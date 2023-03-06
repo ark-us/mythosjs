@@ -1,6 +1,6 @@
 import { Coin, CoinSDKType } from "../../cosmos/base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
-import { DeepPartial, Long } from "../../helpers";
+import { isSet, bytesFromBase64, base64FromBytes, Long } from "../../helpers";
 /** MsgStoreCode submit Wasm code to the system */
 
 export interface MsgStoreCode {
@@ -13,7 +13,10 @@ export interface MsgStoreCode {
 /** MsgStoreCode submit Wasm code to the system */
 
 export interface MsgStoreCodeSDKType {
+  /** Sender is the that actor that signed the messages */
   sender: string;
+  /** WASMByteCode can be raw or gzip compressed */
+
   wasm_byte_code: Uint8Array;
 }
 /** MsgStoreCodeResponse returns store result data. */
@@ -28,7 +31,10 @@ export interface MsgStoreCodeResponse {
 /** MsgStoreCodeResponse returns store result data. */
 
 export interface MsgStoreCodeResponseSDKType {
+  /** CodeID is the reference to the stored WASM code */
   code_id: Long;
+  /** Checksum is the sha256 hash of the stored code */
+
   checksum: Uint8Array;
 }
 /**
@@ -58,10 +64,19 @@ export interface MsgInstantiateContract {
  */
 
 export interface MsgInstantiateContractSDKType {
+  /** Sender is the that actor that signed the messages */
   sender: string;
+  /** CodeID is the reference to the stored WASM code */
+
   code_id: Long;
+  /** Label is optional metadata to be stored with a contract instance. */
+
   label: string;
+  /** Msg json encoded message to be passed to the contract on instantiation */
+
   msg: Uint8Array;
+  /** Funds coins that are transferred to the contract on instantiation */
+
   funds: CoinSDKType[];
 }
 /**
@@ -100,12 +115,28 @@ export interface MsgInstantiateContract2 {
  */
 
 export interface MsgInstantiateContract2SDKType {
+  /** Sender is the that actor that signed the messages */
   sender: string;
+  /** Admin is an optional address that can execute migrations */
+
   code_id: Long;
+  /** Label is optional metadata to be stored with a contract instance. */
+
   label: string;
+  /** Msg json encoded message to be passed to the contract on instantiation */
+
   msg: Uint8Array;
+  /** Funds coins that are transferred to the contract on instantiation */
+
   funds: CoinSDKType[];
+  /** Salt is an arbitrary value provided by the sender. Size can be 1 to 64. */
+
   salt: Uint8Array;
+  /**
+   * FixMsg include the msg value into the hash for the predictable address.
+   * Default is false
+   */
+
   fix_msg: boolean;
 }
 /** MsgInstantiateContractResponse return instantiation result data */
@@ -120,7 +151,10 @@ export interface MsgInstantiateContractResponse {
 /** MsgInstantiateContractResponse return instantiation result data */
 
 export interface MsgInstantiateContractResponseSDKType {
+  /** Address is the bech32 address of the new contract instance. */
   address: string;
+  /** Data contains bytes to returned from the contract */
+
   data: Uint8Array;
 }
 /** MsgInstantiateContract2Response return instantiation result data */
@@ -135,7 +169,10 @@ export interface MsgInstantiateContract2Response {
 /** MsgInstantiateContract2Response return instantiation result data */
 
 export interface MsgInstantiateContract2ResponseSDKType {
+  /** Address is the bech32 address of the new contract instance. */
   address: string;
+  /** Data contains bytes to returned from the contract */
+
   data: Uint8Array;
 }
 /** MsgExecuteContract submits the given message data to a smart contract */
@@ -162,10 +199,22 @@ export interface MsgExecuteContract {
 /** MsgExecuteContract submits the given message data to a smart contract */
 
 export interface MsgExecuteContractSDKType {
+  /** Sender is the that actor that signed the messages */
   sender: string;
+  /** Contract is the address of the smart contract */
+
   contract: string;
+  /** Msg json encoded message to be passed to the contract */
+
   msg: Uint8Array;
+  /** Funds coins that are transferred to the contract on execution */
+
   funds: CoinSDKType[];
+  /**
+   * Array of either hex-encoded contract addresses or contract labels
+   * on which the execution of this message depends on
+   */
+
   dependencies: string[];
 }
 /** MsgExecuteContractResponse returns execution result data. */
@@ -177,6 +226,7 @@ export interface MsgExecuteContractResponse {
 /** MsgExecuteContractResponse returns execution result data. */
 
 export interface MsgExecuteContractResponseSDKType {
+  /** Data contains bytes to returned from the contract */
   data: Uint8Array;
 }
 /**
@@ -206,10 +256,19 @@ export interface MsgExecuteWithOriginContract {
  */
 
 export interface MsgExecuteWithOriginContractSDKType {
+  /** Origin is the actor that originally signed the message */
   origin: string;
+  /** Sender is the the smart contract that sent the messages */
+
   sender: string;
+  /** Contract is the address of the smart contract that receives the message */
+
   contract: string;
+  /** Msg json encoded message to be passed to the contract */
+
   msg: Uint8Array;
+  /** Funds coins that are transferred to the contract on execution */
+
   funds: CoinSDKType[];
 }
 /** MsgExecuteDelegateContract submits the given message data to a smart contract */
@@ -239,12 +298,25 @@ export interface MsgExecuteDelegateContract {
 /** MsgExecuteDelegateContract submits the given message data to a smart contract */
 
 export interface MsgExecuteDelegateContractSDKType {
+  /** Origin is the actor that originally signed the message */
   origin: string;
+  /** Sender is the storage contract, equivalent to the address that triggers the message (signer) */
+
   sender: string;
+  /** Caller is the address that will be used as sender */
+
   caller: string;
+  /** CodeContract is the address of the smart contract whose binary is used */
+
   code_contract: string;
+  /** StorageContract is the address of the smart contract whose storage is used */
+
   storage_contract: string;
+  /** Msg json encoded message to be passed to the contract */
+
   msg: Uint8Array;
+  /** Funds coins that are transferred to the contract on execution */
+
   funds: CoinSDKType[];
 }
 /** MsgExecuteDelegateContractResponse returns execution result data. */
@@ -256,6 +328,7 @@ export interface MsgExecuteDelegateContractResponse {
 /** MsgExecuteDelegateContractResponse returns execution result data. */
 
 export interface MsgExecuteDelegateContractResponseSDKType {
+  /** Data contains bytes to returned from the contract */
   data: Uint8Array;
 }
 
@@ -305,7 +378,21 @@ export const MsgStoreCode = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<MsgStoreCode>): MsgStoreCode {
+  fromJSON(object: any): MsgStoreCode {
+    return {
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      wasmByteCode: isSet(object.wasmByteCode) ? bytesFromBase64(object.wasmByteCode) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: MsgStoreCode): unknown {
+    const obj: any = {};
+    message.sender !== undefined && (obj.sender = message.sender);
+    message.wasmByteCode !== undefined && (obj.wasmByteCode = base64FromBytes(message.wasmByteCode !== undefined ? message.wasmByteCode : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgStoreCode>): MsgStoreCode {
     const message = createBaseMsgStoreCode();
     message.sender = object.sender ?? "";
     message.wasmByteCode = object.wasmByteCode ?? new Uint8Array();
@@ -360,7 +447,21 @@ export const MsgStoreCodeResponse = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<MsgStoreCodeResponse>): MsgStoreCodeResponse {
+  fromJSON(object: any): MsgStoreCodeResponse {
+    return {
+      codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO,
+      checksum: isSet(object.checksum) ? bytesFromBase64(object.checksum) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: MsgStoreCodeResponse): unknown {
+    const obj: any = {};
+    message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
+    message.checksum !== undefined && (obj.checksum = base64FromBytes(message.checksum !== undefined ? message.checksum : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgStoreCodeResponse>): MsgStoreCodeResponse {
     const message = createBaseMsgStoreCodeResponse();
     message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
     message.checksum = object.checksum ?? new Uint8Array();
@@ -442,7 +543,33 @@ export const MsgInstantiateContract = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<MsgInstantiateContract>): MsgInstantiateContract {
+  fromJSON(object: any): MsgInstantiateContract {
+    return {
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO,
+      label: isSet(object.label) ? String(object.label) : "",
+      msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array(),
+      funds: Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : []
+    };
+  },
+
+  toJSON(message: MsgInstantiateContract): unknown {
+    const obj: any = {};
+    message.sender !== undefined && (obj.sender = message.sender);
+    message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
+    message.label !== undefined && (obj.label = message.label);
+    message.msg !== undefined && (obj.msg = base64FromBytes(message.msg !== undefined ? message.msg : new Uint8Array()));
+
+    if (message.funds) {
+      obj.funds = message.funds.map(e => e ? Coin.toJSON(e) : undefined);
+    } else {
+      obj.funds = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgInstantiateContract>): MsgInstantiateContract {
     const message = createBaseMsgInstantiateContract();
     message.sender = object.sender ?? "";
     message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
@@ -545,7 +672,37 @@ export const MsgInstantiateContract2 = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<MsgInstantiateContract2>): MsgInstantiateContract2 {
+  fromJSON(object: any): MsgInstantiateContract2 {
+    return {
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO,
+      label: isSet(object.label) ? String(object.label) : "",
+      msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array(),
+      funds: Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : [],
+      salt: isSet(object.salt) ? bytesFromBase64(object.salt) : new Uint8Array(),
+      fixMsg: isSet(object.fixMsg) ? Boolean(object.fixMsg) : false
+    };
+  },
+
+  toJSON(message: MsgInstantiateContract2): unknown {
+    const obj: any = {};
+    message.sender !== undefined && (obj.sender = message.sender);
+    message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
+    message.label !== undefined && (obj.label = message.label);
+    message.msg !== undefined && (obj.msg = base64FromBytes(message.msg !== undefined ? message.msg : new Uint8Array()));
+
+    if (message.funds) {
+      obj.funds = message.funds.map(e => e ? Coin.toJSON(e) : undefined);
+    } else {
+      obj.funds = [];
+    }
+
+    message.salt !== undefined && (obj.salt = base64FromBytes(message.salt !== undefined ? message.salt : new Uint8Array()));
+    message.fixMsg !== undefined && (obj.fixMsg = message.fixMsg);
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgInstantiateContract2>): MsgInstantiateContract2 {
     const message = createBaseMsgInstantiateContract2();
     message.sender = object.sender ?? "";
     message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
@@ -605,7 +762,21 @@ export const MsgInstantiateContractResponse = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<MsgInstantiateContractResponse>): MsgInstantiateContractResponse {
+  fromJSON(object: any): MsgInstantiateContractResponse {
+    return {
+      address: isSet(object.address) ? String(object.address) : "",
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: MsgInstantiateContractResponse): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgInstantiateContractResponse>): MsgInstantiateContractResponse {
     const message = createBaseMsgInstantiateContractResponse();
     message.address = object.address ?? "";
     message.data = object.data ?? new Uint8Array();
@@ -660,7 +831,21 @@ export const MsgInstantiateContract2Response = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<MsgInstantiateContract2Response>): MsgInstantiateContract2Response {
+  fromJSON(object: any): MsgInstantiateContract2Response {
+    return {
+      address: isSet(object.address) ? String(object.address) : "",
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: MsgInstantiateContract2Response): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgInstantiateContract2Response>): MsgInstantiateContract2Response {
     const message = createBaseMsgInstantiateContract2Response();
     message.address = object.address ?? "";
     message.data = object.data ?? new Uint8Array();
@@ -742,7 +927,38 @@ export const MsgExecuteContract = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<MsgExecuteContract>): MsgExecuteContract {
+  fromJSON(object: any): MsgExecuteContract {
+    return {
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      contract: isSet(object.contract) ? String(object.contract) : "",
+      msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array(),
+      funds: Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : [],
+      dependencies: Array.isArray(object?.dependencies) ? object.dependencies.map((e: any) => String(e)) : []
+    };
+  },
+
+  toJSON(message: MsgExecuteContract): unknown {
+    const obj: any = {};
+    message.sender !== undefined && (obj.sender = message.sender);
+    message.contract !== undefined && (obj.contract = message.contract);
+    message.msg !== undefined && (obj.msg = base64FromBytes(message.msg !== undefined ? message.msg : new Uint8Array()));
+
+    if (message.funds) {
+      obj.funds = message.funds.map(e => e ? Coin.toJSON(e) : undefined);
+    } else {
+      obj.funds = [];
+    }
+
+    if (message.dependencies) {
+      obj.dependencies = message.dependencies.map(e => e);
+    } else {
+      obj.dependencies = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgExecuteContract>): MsgExecuteContract {
     const message = createBaseMsgExecuteContract();
     message.sender = object.sender ?? "";
     message.contract = object.contract ?? "";
@@ -791,7 +1007,19 @@ export const MsgExecuteContractResponse = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<MsgExecuteContractResponse>): MsgExecuteContractResponse {
+  fromJSON(object: any): MsgExecuteContractResponse {
+    return {
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: MsgExecuteContractResponse): unknown {
+    const obj: any = {};
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgExecuteContractResponse>): MsgExecuteContractResponse {
     const message = createBaseMsgExecuteContractResponse();
     message.data = object.data ?? new Uint8Array();
     return message;
@@ -872,7 +1100,33 @@ export const MsgExecuteWithOriginContract = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<MsgExecuteWithOriginContract>): MsgExecuteWithOriginContract {
+  fromJSON(object: any): MsgExecuteWithOriginContract {
+    return {
+      origin: isSet(object.origin) ? String(object.origin) : "",
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      contract: isSet(object.contract) ? String(object.contract) : "",
+      msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array(),
+      funds: Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : []
+    };
+  },
+
+  toJSON(message: MsgExecuteWithOriginContract): unknown {
+    const obj: any = {};
+    message.origin !== undefined && (obj.origin = message.origin);
+    message.sender !== undefined && (obj.sender = message.sender);
+    message.contract !== undefined && (obj.contract = message.contract);
+    message.msg !== undefined && (obj.msg = base64FromBytes(message.msg !== undefined ? message.msg : new Uint8Array()));
+
+    if (message.funds) {
+      obj.funds = message.funds.map(e => e ? Coin.toJSON(e) : undefined);
+    } else {
+      obj.funds = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgExecuteWithOriginContract>): MsgExecuteWithOriginContract {
     const message = createBaseMsgExecuteWithOriginContract();
     message.origin = object.origin ?? "";
     message.sender = object.sender ?? "";
@@ -975,7 +1229,37 @@ export const MsgExecuteDelegateContract = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<MsgExecuteDelegateContract>): MsgExecuteDelegateContract {
+  fromJSON(object: any): MsgExecuteDelegateContract {
+    return {
+      origin: isSet(object.origin) ? String(object.origin) : "",
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      caller: isSet(object.caller) ? String(object.caller) : "",
+      codeContract: isSet(object.codeContract) ? String(object.codeContract) : "",
+      storageContract: isSet(object.storageContract) ? String(object.storageContract) : "",
+      msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array(),
+      funds: Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : []
+    };
+  },
+
+  toJSON(message: MsgExecuteDelegateContract): unknown {
+    const obj: any = {};
+    message.origin !== undefined && (obj.origin = message.origin);
+    message.sender !== undefined && (obj.sender = message.sender);
+    message.caller !== undefined && (obj.caller = message.caller);
+    message.codeContract !== undefined && (obj.codeContract = message.codeContract);
+    message.storageContract !== undefined && (obj.storageContract = message.storageContract);
+    message.msg !== undefined && (obj.msg = base64FromBytes(message.msg !== undefined ? message.msg : new Uint8Array()));
+
+    if (message.funds) {
+      obj.funds = message.funds.map(e => e ? Coin.toJSON(e) : undefined);
+    } else {
+      obj.funds = [];
+    }
+
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgExecuteDelegateContract>): MsgExecuteDelegateContract {
     const message = createBaseMsgExecuteDelegateContract();
     message.origin = object.origin ?? "";
     message.sender = object.sender ?? "";
@@ -1026,7 +1310,19 @@ export const MsgExecuteDelegateContractResponse = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<MsgExecuteDelegateContractResponse>): MsgExecuteDelegateContractResponse {
+  fromJSON(object: any): MsgExecuteDelegateContractResponse {
+    return {
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: MsgExecuteDelegateContractResponse): unknown {
+    const obj: any = {};
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgExecuteDelegateContractResponse>): MsgExecuteDelegateContractResponse {
     const message = createBaseMsgExecuteDelegateContractResponse();
     message.data = object.data ?? new Uint8Array();
     return message;

@@ -2,14 +2,14 @@ import { AminoMsg } from "@cosmjs/amino";
 import { fromUtf8, toUtf8 } from "@cosmjs/encoding";
 import { Long } from "../../helpers";
 import { MsgStoreCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract } from "./tx";
-export interface MsgStoreCodeAminoType extends AminoMsg {
+export interface AminoMsgStoreCode extends AminoMsg {
   type: "/wasmx.wasmx.MsgStoreCode";
   value: {
     sender: string;
     wasm_byte_code: Uint8Array;
   };
 }
-export interface MsgInstantiateContractAminoType extends AminoMsg {
+export interface AminoMsgInstantiateContract extends AminoMsg {
   type: "/wasmx.wasmx.MsgInstantiateContract";
   value: {
     sender: string;
@@ -22,7 +22,7 @@ export interface MsgInstantiateContractAminoType extends AminoMsg {
     }[];
   };
 }
-export interface MsgInstantiateContract2AminoType extends AminoMsg {
+export interface AminoMsgInstantiateContract2 extends AminoMsg {
   type: "/wasmx.wasmx.MsgInstantiateContract2";
   value: {
     sender: string;
@@ -37,7 +37,7 @@ export interface MsgInstantiateContract2AminoType extends AminoMsg {
     fix_msg: boolean;
   };
 }
-export interface MsgExecuteContractAminoType extends AminoMsg {
+export interface AminoMsgExecuteContract extends AminoMsg {
   type: "/wasmx.wasmx.MsgExecuteContract";
   value: {
     sender: string;
@@ -50,7 +50,7 @@ export interface MsgExecuteContractAminoType extends AminoMsg {
     dependencies: string[];
   };
 }
-export interface MsgExecuteWithOriginContractAminoType extends AminoMsg {
+export interface AminoMsgExecuteWithOriginContract extends AminoMsg {
   type: "/wasmx.wasmx.MsgExecuteWithOriginContract";
   value: {
     origin: string;
@@ -63,7 +63,7 @@ export interface MsgExecuteWithOriginContractAminoType extends AminoMsg {
     }[];
   };
 }
-export interface MsgExecuteDelegateContractAminoType extends AminoMsg {
+export interface AminoMsgExecuteDelegateContract extends AminoMsg {
   type: "/wasmx.wasmx.MsgExecuteDelegateContract";
   value: {
     origin: string;
@@ -84,7 +84,7 @@ export const AminoConverter = {
     toAmino: ({
       sender,
       wasmByteCode
-    }: MsgStoreCode): MsgStoreCodeAminoType["value"] => {
+    }: MsgStoreCode): AminoMsgStoreCode["value"] => {
       return {
         sender,
         wasm_byte_code: wasmByteCode
@@ -93,7 +93,7 @@ export const AminoConverter = {
     fromAmino: ({
       sender,
       wasm_byte_code
-    }: MsgStoreCodeAminoType["value"]): MsgStoreCode => {
+    }: AminoMsgStoreCode["value"]): MsgStoreCode => {
       return {
         sender,
         wasmByteCode: wasm_byte_code
@@ -108,7 +108,7 @@ export const AminoConverter = {
       label,
       msg,
       funds
-    }: MsgInstantiateContract): MsgInstantiateContractAminoType["value"] => {
+    }: MsgInstantiateContract): AminoMsgInstantiateContract["value"] => {
       return {
         sender,
         code_id: codeId.toString(),
@@ -126,7 +126,7 @@ export const AminoConverter = {
       label,
       msg,
       funds
-    }: MsgInstantiateContractAminoType["value"]): MsgInstantiateContract => {
+    }: AminoMsgInstantiateContract["value"]): MsgInstantiateContract => {
       return {
         sender,
         codeId: Long.fromString(code_id),
@@ -149,7 +149,7 @@ export const AminoConverter = {
       funds,
       salt,
       fixMsg
-    }: MsgInstantiateContract2): MsgInstantiateContract2AminoType["value"] => {
+    }: MsgInstantiateContract2): AminoMsgInstantiateContract2["value"] => {
       return {
         sender,
         code_id: codeId.toString(),
@@ -171,7 +171,7 @@ export const AminoConverter = {
       funds,
       salt,
       fix_msg
-    }: MsgInstantiateContract2AminoType["value"]): MsgInstantiateContract2 => {
+    }: AminoMsgInstantiateContract2["value"]): MsgInstantiateContract2 => {
       return {
         sender,
         codeId: Long.fromString(code_id),
@@ -194,7 +194,7 @@ export const AminoConverter = {
       msg,
       funds,
       dependencies
-    }: MsgExecuteContract): MsgExecuteContractAminoType["value"] => {
+    }: MsgExecuteContract): AminoMsgExecuteContract["value"] => {
       return {
         sender,
         contract,
@@ -212,7 +212,7 @@ export const AminoConverter = {
       msg,
       funds,
       dependencies
-    }: MsgExecuteContractAminoType["value"]): MsgExecuteContract => {
+    }: AminoMsgExecuteContract["value"]): MsgExecuteContract => {
       return {
         sender,
         contract,
@@ -233,7 +233,7 @@ export const AminoConverter = {
       contract,
       msg,
       funds
-    }: MsgExecuteWithOriginContract): MsgExecuteWithOriginContractAminoType["value"] => {
+    }: MsgExecuteWithOriginContract): AminoMsgExecuteWithOriginContract["value"] => {
       return {
         origin,
         sender,
@@ -251,7 +251,7 @@ export const AminoConverter = {
       contract,
       msg,
       funds
-    }: MsgExecuteWithOriginContractAminoType["value"]): MsgExecuteWithOriginContract => {
+    }: AminoMsgExecuteWithOriginContract["value"]): MsgExecuteWithOriginContract => {
       return {
         origin,
         sender,
@@ -274,7 +274,7 @@ export const AminoConverter = {
       storageContract,
       msg,
       funds
-    }: MsgExecuteDelegateContract): MsgExecuteDelegateContractAminoType["value"] => {
+    }: MsgExecuteDelegateContract): AminoMsgExecuteDelegateContract["value"] => {
       return {
         origin,
         sender,
@@ -296,7 +296,7 @@ export const AminoConverter = {
       storage_contract,
       msg,
       funds
-    }: MsgExecuteDelegateContractAminoType["value"]): MsgExecuteDelegateContract => {
+    }: AminoMsgExecuteDelegateContract["value"]): MsgExecuteDelegateContract => {
       return {
         origin,
         sender,

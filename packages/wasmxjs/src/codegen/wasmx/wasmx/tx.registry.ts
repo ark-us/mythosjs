@@ -95,6 +95,94 @@ export const MessageComposer = {
     }
 
   },
+  toJSON: {
+    storeCode(value: MsgStoreCode) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgStoreCode",
+        value: MsgStoreCode.toJSON(value)
+      };
+    },
+
+    instantiateContract(value: MsgInstantiateContract) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgInstantiateContract",
+        value: MsgInstantiateContract.toJSON(value)
+      };
+    },
+
+    instantiateContract2(value: MsgInstantiateContract2) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgInstantiateContract2",
+        value: MsgInstantiateContract2.toJSON(value)
+      };
+    },
+
+    executeContract(value: MsgExecuteContract) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgExecuteContract",
+        value: MsgExecuteContract.toJSON(value)
+      };
+    },
+
+    executeWithOriginContract(value: MsgExecuteWithOriginContract) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgExecuteWithOriginContract",
+        value: MsgExecuteWithOriginContract.toJSON(value)
+      };
+    },
+
+    executeDelegateContract(value: MsgExecuteDelegateContract) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgExecuteDelegateContract",
+        value: MsgExecuteDelegateContract.toJSON(value)
+      };
+    }
+
+  },
+  fromJSON: {
+    storeCode(value: any) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgStoreCode",
+        value: MsgStoreCode.fromJSON(value)
+      };
+    },
+
+    instantiateContract(value: any) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgInstantiateContract",
+        value: MsgInstantiateContract.fromJSON(value)
+      };
+    },
+
+    instantiateContract2(value: any) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgInstantiateContract2",
+        value: MsgInstantiateContract2.fromJSON(value)
+      };
+    },
+
+    executeContract(value: any) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgExecuteContract",
+        value: MsgExecuteContract.fromJSON(value)
+      };
+    },
+
+    executeWithOriginContract(value: any) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgExecuteWithOriginContract",
+        value: MsgExecuteWithOriginContract.fromJSON(value)
+      };
+    },
+
+    executeDelegateContract(value: any) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgExecuteDelegateContract",
+        value: MsgExecuteDelegateContract.fromJSON(value)
+      };
+    }
+
+  },
   fromPartial: {
     storeCode(value: MsgStoreCode) {
       return {

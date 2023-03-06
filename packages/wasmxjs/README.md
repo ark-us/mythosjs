@@ -1,9 +1,6 @@
 # wasmxjs
 
-<p align="center">
-  <img src="https://user-images.githubusercontent.com/545047/188804067-28e67e5e-0214-4449-ab04-2e0c564a6885.svg" width="80"><br />
-    "Typescript Protobuf Messages for Mythos"
-</p>
+Typescript Protobuf Messages for Mythos
 
 
 ## install
@@ -19,8 +16,8 @@ npm install @ark-us/wasmxjs
 - [Usage](#usage)
     - [RPC Clients](#rpc-clients)
     - [Composing Messages](#composing-messages)
-        - Cosmos, CosmWasm, and IBC
-            - [CosmWasm](#cosmwasm-messages)
+        - Cosmos, WasmX, and IBC
+            - [WasmX](#wasmx-messages)
             - [IBC](#ibc-messages)
             - [Cosmos](#cosmos-messages)
 - [Wallets and Signers](#connecting-with-wallets-and-signing-messages)
@@ -63,19 +60,16 @@ const {
 } = mythos.exchange.v1beta1.MessageComposer.withTypeUrl;
 ```
 
-#### CosmWasm Messages
+#### WasmX Messages
 
 ```js
-import { cosmwasm } from "@ark-us/wasmxjs";
+import { wasmx } from "@ark-us/wasmxjs";
 
 const {
-    clearAdmin,
     executeContract,
     instantiateContract,
-    migrateContract,
     storeCode,
-    updateAdmin
-} = cosmwasm.wasm.v1.MessageComposer.withTypeUrl;
+} = wasmx.wasmx.MessageComposer.withTypeUrl;
 ```
 
 #### IBC Messages
@@ -214,8 +208,8 @@ import { AminoTypes, SigningStargateClient } from "@cosmjs/stargate";
 import {
     cosmosAminoConverters,
     cosmosProtoRegistry,
-    cosmwasmAminoConverters,
-    cosmwasmProtoRegistry,
+    wasmxAminoConverters,
+    wasmxProtoRegistry,
     ibcProtoRegistry,
     ibcAminoConverters,
     mythosAminoConverters,
@@ -227,14 +221,14 @@ const rpcEndpint = 'https://rpc.cosmos.directory/mythos'; // or another URL
 
 const protoRegistry: ReadonlyArray<[string, GeneratedType]> = [
     ...cosmosProtoRegistry,
-    ...cosmwasmProtoRegistry,
+    ...wasmxProtoRegistry,
     ...ibcProtoRegistry,
     ...mythosProtoRegistry
 ];
 
 const aminoConverters = {
     ...cosmosAminoConverters,
-    ...cosmwasmAminoConverters,
+    ...wasmxAminoConverters,
     ...ibcAminoConverters,
     ...mythosAminoConverters
 };
@@ -275,13 +269,9 @@ yarn publish
 ```
 ## Credits
 
-🛠 Built by Cosmology — if you like our tools, please consider delegating to [our validator ⚛️](https://cosmology.tech/validator)
-
 Code built with the help of these related projects:
 
-* [@cosmwasm/ts-codegen](https://github.com/CosmWasm/ts-codegen) for generated CosmWasm contract Typescript classes
 * [@osmonauts/telescope](https://github.com/osmosis-labs/telescope) a "babel for the Cosmos", Telescope is a TypeScript Transpiler for Cosmos Protobufs.
-* [cosmos-kit](https://github.com/cosmology-tech/cosmos-kit) A wallet connector for the Cosmos ⚛️
 
 ## Disclaimer
 

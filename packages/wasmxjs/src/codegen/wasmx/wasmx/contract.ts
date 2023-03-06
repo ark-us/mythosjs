@@ -1,5 +1,5 @@
 import * as _m0 from "protobufjs/minimal";
-import { DeepPartial, Long } from "../../helpers";
+import { isSet, bytesFromBase64, base64FromBytes, Long } from "../../helpers";
 /** ContractStorage */
 
 export interface ContractStorage {
@@ -12,7 +12,10 @@ export interface ContractStorage {
 /** ContractStorage */
 
 export interface ContractStorageSDKType {
+  /** hex-encode key */
   key: Uint8Array;
+  /** raw value */
+
   value: Uint8Array;
 }
 /** CodeInfo is data for the uploaded contract WASM code */
@@ -35,8 +38,16 @@ export interface CodeInfo {
 /** CodeInfo is data for the uploaded contract WASM code */
 
 export interface CodeInfoSDKType {
+  /** CodeHash is the unique identifier created by hashing the wasm code */
   code_hash: Uint8Array;
+  /** Creator address who initially stored the code */
+
   creator: string;
+  /**
+   * deps can be hex-formatted contract addresses (32 bytes)
+   * or versioned interface labels
+   */
+
   deps: string[];
   abi: string;
   json_schema: string;
@@ -60,9 +71,16 @@ export interface ContractInfo {
 /** ContractInfo stores a WASM contract instance */
 
 export interface ContractInfoSDKType {
+  /** CodeID is the reference to the stored Wasm code */
   code_id: Long;
+  /** Creator address who initially instantiated the contract */
+
   creator: string;
+  /** Label is optional metadata to be stored with a contract instance. */
+
   label: string;
+  /** Initialization message */
+
   init_message: Uint8Array;
   ibc_port_id: string;
 }
@@ -87,7 +105,13 @@ export interface AbsoluteTxPosition {
  */
 
 export interface AbsoluteTxPositionSDKType {
+  /** BlockHeight is the block the contract was created at */
   block_height: Long;
+  /**
+   * TxIndex is a monotonic counter within the block (actual transaction index,
+   * or gas consumed)
+   */
+
   tx_index: Long;
 }
 
@@ -137,7 +161,21 @@ export const ContractStorage = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<ContractStorage>): ContractStorage {
+  fromJSON(object: any): ContractStorage {
+    return {
+      key: isSet(object.key) ? bytesFromBase64(object.key) : new Uint8Array(),
+      value: isSet(object.value) ? bytesFromBase64(object.value) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: ContractStorage): unknown {
+    const obj: any = {};
+    message.key !== undefined && (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
+    message.value !== undefined && (obj.value = base64FromBytes(message.value !== undefined ? message.value : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial(object: Partial<ContractStorage>): ContractStorage {
     const message = createBaseContractStorage();
     message.key = object.key ?? new Uint8Array();
     message.value = object.value ?? new Uint8Array();
@@ -219,7 +257,33 @@ export const CodeInfo = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<CodeInfo>): CodeInfo {
+  fromJSON(object: any): CodeInfo {
+    return {
+      codeHash: isSet(object.codeHash) ? bytesFromBase64(object.codeHash) : new Uint8Array(),
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      deps: Array.isArray(object?.deps) ? object.deps.map((e: any) => String(e)) : [],
+      abi: isSet(object.abi) ? String(object.abi) : "",
+      jsonSchema: isSet(object.jsonSchema) ? String(object.jsonSchema) : ""
+    };
+  },
+
+  toJSON(message: CodeInfo): unknown {
+    const obj: any = {};
+    message.codeHash !== undefined && (obj.codeHash = base64FromBytes(message.codeHash !== undefined ? message.codeHash : new Uint8Array()));
+    message.creator !== undefined && (obj.creator = message.creator);
+
+    if (message.deps) {
+      obj.deps = message.deps.map(e => e);
+    } else {
+      obj.deps = [];
+    }
+
+    message.abi !== undefined && (obj.abi = message.abi);
+    message.jsonSchema !== undefined && (obj.jsonSchema = message.jsonSchema);
+    return obj;
+  },
+
+  fromPartial(object: Partial<CodeInfo>): CodeInfo {
     const message = createBaseCodeInfo();
     message.codeHash = object.codeHash ?? new Uint8Array();
     message.creator = object.creator ?? "";
@@ -304,7 +368,27 @@ export const ContractInfo = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<ContractInfo>): ContractInfo {
+  fromJSON(object: any): ContractInfo {
+    return {
+      codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO,
+      creator: isSet(object.creator) ? String(object.creator) : "",
+      label: isSet(object.label) ? String(object.label) : "",
+      initMessage: isSet(object.initMessage) ? bytesFromBase64(object.initMessage) : new Uint8Array(),
+      ibcPortId: isSet(object.ibcPortId) ? String(object.ibcPortId) : ""
+    };
+  },
+
+  toJSON(message: ContractInfo): unknown {
+    const obj: any = {};
+    message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
+    message.creator !== undefined && (obj.creator = message.creator);
+    message.label !== undefined && (obj.label = message.label);
+    message.initMessage !== undefined && (obj.initMessage = base64FromBytes(message.initMessage !== undefined ? message.initMessage : new Uint8Array()));
+    message.ibcPortId !== undefined && (obj.ibcPortId = message.ibcPortId);
+    return obj;
+  },
+
+  fromPartial(object: Partial<ContractInfo>): ContractInfo {
     const message = createBaseContractInfo();
     message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
     message.creator = object.creator ?? "";
@@ -362,7 +446,21 @@ export const AbsoluteTxPosition = {
     return message;
   },
 
-  fromPartial(object: DeepPartial<AbsoluteTxPosition>): AbsoluteTxPosition {
+  fromJSON(object: any): AbsoluteTxPosition {
+    return {
+      blockHeight: isSet(object.blockHeight) ? Long.fromValue(object.blockHeight) : Long.UZERO,
+      txIndex: isSet(object.txIndex) ? Long.fromValue(object.txIndex) : Long.UZERO
+    };
+  },
+
+  toJSON(message: AbsoluteTxPosition): unknown {
+    const obj: any = {};
+    message.blockHeight !== undefined && (obj.blockHeight = (message.blockHeight || Long.UZERO).toString());
+    message.txIndex !== undefined && (obj.txIndex = (message.txIndex || Long.UZERO).toString());
+    return obj;
+  },
+
+  fromPartial(object: Partial<AbsoluteTxPosition>): AbsoluteTxPosition {
     const message = createBaseAbsoluteTxPosition();
     message.blockHeight = object.blockHeight !== undefined && object.blockHeight !== null ? Long.fromValue(object.blockHeight) : Long.UZERO;
     message.txIndex = object.txIndex !== undefined && object.txIndex !== null ? Long.fromValue(object.txIndex) : Long.UZERO;
