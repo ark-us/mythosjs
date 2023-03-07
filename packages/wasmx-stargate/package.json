@@ -1,11 +1,11 @@
 {
   "name": "@ark-us/wasmx-stargate",
-  "version": "0.29.5",
+  "version": "0.0.1",
   "description": "WasmX SDK",
   "contributors": [
-    "Will Clark <willclarktech@users.noreply.github.com>"
+    "Loredana Cirstea"
   ],
-  "license": "Apache-2.0",
+  "license": "GLPv3",
   "main": "build/index.js",
   "types": "build/index.d.ts",
   "files": [
