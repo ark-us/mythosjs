@@ -1,5 +1,5 @@
 import { fromUtf8, toUtf8 } from "@cosmjs/encoding";
-import { createPagination, createProtobufRpcClient, QueryClient } from "@cosmjs/stargate";
+import { createPagination, createProtobufRpcClient, QueryClient, Coin } from "@cosmjs/stargate";
 import {
   QueryAllContractStateResponse,
   QueryCodeResponse,
@@ -54,6 +54,7 @@ export interface WasmExtension {
      * Throws error if no such contract exists, the query format is invalid or the response is invalid.
      */
     readonly queryContractSmart: (address: string, query: JsonObject) => Promise<JsonObject>;
+    readonly queryContractFull: (sender: string, address: string, query: JsonObject, funds: Coin[], dependencies: string[]) => Promise<JsonObject>;
   };
 }
 
@@ -109,6 +110,25 @@ export function setupWasmExtension(base: QueryClient): WasmExtension {
         const { items } = await queryService.allContractState(request);
         return items;
       },
+
+      queryContractFull: async (sender: string, address: string, query: JsonObject, funds: Coin[], dependencies: string[]) => {
+        const request = { sender: sender, address: address, queryData: toUtf8(JSON.stringify(query)), funds: funds, dependencies };
+        const { data } = await queryService.smartContractCall(request);
+        // By convention, smart queries must return a valid JSON document (see https://github.com/CosmWasm/cosmwasm/issues/144)
+        let responseText;
+        try {
+            responseText = fromUtf8(data);
+        }
+        catch (error) {
+            throw new Error(`Could not UTF-8 decode smart query response from contract: ${error}`);
+        }
+        try {
+            return JSON.parse(responseText);
+        }
+        catch (error) {
+            throw new Error(`Could not JSON parse smart query response from contract: ${error}`);
+        }
+    },
     },
   };
 }

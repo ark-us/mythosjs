@@ -319,7 +319,7 @@ export class SigningWasmXClient extends WasmXClient {
       throw new Error(createDeliverTxResponseErrorMessage(result));
     }
     const parsedLogs = logs.parseRawLog(result.rawLog);
-    const contractAddressAttr = logs.findAttribute(parsedLogs, "instantiate", "_contract_address");
+    const contractAddressAttr = logs.findAttribute(parsedLogs, "instantiate", "contract_address");
     return {
       contractAddress: contractAddressAttr.value,
       logs: parsedLogs,

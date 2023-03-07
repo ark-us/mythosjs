@@ -443,6 +443,22 @@ export class WasmXClient {
     }
   }
 
+  public async queryContractFull(sender: string, address: string, queryMsg: JsonObject, funds: Coin[], dependencies: string[]): Promise<JsonObject> {
+    try {
+      return await this.forceGetQueryClient().wasm.queryContractFull(sender, address, queryMsg, funds, dependencies);
+    } catch (error) {
+      if (error instanceof Error) {
+        if (error.message.startsWith("not found: contract")) {
+          throw new Error(`No contract found at address "${address}"`);
+        } else {
+          throw error;
+        }
+      } else {
+        throw error;
+      }
+    }
+  }
+
   private async txsQuery(query: string): Promise<readonly IndexedTx[]> {
     const results = await this.forceGetTmClient().txSearchAll({ query: query });
     return results.txs.map((tx: any) => {
