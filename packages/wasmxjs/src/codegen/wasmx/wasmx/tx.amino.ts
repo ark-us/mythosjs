@@ -1,12 +1,19 @@
 import { AminoMsg } from "@cosmjs/amino";
 import { fromUtf8, toUtf8 } from "@cosmjs/encoding";
 import { Long } from "../../helpers";
-import { MsgStoreCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract } from "./tx";
+import { MsgStoreCode, MsgStoreCodeEvm, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
 export interface AminoMsgStoreCode extends AminoMsg {
   type: "/wasmx.wasmx.MsgStoreCode";
   value: {
     sender: string;
     wasm_byte_code: Uint8Array;
+  };
+}
+export interface AminoMsgStoreCodeEvm extends AminoMsg {
+  type: "/wasmx.wasmx.MsgStoreCodeEvm";
+  value: {
+    sender: string;
+    evm_byte_code: Uint8Array;
   };
 }
 export interface AminoMsgInstantiateContract extends AminoMsg {
@@ -78,6 +85,13 @@ export interface AminoMsgExecuteDelegateContract extends AminoMsg {
     }[];
   };
 }
+export interface AminoMsgCompileContract extends AminoMsg {
+  type: "/wasmx.wasmx.MsgCompileContract";
+  value: {
+    sender: string;
+    codeId: string;
+  };
+}
 export const AminoConverter = {
   "/wasmx.wasmx.MsgStoreCode": {
     aminoType: "/wasmx.wasmx.MsgStoreCode",
@@ -97,6 +111,27 @@ export const AminoConverter = {
       return {
         sender,
         wasmByteCode: wasm_byte_code
+      };
+    }
+  },
+  "/wasmx.wasmx.MsgStoreCodeEvm": {
+    aminoType: "/wasmx.wasmx.MsgStoreCodeEvm",
+    toAmino: ({
+      sender,
+      evmByteCode
+    }: MsgStoreCodeEvm): AminoMsgStoreCodeEvm["value"] => {
+      return {
+        sender,
+        evm_byte_code: evmByteCode
+      };
+    },
+    fromAmino: ({
+      sender,
+      evm_byte_code
+    }: AminoMsgStoreCodeEvm["value"]): MsgStoreCodeEvm => {
+      return {
+        sender,
+        evmByteCode: evm_byte_code
       };
     }
   },
@@ -308,6 +343,27 @@ export const AminoConverter = {
           denom: el0.denom,
           amount: el0.amount
         }))
+      };
+    }
+  },
+  "/wasmx.wasmx.MsgCompileContract": {
+    aminoType: "/wasmx.wasmx.MsgCompileContract",
+    toAmino: ({
+      sender,
+      codeId
+    }: MsgCompileContract): AminoMsgCompileContract["value"] => {
+      return {
+        sender,
+        codeId: codeId.toString()
+      };
+    },
+    fromAmino: ({
+      sender,
+      codeId
+    }: AminoMsgCompileContract["value"]): MsgCompileContract => {
+      return {
+        sender,
+        codeId: Long.fromString(codeId)
       };
     }
   }

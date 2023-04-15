@@ -42,6 +42,7 @@ import {
   MsgExecuteContract,
   MsgInstantiateContract,
   MsgStoreCode,
+  MsgStoreCodeEvm,
 } from "@ark-us/wasmxjs";
 import Long from 'long';
 import pako from "pako";
@@ -53,6 +54,7 @@ import {
   MsgExecuteContractEncodeObject,
   MsgInstantiateContractEncodeObject,
   MsgStoreCodeEncodeObject,
+  MsgStoreCodeEvmEncodeObject,
   wasmTypes,
 } from "./modules";
 
@@ -285,6 +287,42 @@ export class SigningWasmXClient extends WasmXClient {
       originalChecksum: toHex(sha256(wasmCode)),
       compressedSize: compressed.length,
       compressedChecksum: toHex(sha256(compressed)),
+      codeId: Number.parseInt(codeIdAttr.value, 10),
+      logs: parsedLogs,
+      height: result.height,
+      transactionHash: result.transactionHash,
+      events: result.events,
+      gasWanted: result.gasWanted,
+      gasUsed: result.gasUsed,
+    };
+  }
+
+  /** Uploads code and returns a receipt, including the code ID */
+  public async uploadEvm(
+    senderAddress: string,
+    evmCode: Uint8Array,
+    fee: StdFee | "auto" | number,
+    memo = "",
+  ): Promise<UploadResult> {
+    const storeCodeEvmMsg: MsgStoreCodeEvmEncodeObject = {
+      typeUrl: "/wasmx.wasmx.MsgStoreCodeEvm",
+      value: MsgStoreCodeEvm.fromPartial({
+        sender: senderAddress,
+        evmByteCode: evmCode,
+      }),
+    };
+
+    const result = await this.signAndBroadcast(senderAddress, [storeCodeEvmMsg], fee, memo);
+    if (isDeliverTxFailure(result)) {
+      throw new Error(createDeliverTxResponseErrorMessage(result));
+    }
+    const parsedLogs = logs.parseRawLog(result.rawLog);
+    const codeIdAttr = logs.findAttribute(parsedLogs, "store_code", "code_id");
+    return {
+      originalSize: evmCode.length,
+      originalChecksum: toHex(sha256(evmCode)),
+      compressedSize: evmCode.length,
+      compressedChecksum: toHex(sha256(evmCode)),
       codeId: Number.parseInt(codeIdAttr.value, 10),
       logs: parsedLogs,
       height: result.height,

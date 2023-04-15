@@ -37,6 +37,42 @@ export interface MsgStoreCodeResponseSDKType {
 
   checksum: Uint8Array;
 }
+/** MsgStoreCodeEvm submit Wasm code to the system */
+
+export interface MsgStoreCodeEvm {
+  /** Sender is the that actor that signed the messages */
+  sender: string;
+  /** EVM bytecode */
+
+  evmByteCode: Uint8Array;
+}
+/** MsgStoreCodeEvm submit Wasm code to the system */
+
+export interface MsgStoreCodeEvmSDKType {
+  /** Sender is the that actor that signed the messages */
+  sender: string;
+  /** EVM bytecode */
+
+  evm_byte_code: Uint8Array;
+}
+/** MsgStoreCodeEvmResponse returns store result data. */
+
+export interface MsgStoreCodeEvmResponse {
+  /** CodeID is the reference to the stored WASM code */
+  codeId: Long;
+  /** Checksum is the sha256 hash of the stored code */
+
+  checksum: Uint8Array;
+}
+/** MsgStoreCodeEvmResponse returns store result data. */
+
+export interface MsgStoreCodeEvmResponseSDKType {
+  /** CodeID is the reference to the stored WASM code */
+  code_id: Long;
+  /** Checksum is the sha256 hash of the stored code */
+
+  checksum: Uint8Array;
+}
 /**
  * MsgInstantiateContract create a new smart contract instance for the given
  * code id.
@@ -331,6 +367,22 @@ export interface MsgExecuteDelegateContractResponseSDKType {
   /** Data contains bytes to returned from the contract */
   data: Uint8Array;
 }
+export interface MsgCompileContract {
+  /** Sender is the that actor that signed the messages */
+  sender: string;
+  /** Contract is the address of the smart contract */
+
+  codeId: Long;
+}
+export interface MsgCompileContractSDKType {
+  /** Sender is the that actor that signed the messages */
+  sender: string;
+  /** Contract is the address of the smart contract */
+
+  codeId: Long;
+}
+export interface MsgCompileContractResponse {}
+export interface MsgCompileContractResponseSDKType {}
 
 function createBaseMsgStoreCode(): MsgStoreCode {
   return {
@@ -463,6 +515,144 @@ export const MsgStoreCodeResponse = {
 
   fromPartial(object: Partial<MsgStoreCodeResponse>): MsgStoreCodeResponse {
     const message = createBaseMsgStoreCodeResponse();
+    message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
+    message.checksum = object.checksum ?? new Uint8Array();
+    return message;
+  }
+
+};
+
+function createBaseMsgStoreCodeEvm(): MsgStoreCodeEvm {
+  return {
+    sender: "",
+    evmByteCode: new Uint8Array()
+  };
+}
+
+export const MsgStoreCodeEvm = {
+  encode(message: MsgStoreCodeEvm, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.sender !== "") {
+      writer.uint32(10).string(message.sender);
+    }
+
+    if (message.evmByteCode.length !== 0) {
+      writer.uint32(18).bytes(message.evmByteCode);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgStoreCodeEvm {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgStoreCodeEvm();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.sender = reader.string();
+          break;
+
+        case 2:
+          message.evmByteCode = reader.bytes();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgStoreCodeEvm {
+    return {
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      evmByteCode: isSet(object.evmByteCode) ? bytesFromBase64(object.evmByteCode) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: MsgStoreCodeEvm): unknown {
+    const obj: any = {};
+    message.sender !== undefined && (obj.sender = message.sender);
+    message.evmByteCode !== undefined && (obj.evmByteCode = base64FromBytes(message.evmByteCode !== undefined ? message.evmByteCode : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgStoreCodeEvm>): MsgStoreCodeEvm {
+    const message = createBaseMsgStoreCodeEvm();
+    message.sender = object.sender ?? "";
+    message.evmByteCode = object.evmByteCode ?? new Uint8Array();
+    return message;
+  }
+
+};
+
+function createBaseMsgStoreCodeEvmResponse(): MsgStoreCodeEvmResponse {
+  return {
+    codeId: Long.UZERO,
+    checksum: new Uint8Array()
+  };
+}
+
+export const MsgStoreCodeEvmResponse = {
+  encode(message: MsgStoreCodeEvmResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.codeId.isZero()) {
+      writer.uint32(8).uint64(message.codeId);
+    }
+
+    if (message.checksum.length !== 0) {
+      writer.uint32(18).bytes(message.checksum);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgStoreCodeEvmResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgStoreCodeEvmResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.codeId = (reader.uint64() as Long);
+          break;
+
+        case 2:
+          message.checksum = reader.bytes();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgStoreCodeEvmResponse {
+    return {
+      codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO,
+      checksum: isSet(object.checksum) ? bytesFromBase64(object.checksum) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: MsgStoreCodeEvmResponse): unknown {
+    const obj: any = {};
+    message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
+    message.checksum !== undefined && (obj.checksum = base64FromBytes(message.checksum !== undefined ? message.checksum : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgStoreCodeEvmResponse>): MsgStoreCodeEvmResponse {
+    const message = createBaseMsgStoreCodeEvmResponse();
     message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
     message.checksum = object.checksum ?? new Uint8Array();
     return message;
@@ -1325,6 +1515,118 @@ export const MsgExecuteDelegateContractResponse = {
   fromPartial(object: Partial<MsgExecuteDelegateContractResponse>): MsgExecuteDelegateContractResponse {
     const message = createBaseMsgExecuteDelegateContractResponse();
     message.data = object.data ?? new Uint8Array();
+    return message;
+  }
+
+};
+
+function createBaseMsgCompileContract(): MsgCompileContract {
+  return {
+    sender: "",
+    codeId: Long.UZERO
+  };
+}
+
+export const MsgCompileContract = {
+  encode(message: MsgCompileContract, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.sender !== "") {
+      writer.uint32(10).string(message.sender);
+    }
+
+    if (!message.codeId.isZero()) {
+      writer.uint32(16).uint64(message.codeId);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCompileContract {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCompileContract();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.sender = reader.string();
+          break;
+
+        case 2:
+          message.codeId = (reader.uint64() as Long);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgCompileContract {
+    return {
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO
+    };
+  },
+
+  toJSON(message: MsgCompileContract): unknown {
+    const obj: any = {};
+    message.sender !== undefined && (obj.sender = message.sender);
+    message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgCompileContract>): MsgCompileContract {
+    const message = createBaseMsgCompileContract();
+    message.sender = object.sender ?? "";
+    message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
+    return message;
+  }
+
+};
+
+function createBaseMsgCompileContractResponse(): MsgCompileContractResponse {
+  return {};
+}
+
+export const MsgCompileContractResponse = {
+  encode(_: MsgCompileContractResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgCompileContractResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgCompileContractResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgCompileContractResponse {
+    return {};
+  },
+
+  toJSON(_: MsgCompileContractResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: Partial<MsgCompileContractResponse>): MsgCompileContractResponse {
+    const message = createBaseMsgCompileContractResponse();
     return message;
   }
 

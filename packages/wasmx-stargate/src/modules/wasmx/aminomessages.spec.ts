@@ -5,6 +5,7 @@ import {
   MsgExecuteContract,
   MsgInstantiateContract,
   MsgStoreCode,
+  MsgStoreCodeEvm,
 } from "@ark-us/wasmxjs";
 import Long from 'long';
 
@@ -12,6 +13,7 @@ import {
   AminoMsgExecuteContract,
   AminoMsgInstantiateContract,
   AminoMsgStoreCode,
+  AminoMsgStoreCodeEvm,
   createWasmAminoConverters,
 } from "./aminomessages";
 
@@ -31,6 +33,25 @@ describe("AminoTypes", () => {
         value: {
           sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
           wasm_byte_code: "WUVMTE9XIFNVQk1BUklORQ==",
+        },
+      };
+      expect(aminoMsg).toEqual(expected);
+    });
+
+    it("works for MsgStoreCodeEvm", () => {
+      const msg: MsgStoreCodeEvm = {
+        sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
+        evmByteCode: fromBase64("WUVMTE9XIFNVQk1BUklORQ=="),
+      };
+      const aminoMsg = new AminoTypes(createWasmAminoConverters()).toAmino({
+        typeUrl: "/wasmx.wasmx.MsgStoreCodeEvm",
+        value: msg,
+      });
+      const expected: AminoMsgStoreCodeEvm = {
+        type: "wasmx/MsgStoreCodeEvm",
+        value: {
+          sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
+          evm_byte_code: "WUVMTE9XIFNVQk1BUklORQ==",
         },
       };
       expect(aminoMsg).toEqual(expected);

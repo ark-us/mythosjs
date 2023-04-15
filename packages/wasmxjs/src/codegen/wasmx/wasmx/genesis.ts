@@ -1,5 +1,5 @@
 import { Params, ParamsSDKType } from "./params";
-import { CodeInfo, CodeInfoSDKType, ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType } from "./contract";
+import { CodeInfo, CodeInfoSDKType, CodeMetadata, CodeMetadataSDKType, ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType } from "./contract";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, bytesFromBase64, base64FromBytes, Long } from "../../helpers";
 /** GenesisState defines the wasmx module's genesis state. */
@@ -13,6 +13,13 @@ export interface GenesisState {
   codes: Code[];
   contracts: Contract[];
   sequences: Sequence[];
+  /**
+   * not recommended
+   * initiate pinned/AOT compiled contracts from a provided folder
+   * instead of compiling the contracts from wasm
+   */
+
+  compiledFolderPath: string;
 }
 /** GenesisState defines the wasmx module's genesis state. */
 
@@ -25,16 +32,27 @@ export interface GenesisStateSDKType {
   codes: CodeSDKType[];
   contracts: ContractSDKType[];
   sequences: SequenceSDKType[];
+  /**
+   * not recommended
+   * initiate pinned/AOT compiled contracts from a provided folder
+   * instead of compiling the contracts from wasm
+   */
+
+  compiled_folder_path: string;
 }
 export interface SystemContract {
   address: string;
   label: string;
   initMessage: Uint8Array;
+  pinned: boolean;
+  native: boolean;
 }
 export interface SystemContractSDKType {
   address: string;
   label: string;
   init_message: Uint8Array;
+  pinned: boolean;
+  native: boolean;
 }
 /** Code - for importing and exporting code data */
 
@@ -42,9 +60,7 @@ export interface Code {
   codeId: Long;
   codeInfo?: CodeInfo;
   codeBytes: Uint8Array;
-  /** Pinned to wasmvm cache */
-
-  pinned: boolean;
+  codeMetadata?: CodeMetadata;
 }
 /** Code - for importing and exporting code data */
 
@@ -52,9 +68,7 @@ export interface CodeSDKType {
   code_id: Long;
   code_info?: CodeInfoSDKType;
   code_bytes: Uint8Array;
-  /** Pinned to wasmvm cache */
-
-  pinned: boolean;
+  code_metadata?: CodeMetadataSDKType;
 }
 /** Contract struct encompasses ContractAddress, ContractInfo, and ContractState */
 
@@ -90,7 +104,8 @@ function createBaseGenesisState(): GenesisState {
     systemContracts: [],
     codes: [],
     contracts: [],
-    sequences: []
+    sequences: [],
+    compiledFolderPath: ""
   };
 }
 
@@ -118,6 +133,10 @@ export const GenesisState = {
 
     for (const v of message.sequences) {
       Sequence.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+
+    if (message.compiledFolderPath !== "") {
+      writer.uint32(58).string(message.compiledFolderPath);
     }
 
     return writer;
@@ -156,6 +175,10 @@ export const GenesisState = {
           message.sequences.push(Sequence.decode(reader, reader.uint32()));
           break;
 
+        case 7:
+          message.compiledFolderPath = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -172,7 +195,8 @@ export const GenesisState = {
       systemContracts: Array.isArray(object?.systemContracts) ? object.systemContracts.map((e: any) => SystemContract.fromJSON(e)) : [],
       codes: Array.isArray(object?.codes) ? object.codes.map((e: any) => Code.fromJSON(e)) : [],
       contracts: Array.isArray(object?.contracts) ? object.contracts.map((e: any) => Contract.fromJSON(e)) : [],
-      sequences: Array.isArray(object?.sequences) ? object.sequences.map((e: any) => Sequence.fromJSON(e)) : []
+      sequences: Array.isArray(object?.sequences) ? object.sequences.map((e: any) => Sequence.fromJSON(e)) : [],
+      compiledFolderPath: isSet(object.compiledFolderPath) ? String(object.compiledFolderPath) : ""
     };
   },
 
@@ -205,6 +229,7 @@ export const GenesisState = {
       obj.sequences = [];
     }
 
+    message.compiledFolderPath !== undefined && (obj.compiledFolderPath = message.compiledFolderPath);
     return obj;
   },
 
@@ -216,6 +241,7 @@ export const GenesisState = {
     message.codes = object.codes?.map(e => Code.fromPartial(e)) || [];
     message.contracts = object.contracts?.map(e => Contract.fromPartial(e)) || [];
     message.sequences = object.sequences?.map(e => Sequence.fromPartial(e)) || [];
+    message.compiledFolderPath = object.compiledFolderPath ?? "";
     return message;
   }
 
@@ -225,7 +251,9 @@ function createBaseSystemContract(): SystemContract {
   return {
     address: "",
     label: "",
-    initMessage: new Uint8Array()
+    initMessage: new Uint8Array(),
+    pinned: false,
+    native: false
   };
 }
 
@@ -241,6 +269,14 @@ export const SystemContract = {
 
     if (message.initMessage.length !== 0) {
       writer.uint32(26).bytes(message.initMessage);
+    }
+
+    if (message.pinned === true) {
+      writer.uint32(32).bool(message.pinned);
+    }
+
+    if (message.native === true) {
+      writer.uint32(40).bool(message.native);
     }
 
     return writer;
@@ -267,6 +303,14 @@ export const SystemContract = {
           message.initMessage = reader.bytes();
           break;
 
+        case 4:
+          message.pinned = reader.bool();
+          break;
+
+        case 5:
+          message.native = reader.bool();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -280,7 +324,9 @@ export const SystemContract = {
     return {
       address: isSet(object.address) ? String(object.address) : "",
       label: isSet(object.label) ? String(object.label) : "",
-      initMessage: isSet(object.initMessage) ? bytesFromBase64(object.initMessage) : new Uint8Array()
+      initMessage: isSet(object.initMessage) ? bytesFromBase64(object.initMessage) : new Uint8Array(),
+      pinned: isSet(object.pinned) ? Boolean(object.pinned) : false,
+      native: isSet(object.native) ? Boolean(object.native) : false
     };
   },
 
@@ -289,6 +335,8 @@ export const SystemContract = {
     message.address !== undefined && (obj.address = message.address);
     message.label !== undefined && (obj.label = message.label);
     message.initMessage !== undefined && (obj.initMessage = base64FromBytes(message.initMessage !== undefined ? message.initMessage : new Uint8Array()));
+    message.pinned !== undefined && (obj.pinned = message.pinned);
+    message.native !== undefined && (obj.native = message.native);
     return obj;
   },
 
@@ -297,6 +345,8 @@ export const SystemContract = {
     message.address = object.address ?? "";
     message.label = object.label ?? "";
     message.initMessage = object.initMessage ?? new Uint8Array();
+    message.pinned = object.pinned ?? false;
+    message.native = object.native ?? false;
     return message;
   }
 
@@ -307,7 +357,7 @@ function createBaseCode(): Code {
     codeId: Long.UZERO,
     codeInfo: undefined,
     codeBytes: new Uint8Array(),
-    pinned: false
+    codeMetadata: undefined
   };
 }
 
@@ -325,8 +375,8 @@ export const Code = {
       writer.uint32(26).bytes(message.codeBytes);
     }
 
-    if (message.pinned === true) {
-      writer.uint32(32).bool(message.pinned);
+    if (message.codeMetadata !== undefined) {
+      CodeMetadata.encode(message.codeMetadata, writer.uint32(34).fork()).ldelim();
     }
 
     return writer;
@@ -354,7 +404,7 @@ export const Code = {
           break;
 
         case 4:
-          message.pinned = reader.bool();
+          message.codeMetadata = CodeMetadata.decode(reader, reader.uint32());
           break;
 
         default:
@@ -371,7 +421,7 @@ export const Code = {
       codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO,
       codeInfo: isSet(object.codeInfo) ? CodeInfo.fromJSON(object.codeInfo) : undefined,
       codeBytes: isSet(object.codeBytes) ? bytesFromBase64(object.codeBytes) : new Uint8Array(),
-      pinned: isSet(object.pinned) ? Boolean(object.pinned) : false
+      codeMetadata: isSet(object.codeMetadata) ? CodeMetadata.fromJSON(object.codeMetadata) : undefined
     };
   },
 
@@ -380,7 +430,7 @@ export const Code = {
     message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
     message.codeInfo !== undefined && (obj.codeInfo = message.codeInfo ? CodeInfo.toJSON(message.codeInfo) : undefined);
     message.codeBytes !== undefined && (obj.codeBytes = base64FromBytes(message.codeBytes !== undefined ? message.codeBytes : new Uint8Array()));
-    message.pinned !== undefined && (obj.pinned = message.pinned);
+    message.codeMetadata !== undefined && (obj.codeMetadata = message.codeMetadata ? CodeMetadata.toJSON(message.codeMetadata) : undefined);
     return obj;
   },
 
@@ -389,7 +439,7 @@ export const Code = {
     message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
     message.codeInfo = object.codeInfo !== undefined && object.codeInfo !== null ? CodeInfo.fromPartial(object.codeInfo) : undefined;
     message.codeBytes = object.codeBytes ?? new Uint8Array();
-    message.pinned = object.pinned ?? false;
+    message.codeMetadata = object.codeMetadata !== undefined && object.codeMetadata !== null ? CodeMetadata.fromPartial(object.codeMetadata) : undefined;
     return message;
   }
 

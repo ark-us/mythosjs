@@ -1,6 +1,6 @@
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgStoreCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract } from "./tx";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/wasmx.wasmx.MsgStoreCode", MsgStoreCode], ["/wasmx.wasmx.MsgInstantiateContract", MsgInstantiateContract], ["/wasmx.wasmx.MsgInstantiateContract2", MsgInstantiateContract2], ["/wasmx.wasmx.MsgExecuteContract", MsgExecuteContract], ["/wasmx.wasmx.MsgExecuteWithOriginContract", MsgExecuteWithOriginContract], ["/wasmx.wasmx.MsgExecuteDelegateContract", MsgExecuteDelegateContract]];
+import { MsgStoreCode, MsgStoreCodeEvm, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/wasmx.wasmx.MsgStoreCode", MsgStoreCode], ["/wasmx.wasmx.MsgStoreCodeEvm", MsgStoreCodeEvm], ["/wasmx.wasmx.MsgInstantiateContract", MsgInstantiateContract], ["/wasmx.wasmx.MsgInstantiateContract2", MsgInstantiateContract2], ["/wasmx.wasmx.MsgExecuteContract", MsgExecuteContract], ["/wasmx.wasmx.MsgExecuteWithOriginContract", MsgExecuteWithOriginContract], ["/wasmx.wasmx.MsgExecuteDelegateContract", MsgExecuteDelegateContract], ["/wasmx.wasmx.MsgCompileContract", MsgCompileContract]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -12,6 +12,13 @@ export const MessageComposer = {
       return {
         typeUrl: "/wasmx.wasmx.MsgStoreCode",
         value: MsgStoreCode.encode(value).finish()
+      };
+    },
+
+    storeCodeEvm(value: MsgStoreCodeEvm) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgStoreCodeEvm",
+        value: MsgStoreCodeEvm.encode(value).finish()
       };
     },
 
@@ -48,6 +55,13 @@ export const MessageComposer = {
         typeUrl: "/wasmx.wasmx.MsgExecuteDelegateContract",
         value: MsgExecuteDelegateContract.encode(value).finish()
       };
+    },
+
+    compileContract(value: MsgCompileContract) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgCompileContract",
+        value: MsgCompileContract.encode(value).finish()
+      };
     }
 
   },
@@ -55,6 +69,13 @@ export const MessageComposer = {
     storeCode(value: MsgStoreCode) {
       return {
         typeUrl: "/wasmx.wasmx.MsgStoreCode",
+        value
+      };
+    },
+
+    storeCodeEvm(value: MsgStoreCodeEvm) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgStoreCodeEvm",
         value
       };
     },
@@ -92,6 +113,13 @@ export const MessageComposer = {
         typeUrl: "/wasmx.wasmx.MsgExecuteDelegateContract",
         value
       };
+    },
+
+    compileContract(value: MsgCompileContract) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgCompileContract",
+        value
+      };
     }
 
   },
@@ -100,6 +128,13 @@ export const MessageComposer = {
       return {
         typeUrl: "/wasmx.wasmx.MsgStoreCode",
         value: MsgStoreCode.toJSON(value)
+      };
+    },
+
+    storeCodeEvm(value: MsgStoreCodeEvm) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgStoreCodeEvm",
+        value: MsgStoreCodeEvm.toJSON(value)
       };
     },
 
@@ -136,6 +171,13 @@ export const MessageComposer = {
         typeUrl: "/wasmx.wasmx.MsgExecuteDelegateContract",
         value: MsgExecuteDelegateContract.toJSON(value)
       };
+    },
+
+    compileContract(value: MsgCompileContract) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgCompileContract",
+        value: MsgCompileContract.toJSON(value)
+      };
     }
 
   },
@@ -144,6 +186,13 @@ export const MessageComposer = {
       return {
         typeUrl: "/wasmx.wasmx.MsgStoreCode",
         value: MsgStoreCode.fromJSON(value)
+      };
+    },
+
+    storeCodeEvm(value: any) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgStoreCodeEvm",
+        value: MsgStoreCodeEvm.fromJSON(value)
       };
     },
 
@@ -180,6 +229,13 @@ export const MessageComposer = {
         typeUrl: "/wasmx.wasmx.MsgExecuteDelegateContract",
         value: MsgExecuteDelegateContract.fromJSON(value)
       };
+    },
+
+    compileContract(value: any) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgCompileContract",
+        value: MsgCompileContract.fromJSON(value)
+      };
     }
 
   },
@@ -188,6 +244,13 @@ export const MessageComposer = {
       return {
         typeUrl: "/wasmx.wasmx.MsgStoreCode",
         value: MsgStoreCode.fromPartial(value)
+      };
+    },
+
+    storeCodeEvm(value: MsgStoreCodeEvm) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgStoreCodeEvm",
+        value: MsgStoreCodeEvm.fromPartial(value)
       };
     },
 
@@ -223,6 +286,13 @@ export const MessageComposer = {
       return {
         typeUrl: "/wasmx.wasmx.MsgExecuteDelegateContract",
         value: MsgExecuteDelegateContract.fromPartial(value)
+      };
+    },
+
+    compileContract(value: MsgCompileContract) {
+      return {
+        typeUrl: "/wasmx.wasmx.MsgCompileContract",
+        value: MsgCompileContract.fromPartial(value)
       };
     }
 

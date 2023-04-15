@@ -1,5 +1,5 @@
 import { Params, ParamsSDKType } from "./params";
-import { CodeInfo, CodeInfoSDKType, ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType } from "./contract";
+import { CodeInfo, CodeInfoSDKType, CodeMetadata, CodeMetadataSDKType, ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType } from "./contract";
 import * as _m0 from "protobufjs/minimal";
 import { Long } from "../../helpers";
 /** GenesisState defines the wasmx module's genesis state. */
@@ -11,6 +11,12 @@ export interface GenesisState {
     codes: Code[];
     contracts: Contract[];
     sequences: Sequence[];
+    /**
+     * not recommended
+     * initiate pinned/AOT compiled contracts from a provided folder
+     * instead of compiling the contracts from wasm
+     */
+    compiledFolderPath: string;
 }
 /** GenesisState defines the wasmx module's genesis state. */
 export interface GenesisStateSDKType {
@@ -21,32 +27,40 @@ export interface GenesisStateSDKType {
     codes: CodeSDKType[];
     contracts: ContractSDKType[];
     sequences: SequenceSDKType[];
+    /**
+     * not recommended
+     * initiate pinned/AOT compiled contracts from a provided folder
+     * instead of compiling the contracts from wasm
+     */
+    compiled_folder_path: string;
 }
 export interface SystemContract {
     address: string;
     label: string;
     initMessage: Uint8Array;
+    pinned: boolean;
+    native: boolean;
 }
 export interface SystemContractSDKType {
     address: string;
     label: string;
     init_message: Uint8Array;
+    pinned: boolean;
+    native: boolean;
 }
 /** Code - for importing and exporting code data */
 export interface Code {
     codeId: Long;
     codeInfo?: CodeInfo;
     codeBytes: Uint8Array;
-    /** Pinned to wasmvm cache */
-    pinned: boolean;
+    codeMetadata?: CodeMetadata;
 }
 /** Code - for importing and exporting code data */
 export interface CodeSDKType {
     code_id: Long;
     code_info?: CodeInfoSDKType;
     code_bytes: Uint8Array;
-    /** Pinned to wasmvm cache */
-    pinned: boolean;
+    code_metadata?: CodeMetadataSDKType;
 }
 /** Contract struct encompasses ContractAddress, ContractInfo, and ContractState */
 export interface Contract {

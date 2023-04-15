@@ -29,6 +29,34 @@ export interface MsgStoreCodeResponseSDKType {
     /** Checksum is the sha256 hash of the stored code */
     checksum: Uint8Array;
 }
+/** MsgStoreCodeEvm submit Wasm code to the system */
+export interface MsgStoreCodeEvm {
+    /** Sender is the that actor that signed the messages */
+    sender: string;
+    /** EVM bytecode */
+    evmByteCode: Uint8Array;
+}
+/** MsgStoreCodeEvm submit Wasm code to the system */
+export interface MsgStoreCodeEvmSDKType {
+    /** Sender is the that actor that signed the messages */
+    sender: string;
+    /** EVM bytecode */
+    evm_byte_code: Uint8Array;
+}
+/** MsgStoreCodeEvmResponse returns store result data. */
+export interface MsgStoreCodeEvmResponse {
+    /** CodeID is the reference to the stored WASM code */
+    codeId: Long;
+    /** Checksum is the sha256 hash of the stored code */
+    checksum: Uint8Array;
+}
+/** MsgStoreCodeEvmResponse returns store result data. */
+export interface MsgStoreCodeEvmResponseSDKType {
+    /** CodeID is the reference to the stored WASM code */
+    code_id: Long;
+    /** Checksum is the sha256 hash of the stored code */
+    checksum: Uint8Array;
+}
 /**
  * MsgInstantiateContract create a new smart contract instance for the given
  * code id.
@@ -253,6 +281,22 @@ export interface MsgExecuteDelegateContractResponseSDKType {
     /** Data contains bytes to returned from the contract */
     data: Uint8Array;
 }
+export interface MsgCompileContract {
+    /** Sender is the that actor that signed the messages */
+    sender: string;
+    /** Contract is the address of the smart contract */
+    codeId: Long;
+}
+export interface MsgCompileContractSDKType {
+    /** Sender is the that actor that signed the messages */
+    sender: string;
+    /** Contract is the address of the smart contract */
+    codeId: Long;
+}
+export interface MsgCompileContractResponse {
+}
+export interface MsgCompileContractResponseSDKType {
+}
 export declare const MsgStoreCode: {
     encode(message: MsgStoreCode, writer?: _m0.Writer): _m0.Writer;
     decode(input: _m0.Reader | Uint8Array, length?: number): MsgStoreCode;
@@ -266,6 +310,20 @@ export declare const MsgStoreCodeResponse: {
     fromJSON(object: any): MsgStoreCodeResponse;
     toJSON(message: MsgStoreCodeResponse): unknown;
     fromPartial(object: Partial<MsgStoreCodeResponse>): MsgStoreCodeResponse;
+};
+export declare const MsgStoreCodeEvm: {
+    encode(message: MsgStoreCodeEvm, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgStoreCodeEvm;
+    fromJSON(object: any): MsgStoreCodeEvm;
+    toJSON(message: MsgStoreCodeEvm): unknown;
+    fromPartial(object: Partial<MsgStoreCodeEvm>): MsgStoreCodeEvm;
+};
+export declare const MsgStoreCodeEvmResponse: {
+    encode(message: MsgStoreCodeEvmResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgStoreCodeEvmResponse;
+    fromJSON(object: any): MsgStoreCodeEvmResponse;
+    toJSON(message: MsgStoreCodeEvmResponse): unknown;
+    fromPartial(object: Partial<MsgStoreCodeEvmResponse>): MsgStoreCodeEvmResponse;
 };
 export declare const MsgInstantiateContract: {
     encode(message: MsgInstantiateContract, writer?: _m0.Writer): _m0.Writer;
@@ -329,4 +387,18 @@ export declare const MsgExecuteDelegateContractResponse: {
     fromJSON(object: any): MsgExecuteDelegateContractResponse;
     toJSON(message: MsgExecuteDelegateContractResponse): unknown;
     fromPartial(object: Partial<MsgExecuteDelegateContractResponse>): MsgExecuteDelegateContractResponse;
+};
+export declare const MsgCompileContract: {
+    encode(message: MsgCompileContract, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgCompileContract;
+    fromJSON(object: any): MsgCompileContract;
+    toJSON(message: MsgCompileContract): unknown;
+    fromPartial(object: Partial<MsgCompileContract>): MsgCompileContract;
+};
+export declare const MsgCompileContractResponse: {
+    encode(_: MsgCompileContractResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgCompileContractResponse;
+    fromJSON(_: any): MsgCompileContractResponse;
+    toJSON(_: MsgCompileContractResponse): unknown;
+    fromPartial(_: Partial<MsgCompileContractResponse>): MsgCompileContractResponse;
 };

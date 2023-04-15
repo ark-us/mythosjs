@@ -1,10 +1,14 @@
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgStoreCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract } from "./tx";
+import { MsgStoreCode, MsgStoreCodeEvm, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
 export declare const registry: ReadonlyArray<[string, GeneratedType]>;
 export declare const load: (protoRegistry: Registry) => void;
 export declare const MessageComposer: {
     encoded: {
         storeCode(value: MsgStoreCode): {
+            typeUrl: string;
+            value: Uint8Array;
+        };
+        storeCodeEvm(value: MsgStoreCodeEvm): {
             typeUrl: string;
             value: Uint8Array;
         };
@@ -28,11 +32,19 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: Uint8Array;
         };
+        compileContract(value: MsgCompileContract): {
+            typeUrl: string;
+            value: Uint8Array;
+        };
     };
     withTypeUrl: {
         storeCode(value: MsgStoreCode): {
             typeUrl: string;
             value: MsgStoreCode;
+        };
+        storeCodeEvm(value: MsgStoreCodeEvm): {
+            typeUrl: string;
+            value: MsgStoreCodeEvm;
         };
         instantiateContract(value: MsgInstantiateContract): {
             typeUrl: string;
@@ -54,9 +66,17 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: MsgExecuteDelegateContract;
         };
+        compileContract(value: MsgCompileContract): {
+            typeUrl: string;
+            value: MsgCompileContract;
+        };
     };
     toJSON: {
         storeCode(value: MsgStoreCode): {
+            typeUrl: string;
+            value: unknown;
+        };
+        storeCodeEvm(value: MsgStoreCodeEvm): {
             typeUrl: string;
             value: unknown;
         };
@@ -80,11 +100,19 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: unknown;
         };
+        compileContract(value: MsgCompileContract): {
+            typeUrl: string;
+            value: unknown;
+        };
     };
     fromJSON: {
         storeCode(value: any): {
             typeUrl: string;
             value: MsgStoreCode;
+        };
+        storeCodeEvm(value: any): {
+            typeUrl: string;
+            value: MsgStoreCodeEvm;
         };
         instantiateContract(value: any): {
             typeUrl: string;
@@ -106,11 +134,19 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: MsgExecuteDelegateContract;
         };
+        compileContract(value: any): {
+            typeUrl: string;
+            value: MsgCompileContract;
+        };
     };
     fromPartial: {
         storeCode(value: MsgStoreCode): {
             typeUrl: string;
             value: MsgStoreCode;
+        };
+        storeCodeEvm(value: MsgStoreCodeEvm): {
+            typeUrl: string;
+            value: MsgStoreCodeEvm;
         };
         instantiateContract(value: MsgInstantiateContract): {
             typeUrl: string;
@@ -131,6 +167,10 @@ export declare const MessageComposer: {
         executeDelegateContract(value: MsgExecuteDelegateContract): {
             typeUrl: string;
             value: MsgExecuteDelegateContract;
+        };
+        compileContract(value: MsgCompileContract): {
+            typeUrl: string;
+            value: MsgCompileContract;
         };
     };
 };

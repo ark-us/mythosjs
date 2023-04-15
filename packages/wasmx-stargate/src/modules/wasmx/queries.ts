@@ -128,7 +128,7 @@ export function setupWasmExtension(base: QueryClient): WasmExtension {
         catch (error) {
             throw new Error(`Could not JSON parse smart query response from contract: ${error}`);
         }
-    },
+      },
     },
   };
 }

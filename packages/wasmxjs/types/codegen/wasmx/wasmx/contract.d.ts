@@ -25,8 +25,8 @@ export interface CodeInfo {
      * or versioned interface labels
      */
     deps: string[];
-    abi: string;
-    jsonSchema: string;
+    /** Pinned contract */
+    pinned: boolean;
 }
 /** CodeInfo is data for the uploaded contract WASM code */
 export interface CodeInfoSDKType {
@@ -39,6 +39,16 @@ export interface CodeInfoSDKType {
      * or versioned interface labels
      */
     deps: string[];
+    /** Pinned contract */
+    pinned: boolean;
+}
+/** Metadata for each codeId */
+export interface CodeMetadata {
+    abi: string;
+    jsonSchema: string;
+}
+/** Metadata for each codeId */
+export interface CodeMetadataSDKType {
     abi: string;
     json_schema: string;
 }
@@ -105,6 +115,13 @@ export declare const CodeInfo: {
     fromJSON(object: any): CodeInfo;
     toJSON(message: CodeInfo): unknown;
     fromPartial(object: Partial<CodeInfo>): CodeInfo;
+};
+export declare const CodeMetadata: {
+    encode(message: CodeMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CodeMetadata;
+    fromJSON(object: any): CodeMetadata;
+    toJSON(message: CodeMetadata): unknown;
+    fromPartial(object: Partial<CodeMetadata>): CodeMetadata;
 };
 export declare const ContractInfo: {
     encode(message: ContractInfo, writer?: _m0.Writer): _m0.Writer;

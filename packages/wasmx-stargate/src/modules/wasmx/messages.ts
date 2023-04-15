@@ -3,11 +3,13 @@ import {
   MsgExecuteContract,
   MsgInstantiateContract,
   MsgStoreCode,
+  MsgStoreCodeEvm,
 } from "@ark-us/wasmxjs";
 
 export const wasmTypes: ReadonlyArray<[string, GeneratedType]> = [
   ["/wasmx.wasmx.MsgExecuteContract", MsgExecuteContract],
   ["/wasmx.wasmx.MsgStoreCode", MsgStoreCode],
+  ["/wasmx.wasmx.MsgStoreCodeEvm", MsgStoreCodeEvm],
   ["/wasmx.wasmx.MsgInstantiateContract", MsgInstantiateContract],
 ];
 
@@ -18,6 +20,15 @@ export interface MsgStoreCodeEncodeObject extends EncodeObject {
 
 export function isMsgStoreCodeEncodeObject(object: EncodeObject): object is MsgStoreCodeEncodeObject {
   return (object as MsgStoreCodeEncodeObject).typeUrl === "/wasmx.wasmx.MsgStoreCode";
+}
+
+export interface MsgStoreCodeEvmEncodeObject extends EncodeObject {
+  readonly typeUrl: "/wasmx.wasmx.MsgStoreCodeEvm";
+  readonly value: Partial<MsgStoreCodeEvm>;
+}
+
+export function isMsgStoreCodeEvmEncodeObject(object: EncodeObject): object is MsgStoreCodeEvmEncodeObject {
+  return (object as MsgStoreCodeEvmEncodeObject).typeUrl === "/wasmx.wasmx.MsgStoreCodeEvm";
 }
 
 export interface MsgInstantiateContractEncodeObject extends EncodeObject {

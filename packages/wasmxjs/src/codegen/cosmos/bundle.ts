@@ -8,8 +8,8 @@ import * as _6 from "./base/store/v1beta1/commit_info";
 import * as _7 from "./base/store/v1beta1/listening";
 import * as _8 from "./base/tendermint/v1beta1/query";
 import * as _9 from "./base/v1beta1/coin";
-import * as _34 from "./base/tendermint/v1beta1/query.rpc.Service";
-import * as _39 from "./rpc.query";
+import * as _39 from "./base/tendermint/v1beta1/query.rpc.Service";
+import * as _48 from "./rpc.query";
 export namespace cosmos {
   export namespace base {
     export namespace abci {
@@ -41,12 +41,12 @@ export namespace cosmos {
     }
     export namespace tendermint {
       export const v1beta1 = { ..._8,
-        ..._34
+        ..._39
       };
     }
     export const v1beta1 = { ..._9
     };
   }
-  export const ClientFactory = { ..._39
+  export const ClientFactory = { ..._48
   };
 }

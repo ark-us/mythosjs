@@ -32,8 +32,9 @@ export interface CodeInfo {
    */
 
   deps: string[];
-  abi: string;
-  jsonSchema: string;
+  /** Pinned contract */
+
+  pinned: boolean;
 }
 /** CodeInfo is data for the uploaded contract WASM code */
 
@@ -49,6 +50,19 @@ export interface CodeInfoSDKType {
    */
 
   deps: string[];
+  /** Pinned contract */
+
+  pinned: boolean;
+}
+/** Metadata for each codeId */
+
+export interface CodeMetadata {
+  abi: string;
+  jsonSchema: string;
+}
+/** Metadata for each codeId */
+
+export interface CodeMetadataSDKType {
   abi: string;
   json_schema: string;
 }
@@ -189,8 +203,7 @@ function createBaseCodeInfo(): CodeInfo {
     codeHash: new Uint8Array(),
     creator: "",
     deps: [],
-    abi: "",
-    jsonSchema: ""
+    pinned: false
   };
 }
 
@@ -208,12 +221,8 @@ export const CodeInfo = {
       writer.uint32(26).string(v!);
     }
 
-    if (message.abi !== "") {
-      writer.uint32(34).string(message.abi);
-    }
-
-    if (message.jsonSchema !== "") {
-      writer.uint32(42).string(message.jsonSchema);
+    if (message.pinned === true) {
+      writer.uint32(32).bool(message.pinned);
     }
 
     return writer;
@@ -241,11 +250,7 @@ export const CodeInfo = {
           break;
 
         case 4:
-          message.abi = reader.string();
-          break;
-
-        case 5:
-          message.jsonSchema = reader.string();
+          message.pinned = reader.bool();
           break;
 
         default:
@@ -262,8 +267,7 @@ export const CodeInfo = {
       codeHash: isSet(object.codeHash) ? bytesFromBase64(object.codeHash) : new Uint8Array(),
       creator: isSet(object.creator) ? String(object.creator) : "",
       deps: Array.isArray(object?.deps) ? object.deps.map((e: any) => String(e)) : [],
-      abi: isSet(object.abi) ? String(object.abi) : "",
-      jsonSchema: isSet(object.jsonSchema) ? String(object.jsonSchema) : ""
+      pinned: isSet(object.pinned) ? Boolean(object.pinned) : false
     };
   },
 
@@ -278,8 +282,7 @@ export const CodeInfo = {
       obj.deps = [];
     }
 
-    message.abi !== undefined && (obj.abi = message.abi);
-    message.jsonSchema !== undefined && (obj.jsonSchema = message.jsonSchema);
+    message.pinned !== undefined && (obj.pinned = message.pinned);
     return obj;
   },
 
@@ -288,6 +291,74 @@ export const CodeInfo = {
     message.codeHash = object.codeHash ?? new Uint8Array();
     message.creator = object.creator ?? "";
     message.deps = object.deps?.map(e => e) || [];
+    message.pinned = object.pinned ?? false;
+    return message;
+  }
+
+};
+
+function createBaseCodeMetadata(): CodeMetadata {
+  return {
+    abi: "",
+    jsonSchema: ""
+  };
+}
+
+export const CodeMetadata = {
+  encode(message: CodeMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.abi !== "") {
+      writer.uint32(10).string(message.abi);
+    }
+
+    if (message.jsonSchema !== "") {
+      writer.uint32(18).string(message.jsonSchema);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): CodeMetadata {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseCodeMetadata();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.abi = reader.string();
+          break;
+
+        case 2:
+          message.jsonSchema = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): CodeMetadata {
+    return {
+      abi: isSet(object.abi) ? String(object.abi) : "",
+      jsonSchema: isSet(object.jsonSchema) ? String(object.jsonSchema) : ""
+    };
+  },
+
+  toJSON(message: CodeMetadata): unknown {
+    const obj: any = {};
+    message.abi !== undefined && (obj.abi = message.abi);
+    message.jsonSchema !== undefined && (obj.jsonSchema = message.jsonSchema);
+    return obj;
+  },
+
+  fromPartial(object: Partial<CodeMetadata>): CodeMetadata {
+    const message = createBaseCodeMetadata();
     message.abi = object.abi ?? "";
     message.jsonSchema = object.jsonSchema ?? "";
     return message;

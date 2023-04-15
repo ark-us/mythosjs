@@ -3,12 +3,19 @@ import * as _30 from "./wasmx/genesis";
 import * as _31 from "./wasmx/params";
 import * as _32 from "./wasmx/query";
 import * as _33 from "./wasmx/tx";
-import * as _37 from "./wasmx/query.rpc.Query";
-import * as _38 from "./wasmx/tx.rpc.msg";
+import * as _34 from "./websrv/genesis";
+import * as _35 from "./websrv/params";
+import * as _36 from "./websrv/proposal";
+import * as _37 from "./websrv/query";
+import * as _38 from "./websrv/tx";
+import * as _44 from "./wasmx/query.rpc.Query";
+import * as _45 from "./websrv/query.rpc.Query";
+import * as _46 from "./wasmx/tx.rpc.msg";
+import * as _47 from "./websrv/tx.rpc.msg";
 export declare namespace wasmx {
     const wasmx: {
-        MsgClientImpl: typeof _38.MsgClientImpl;
-        QueryClientImpl: typeof _37.QueryClientImpl;
+        MsgClientImpl: typeof _46.MsgClientImpl;
+        QueryClientImpl: typeof _44.QueryClientImpl;
         createRpcQueryExtension: (base: import("@cosmjs/stargate").QueryClient) => {
             contractInfo(request: _32.QueryContractInfoRequest): Promise<_32.QueryContractInfoResponse>;
             contractsByCode(request: _32.QueryContractsByCodeRequest): Promise<_32.QueryContractsByCodeResponse>;
@@ -25,6 +32,10 @@ export declare namespace wasmx {
         MessageComposer: {
             encoded: {
                 storeCode(value: _33.MsgStoreCode): {
+                    typeUrl: string;
+                    value: Uint8Array;
+                };
+                storeCodeEvm(value: _33.MsgStoreCodeEvm): {
                     typeUrl: string;
                     value: Uint8Array;
                 };
@@ -48,11 +59,19 @@ export declare namespace wasmx {
                     typeUrl: string;
                     value: Uint8Array;
                 };
+                compileContract(value: _33.MsgCompileContract): {
+                    typeUrl: string;
+                    value: Uint8Array;
+                };
             };
             withTypeUrl: {
                 storeCode(value: _33.MsgStoreCode): {
                     typeUrl: string;
                     value: _33.MsgStoreCode;
+                };
+                storeCodeEvm(value: _33.MsgStoreCodeEvm): {
+                    typeUrl: string;
+                    value: _33.MsgStoreCodeEvm;
                 };
                 instantiateContract(value: _33.MsgInstantiateContract): {
                     typeUrl: string;
@@ -74,9 +93,17 @@ export declare namespace wasmx {
                     typeUrl: string;
                     value: _33.MsgExecuteDelegateContract;
                 };
+                compileContract(value: _33.MsgCompileContract): {
+                    typeUrl: string;
+                    value: _33.MsgCompileContract;
+                };
             };
             toJSON: {
                 storeCode(value: _33.MsgStoreCode): {
+                    typeUrl: string;
+                    value: unknown;
+                };
+                storeCodeEvm(value: _33.MsgStoreCodeEvm): {
                     typeUrl: string;
                     value: unknown;
                 };
@@ -100,11 +127,19 @@ export declare namespace wasmx {
                     typeUrl: string;
                     value: unknown;
                 };
+                compileContract(value: _33.MsgCompileContract): {
+                    typeUrl: string;
+                    value: unknown;
+                };
             };
             fromJSON: {
                 storeCode(value: any): {
                     typeUrl: string;
                     value: _33.MsgStoreCode;
+                };
+                storeCodeEvm(value: any): {
+                    typeUrl: string;
+                    value: _33.MsgStoreCodeEvm;
                 };
                 instantiateContract(value: any): {
                     typeUrl: string;
@@ -126,11 +161,19 @@ export declare namespace wasmx {
                     typeUrl: string;
                     value: _33.MsgExecuteDelegateContract;
                 };
+                compileContract(value: any): {
+                    typeUrl: string;
+                    value: _33.MsgCompileContract;
+                };
             };
             fromPartial: {
                 storeCode(value: _33.MsgStoreCode): {
                     typeUrl: string;
                     value: _33.MsgStoreCode;
+                };
+                storeCodeEvm(value: _33.MsgStoreCodeEvm): {
+                    typeUrl: string;
+                    value: _33.MsgStoreCodeEvm;
                 };
                 instantiateContract(value: _33.MsgInstantiateContract): {
                     typeUrl: string;
@@ -152,6 +195,10 @@ export declare namespace wasmx {
                     typeUrl: string;
                     value: _33.MsgExecuteDelegateContract;
                 };
+                compileContract(value: _33.MsgCompileContract): {
+                    typeUrl: string;
+                    value: _33.MsgCompileContract;
+                };
             };
         };
         AminoConverter: {
@@ -165,6 +212,17 @@ export declare namespace wasmx {
                     sender: string;
                     wasm_byte_code: Uint8Array;
                 }) => _33.MsgStoreCode;
+            };
+            "/wasmx.wasmx.MsgStoreCodeEvm": {
+                aminoType: string;
+                toAmino: ({ sender, evmByteCode }: _33.MsgStoreCodeEvm) => {
+                    sender: string;
+                    evm_byte_code: Uint8Array;
+                };
+                fromAmino: ({ sender, evm_byte_code }: {
+                    sender: string;
+                    evm_byte_code: Uint8Array;
+                }) => _33.MsgStoreCodeEvm;
             };
             "/wasmx.wasmx.MsgInstantiateContract": {
                 aminoType: string;
@@ -289,6 +347,17 @@ export declare namespace wasmx {
                     }[];
                 }) => _33.MsgExecuteDelegateContract;
             };
+            "/wasmx.wasmx.MsgCompileContract": {
+                aminoType: string;
+                toAmino: ({ sender, codeId }: _33.MsgCompileContract) => {
+                    sender: string;
+                    codeId: string;
+                };
+                fromAmino: ({ sender, codeId }: {
+                    sender: string;
+                    codeId: string;
+                }) => _33.MsgCompileContract;
+            };
         };
         MsgStoreCode: {
             encode(message: _33.MsgStoreCode, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
@@ -303,6 +372,20 @@ export declare namespace wasmx {
             fromJSON(object: any): _33.MsgStoreCodeResponse;
             toJSON(message: _33.MsgStoreCodeResponse): unknown;
             fromPartial(object: Partial<_33.MsgStoreCodeResponse>): _33.MsgStoreCodeResponse;
+        };
+        MsgStoreCodeEvm: {
+            encode(message: _33.MsgStoreCodeEvm, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _33.MsgStoreCodeEvm;
+            fromJSON(object: any): _33.MsgStoreCodeEvm;
+            toJSON(message: _33.MsgStoreCodeEvm): unknown;
+            fromPartial(object: Partial<_33.MsgStoreCodeEvm>): _33.MsgStoreCodeEvm;
+        };
+        MsgStoreCodeEvmResponse: {
+            encode(message: _33.MsgStoreCodeEvmResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _33.MsgStoreCodeEvmResponse;
+            fromJSON(object: any): _33.MsgStoreCodeEvmResponse;
+            toJSON(message: _33.MsgStoreCodeEvmResponse): unknown;
+            fromPartial(object: Partial<_33.MsgStoreCodeEvmResponse>): _33.MsgStoreCodeEvmResponse;
         };
         MsgInstantiateContract: {
             encode(message: _33.MsgInstantiateContract, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
@@ -366,6 +449,20 @@ export declare namespace wasmx {
             fromJSON(object: any): _33.MsgExecuteDelegateContractResponse;
             toJSON(message: _33.MsgExecuteDelegateContractResponse): unknown;
             fromPartial(object: Partial<_33.MsgExecuteDelegateContractResponse>): _33.MsgExecuteDelegateContractResponse;
+        };
+        MsgCompileContract: {
+            encode(message: _33.MsgCompileContract, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _33.MsgCompileContract;
+            fromJSON(object: any): _33.MsgCompileContract;
+            toJSON(message: _33.MsgCompileContract): unknown;
+            fromPartial(object: Partial<_33.MsgCompileContract>): _33.MsgCompileContract;
+        };
+        MsgCompileContractResponse: {
+            encode(_: _33.MsgCompileContractResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _33.MsgCompileContractResponse;
+            fromJSON(_: any): _33.MsgCompileContractResponse;
+            toJSON(_: _33.MsgCompileContractResponse): unknown;
+            fromPartial(_: Partial<_33.MsgCompileContractResponse>): _33.MsgCompileContractResponse;
         };
         QueryContractInfoRequest: {
             encode(message: _32.QueryContractInfoRequest, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
@@ -556,6 +653,13 @@ export declare namespace wasmx {
             toJSON(message: _29.CodeInfo): unknown;
             fromPartial(object: Partial<_29.CodeInfo>): _29.CodeInfo;
         };
+        CodeMetadata: {
+            encode(message: _29.CodeMetadata, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _29.CodeMetadata;
+            fromJSON(object: any): _29.CodeMetadata;
+            toJSON(message: _29.CodeMetadata): unknown;
+            fromPartial(object: Partial<_29.CodeMetadata>): _29.CodeMetadata;
+        };
         ContractInfo: {
             encode(message: _29.ContractInfo, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
             decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _29.ContractInfo;
@@ -571,12 +675,312 @@ export declare namespace wasmx {
             fromPartial(object: Partial<_29.AbsoluteTxPosition>): _29.AbsoluteTxPosition;
         };
     };
+    const websrv: {
+        MsgClientImpl: typeof _47.MsgClientImpl;
+        QueryClientImpl: typeof _45.QueryClientImpl;
+        createRpcQueryExtension: (base: import("@cosmjs/stargate").QueryClient) => {
+            httpGet(request: _37.QueryHttpRequestGet): Promise<_37.QueryHttpResponseGet>;
+            contractByRoute(request: _37.QueryContractByRouteRequest): Promise<_37.QueryContractByRouteResponse>;
+            routeByContract(request: _37.QueryRouteByContractRequest): Promise<_37.QueryRouteByContractResponse>;
+            params(request?: _37.QueryParamsRequest): Promise<_37.QueryParamsResponse>;
+            getAllOauthClients(request?: _37.QueryGetAllOauthClientsRequest): Promise<_37.QueryGetAllOauthClientsResponse>;
+            getOauthClient(request: _37.QueryGetOauthClientRequest): Promise<_37.QueryGetOauthClientResponse>;
+            getOauthClientsByOwner(request: _37.QueryGetOauthClientsByOwnerRequest): Promise<_37.QueryGetOauthClientsByOwnerResponse>;
+        };
+        registry: readonly [string, import("@cosmjs/proto-signing").GeneratedType][];
+        load: (protoRegistry: import("@cosmjs/proto-signing").Registry) => void;
+        MessageComposer: {
+            encoded: {
+                registerOAuthClient(value: _38.MsgRegisterOAuthClient): {
+                    typeUrl: string;
+                    value: Uint8Array;
+                };
+                editOAuthClient(value: _38.MsgEditOAuthClient): {
+                    typeUrl: string;
+                    value: Uint8Array;
+                };
+                deregisterOAuthClient(value: _38.MsgDeregisterOAuthClient): {
+                    typeUrl: string;
+                    value: Uint8Array;
+                };
+            };
+            withTypeUrl: {
+                registerOAuthClient(value: _38.MsgRegisterOAuthClient): {
+                    typeUrl: string;
+                    value: _38.MsgRegisterOAuthClient;
+                };
+                editOAuthClient(value: _38.MsgEditOAuthClient): {
+                    typeUrl: string;
+                    value: _38.MsgEditOAuthClient;
+                };
+                deregisterOAuthClient(value: _38.MsgDeregisterOAuthClient): {
+                    typeUrl: string;
+                    value: _38.MsgDeregisterOAuthClient;
+                };
+            };
+            toJSON: {
+                registerOAuthClient(value: _38.MsgRegisterOAuthClient): {
+                    typeUrl: string;
+                    value: unknown;
+                };
+                editOAuthClient(value: _38.MsgEditOAuthClient): {
+                    typeUrl: string;
+                    value: unknown;
+                };
+                deregisterOAuthClient(value: _38.MsgDeregisterOAuthClient): {
+                    typeUrl: string;
+                    value: unknown;
+                };
+            };
+            fromJSON: {
+                registerOAuthClient(value: any): {
+                    typeUrl: string;
+                    value: _38.MsgRegisterOAuthClient;
+                };
+                editOAuthClient(value: any): {
+                    typeUrl: string;
+                    value: _38.MsgEditOAuthClient;
+                };
+                deregisterOAuthClient(value: any): {
+                    typeUrl: string;
+                    value: _38.MsgDeregisterOAuthClient;
+                };
+            };
+            fromPartial: {
+                registerOAuthClient(value: _38.MsgRegisterOAuthClient): {
+                    typeUrl: string;
+                    value: _38.MsgRegisterOAuthClient;
+                };
+                editOAuthClient(value: _38.MsgEditOAuthClient): {
+                    typeUrl: string;
+                    value: _38.MsgEditOAuthClient;
+                };
+                deregisterOAuthClient(value: _38.MsgDeregisterOAuthClient): {
+                    typeUrl: string;
+                    value: _38.MsgDeregisterOAuthClient;
+                };
+            };
+        };
+        AminoConverter: {
+            "/wasmx.websrv.MsgRegisterOAuthClient": {
+                aminoType: string;
+                toAmino: ({ owner, domain }: _38.MsgRegisterOAuthClient) => {
+                    owner: string;
+                    domain: string;
+                };
+                fromAmino: ({ owner, domain }: {
+                    owner: string;
+                    domain: string;
+                }) => _38.MsgRegisterOAuthClient;
+            };
+            "/wasmx.websrv.MsgEditOAuthClient": {
+                aminoType: string;
+                toAmino: ({ owner, clientId, domain }: _38.MsgEditOAuthClient) => {
+                    owner: string;
+                    client_id: string;
+                    domain: string;
+                };
+                fromAmino: ({ owner, client_id, domain }: {
+                    owner: string;
+                    client_id: string;
+                    domain: string;
+                }) => _38.MsgEditOAuthClient;
+            };
+            "/wasmx.websrv.MsgDeregisterOAuthClient": {
+                aminoType: string;
+                toAmino: ({ owner, clientId }: _38.MsgDeregisterOAuthClient) => {
+                    owner: string;
+                    client_id: string;
+                };
+                fromAmino: ({ owner, client_id }: {
+                    owner: string;
+                    client_id: string;
+                }) => _38.MsgDeregisterOAuthClient;
+            };
+        };
+        MsgRegisterOAuthClient: {
+            encode(message: _38.MsgRegisterOAuthClient, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _38.MsgRegisterOAuthClient;
+            fromJSON(object: any): _38.MsgRegisterOAuthClient;
+            toJSON(message: _38.MsgRegisterOAuthClient): unknown;
+            fromPartial(object: Partial<_38.MsgRegisterOAuthClient>): _38.MsgRegisterOAuthClient;
+        };
+        MsgRegisterOAuthClientResponse: {
+            encode(message: _38.MsgRegisterOAuthClientResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _38.MsgRegisterOAuthClientResponse;
+            fromJSON(object: any): _38.MsgRegisterOAuthClientResponse;
+            toJSON(message: _38.MsgRegisterOAuthClientResponse): unknown;
+            fromPartial(object: Partial<_38.MsgRegisterOAuthClientResponse>): _38.MsgRegisterOAuthClientResponse;
+        };
+        MsgEditOAuthClient: {
+            encode(message: _38.MsgEditOAuthClient, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _38.MsgEditOAuthClient;
+            fromJSON(object: any): _38.MsgEditOAuthClient;
+            toJSON(message: _38.MsgEditOAuthClient): unknown;
+            fromPartial(object: Partial<_38.MsgEditOAuthClient>): _38.MsgEditOAuthClient;
+        };
+        MsgEditOAuthClientResponse: {
+            encode(_: _38.MsgEditOAuthClientResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _38.MsgEditOAuthClientResponse;
+            fromJSON(_: any): _38.MsgEditOAuthClientResponse;
+            toJSON(_: _38.MsgEditOAuthClientResponse): unknown;
+            fromPartial(_: Partial<_38.MsgEditOAuthClientResponse>): _38.MsgEditOAuthClientResponse;
+        };
+        MsgDeregisterOAuthClient: {
+            encode(message: _38.MsgDeregisterOAuthClient, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _38.MsgDeregisterOAuthClient;
+            fromJSON(object: any): _38.MsgDeregisterOAuthClient;
+            toJSON(message: _38.MsgDeregisterOAuthClient): unknown;
+            fromPartial(object: Partial<_38.MsgDeregisterOAuthClient>): _38.MsgDeregisterOAuthClient;
+        };
+        MsgDeregisterOAuthClientResponse: {
+            encode(_: _38.MsgDeregisterOAuthClientResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _38.MsgDeregisterOAuthClientResponse;
+            fromJSON(_: any): _38.MsgDeregisterOAuthClientResponse;
+            toJSON(_: _38.MsgDeregisterOAuthClientResponse): unknown;
+            fromPartial(_: Partial<_38.MsgDeregisterOAuthClientResponse>): _38.MsgDeregisterOAuthClientResponse;
+        };
+        QueryContractByRouteRequest: {
+            encode(message: _37.QueryContractByRouteRequest, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.QueryContractByRouteRequest;
+            fromJSON(object: any): _37.QueryContractByRouteRequest;
+            toJSON(message: _37.QueryContractByRouteRequest): unknown;
+            fromPartial(object: Partial<_37.QueryContractByRouteRequest>): _37.QueryContractByRouteRequest;
+        };
+        QueryContractByRouteResponse: {
+            encode(message: _37.QueryContractByRouteResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.QueryContractByRouteResponse;
+            fromJSON(object: any): _37.QueryContractByRouteResponse;
+            toJSON(message: _37.QueryContractByRouteResponse): unknown;
+            fromPartial(object: Partial<_37.QueryContractByRouteResponse>): _37.QueryContractByRouteResponse;
+        };
+        QueryRouteByContractRequest: {
+            encode(message: _37.QueryRouteByContractRequest, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.QueryRouteByContractRequest;
+            fromJSON(object: any): _37.QueryRouteByContractRequest;
+            toJSON(message: _37.QueryRouteByContractRequest): unknown;
+            fromPartial(object: Partial<_37.QueryRouteByContractRequest>): _37.QueryRouteByContractRequest;
+        };
+        QueryRouteByContractResponse: {
+            encode(message: _37.QueryRouteByContractResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.QueryRouteByContractResponse;
+            fromJSON(object: any): _37.QueryRouteByContractResponse;
+            toJSON(message: _37.QueryRouteByContractResponse): unknown;
+            fromPartial(object: Partial<_37.QueryRouteByContractResponse>): _37.QueryRouteByContractResponse;
+        };
+        QueryHttpRequestGet: {
+            encode(message: _37.QueryHttpRequestGet, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.QueryHttpRequestGet;
+            fromJSON(object: any): _37.QueryHttpRequestGet;
+            toJSON(message: _37.QueryHttpRequestGet): unknown;
+            fromPartial(object: Partial<_37.QueryHttpRequestGet>): _37.QueryHttpRequestGet;
+        };
+        QueryHttpResponseGet: {
+            encode(message: _37.QueryHttpResponseGet, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.QueryHttpResponseGet;
+            fromJSON(object: any): _37.QueryHttpResponseGet;
+            toJSON(message: _37.QueryHttpResponseGet): unknown;
+            fromPartial(object: Partial<_37.QueryHttpResponseGet>): _37.QueryHttpResponseGet;
+        };
+        QueryParamsRequest: {
+            encode(_: _37.QueryParamsRequest, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.QueryParamsRequest;
+            fromJSON(_: any): _37.QueryParamsRequest;
+            toJSON(_: _37.QueryParamsRequest): unknown;
+            fromPartial(_: Partial<_37.QueryParamsRequest>): _37.QueryParamsRequest;
+        };
+        QueryParamsResponse: {
+            encode(message: _37.QueryParamsResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.QueryParamsResponse;
+            fromJSON(object: any): _37.QueryParamsResponse;
+            toJSON(message: _37.QueryParamsResponse): unknown;
+            fromPartial(object: Partial<_37.QueryParamsResponse>): _37.QueryParamsResponse;
+        };
+        OauthClientInfo: {
+            encode(message: _37.OauthClientInfo, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.OauthClientInfo;
+            fromJSON(object: any): _37.OauthClientInfo;
+            toJSON(message: _37.OauthClientInfo): unknown;
+            fromPartial(object: Partial<_37.OauthClientInfo>): _37.OauthClientInfo;
+        };
+        QueryGetAllOauthClientsRequest: {
+            encode(message: _37.QueryGetAllOauthClientsRequest, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.QueryGetAllOauthClientsRequest;
+            fromJSON(object: any): _37.QueryGetAllOauthClientsRequest;
+            toJSON(message: _37.QueryGetAllOauthClientsRequest): unknown;
+            fromPartial(object: Partial<_37.QueryGetAllOauthClientsRequest>): _37.QueryGetAllOauthClientsRequest;
+        };
+        QueryGetAllOauthClientsResponse: {
+            encode(message: _37.QueryGetAllOauthClientsResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.QueryGetAllOauthClientsResponse;
+            fromJSON(object: any): _37.QueryGetAllOauthClientsResponse;
+            toJSON(message: _37.QueryGetAllOauthClientsResponse): unknown;
+            fromPartial(object: Partial<_37.QueryGetAllOauthClientsResponse>): _37.QueryGetAllOauthClientsResponse;
+        };
+        QueryGetOauthClientRequest: {
+            encode(message: _37.QueryGetOauthClientRequest, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.QueryGetOauthClientRequest;
+            fromJSON(object: any): _37.QueryGetOauthClientRequest;
+            toJSON(message: _37.QueryGetOauthClientRequest): unknown;
+            fromPartial(object: Partial<_37.QueryGetOauthClientRequest>): _37.QueryGetOauthClientRequest;
+        };
+        QueryGetOauthClientResponse: {
+            encode(message: _37.QueryGetOauthClientResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.QueryGetOauthClientResponse;
+            fromJSON(object: any): _37.QueryGetOauthClientResponse;
+            toJSON(message: _37.QueryGetOauthClientResponse): unknown;
+            fromPartial(object: Partial<_37.QueryGetOauthClientResponse>): _37.QueryGetOauthClientResponse;
+        };
+        QueryGetOauthClientsByOwnerRequest: {
+            encode(message: _37.QueryGetOauthClientsByOwnerRequest, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.QueryGetOauthClientsByOwnerRequest;
+            fromJSON(object: any): _37.QueryGetOauthClientsByOwnerRequest;
+            toJSON(message: _37.QueryGetOauthClientsByOwnerRequest): unknown;
+            fromPartial(object: Partial<_37.QueryGetOauthClientsByOwnerRequest>): _37.QueryGetOauthClientsByOwnerRequest;
+        };
+        QueryGetOauthClientsByOwnerResponse: {
+            encode(message: _37.QueryGetOauthClientsByOwnerResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _37.QueryGetOauthClientsByOwnerResponse;
+            fromJSON(object: any): _37.QueryGetOauthClientsByOwnerResponse;
+            toJSON(message: _37.QueryGetOauthClientsByOwnerResponse): unknown;
+            fromPartial(object: Partial<_37.QueryGetOauthClientsByOwnerResponse>): _37.QueryGetOauthClientsByOwnerResponse;
+        };
+        RegisterRouteProposal: {
+            encode(message: _36.RegisterRouteProposal, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _36.RegisterRouteProposal;
+            fromJSON(object: any): _36.RegisterRouteProposal;
+            toJSON(message: _36.RegisterRouteProposal): unknown;
+            fromPartial(object: Partial<_36.RegisterRouteProposal>): _36.RegisterRouteProposal;
+        };
+        DeregisterRouteProposal: {
+            encode(message: _36.DeregisterRouteProposal, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _36.DeregisterRouteProposal;
+            fromJSON(object: any): _36.DeregisterRouteProposal;
+            toJSON(message: _36.DeregisterRouteProposal): unknown;
+            fromPartial(object: Partial<_36.DeregisterRouteProposal>): _36.DeregisterRouteProposal;
+        };
+        Params: {
+            encode(message: _35.Params, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _35.Params;
+            fromJSON(object: any): _35.Params;
+            toJSON(message: _35.Params): unknown;
+            fromPartial(object: Partial<_35.Params>): _35.Params;
+        };
+        GenesisState: {
+            encode(message: _34.GenesisState, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+            decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _34.GenesisState;
+            fromJSON(object: any): _34.GenesisState;
+            toJSON(message: _34.GenesisState): unknown;
+            fromPartial(object: Partial<_34.GenesisState>): _34.GenesisState;
+        };
+    };
     const ClientFactory: {
         createRPCMsgClient: ({ rpc }: {
             rpc: import("../helpers").Rpc;
         }) => Promise<{
             wasmx: {
-                wasmx: _38.MsgClientImpl;
+                wasmx: _46.MsgClientImpl;
+                websrv: _47.MsgClientImpl;
             };
         }>;
         createRPCQueryClient: ({ rpcEndpoint }: {
@@ -607,6 +1011,15 @@ export declare namespace wasmx {
                     codes(request?: _32.QueryCodesRequest): Promise<_32.QueryCodesResponse>;
                     params(request?: _32.QueryParamsRequest): Promise<_32.QueryParamsResponse>;
                     contractsByCreator(request: _32.QueryContractsByCreatorRequest): Promise<_32.QueryContractsByCreatorResponse>;
+                };
+                websrv: {
+                    httpGet(request: _37.QueryHttpRequestGet): Promise<_37.QueryHttpResponseGet>;
+                    contractByRoute(request: _37.QueryContractByRouteRequest): Promise<_37.QueryContractByRouteResponse>;
+                    routeByContract(request: _37.QueryRouteByContractRequest): Promise<_37.QueryRouteByContractResponse>;
+                    params(request?: _37.QueryParamsRequest): Promise<_37.QueryParamsResponse>;
+                    getAllOauthClients(request?: _37.QueryGetAllOauthClientsRequest): Promise<_37.QueryGetAllOauthClientsResponse>;
+                    getOauthClient(request: _37.QueryGetOauthClientRequest): Promise<_37.QueryGetOauthClientResponse>;
+                    getOauthClientsByOwner(request: _37.QueryGetOauthClientsByOwnerRequest): Promise<_37.QueryGetOauthClientsByOwnerResponse>;
                 };
             };
         }>;

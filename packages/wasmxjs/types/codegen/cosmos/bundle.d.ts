@@ -8,7 +8,7 @@ import * as _6 from "./base/store/v1beta1/commit_info";
 import * as _7 from "./base/store/v1beta1/listening";
 import * as _8 from "./base/tendermint/v1beta1/query";
 import * as _9 from "./base/v1beta1/coin";
-import * as _34 from "./base/tendermint/v1beta1/query.rpc.Service";
+import * as _39 from "./base/tendermint/v1beta1/query.rpc.Service";
 export declare namespace cosmos {
     namespace base {
         namespace abci {
@@ -424,7 +424,7 @@ export declare namespace cosmos {
         }
         namespace tendermint {
             const v1beta1: {
-                ServiceClientImpl: typeof _34.ServiceClientImpl;
+                ServiceClientImpl: typeof _39.ServiceClientImpl;
                 createRpcQueryExtension: (base: import("@cosmjs/stargate").QueryClient) => {
                     getNodeInfo(request?: _8.GetNodeInfoRequest): Promise<_8.GetNodeInfoResponse>;
                     getSyncing(request?: _8.GetSyncingRequest): Promise<_8.GetSyncingResponse>;

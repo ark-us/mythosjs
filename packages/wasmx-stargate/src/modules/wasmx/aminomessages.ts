@@ -5,6 +5,7 @@ import {
   MsgExecuteContract,
   MsgInstantiateContract,
   MsgStoreCode,
+  MsgStoreCodeEvm,
 } from "@ark-us/wasmxjs";
 import Long from 'long';
 
@@ -18,6 +19,19 @@ export interface AminoMsgStoreCode {
     readonly sender: string;
     /** Base64 encoded Wasm */
     readonly wasm_byte_code: string;
+  };
+}
+
+/**
+ * The Amino JSON representation of [MsgStoreCodeEvm].
+ */
+export interface AminoMsgStoreCodeEvm {
+  type: "wasmx/MsgStoreCodeEvm";
+  value: {
+    /** Bech32 account address */
+    readonly sender: string;
+    /** Base64 encoded Wasm */
+    readonly evm_byte_code: string;
   };
 }
 
@@ -67,6 +81,17 @@ export function createWasmAminoConverters(): AminoConverters {
       fromAmino: ({ sender, wasm_byte_code }: AminoMsgStoreCode["value"]): MsgStoreCode => ({
         sender: sender,
         wasmByteCode: fromBase64(wasm_byte_code),
+      }),
+    },
+    "/wasmx.wasmx.MsgStoreCodeEvm": {
+      aminoType: "wasm/MsgStoreCodeEvm",
+      toAmino: ({ sender, evmByteCode }: MsgStoreCodeEvm): AminoMsgStoreCodeEvm["value"] => ({
+        sender: sender,
+        evm_byte_code: toBase64(evmByteCode),
+      }),
+      fromAmino: ({ sender, evm_byte_code }: AminoMsgStoreCodeEvm["value"]): MsgStoreCodeEvm => ({
+        sender: sender,
+        evmByteCode: fromBase64(evm_byte_code),
       }),
     },
     "/wasmx.wasmx.MsgInstantiateContract": {

@@ -1,10 +1,17 @@
 import { AminoMsg } from "@cosmjs/amino";
-import { MsgStoreCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract } from "./tx";
+import { MsgStoreCode, MsgStoreCodeEvm, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
 export interface AminoMsgStoreCode extends AminoMsg {
     type: "/wasmx.wasmx.MsgStoreCode";
     value: {
         sender: string;
         wasm_byte_code: Uint8Array;
+    };
+}
+export interface AminoMsgStoreCodeEvm extends AminoMsg {
+    type: "/wasmx.wasmx.MsgStoreCodeEvm";
+    value: {
+        sender: string;
+        evm_byte_code: Uint8Array;
     };
 }
 export interface AminoMsgInstantiateContract extends AminoMsg {
@@ -76,11 +83,23 @@ export interface AminoMsgExecuteDelegateContract extends AminoMsg {
         }[];
     };
 }
+export interface AminoMsgCompileContract extends AminoMsg {
+    type: "/wasmx.wasmx.MsgCompileContract";
+    value: {
+        sender: string;
+        codeId: string;
+    };
+}
 export declare const AminoConverter: {
     "/wasmx.wasmx.MsgStoreCode": {
         aminoType: string;
         toAmino: ({ sender, wasmByteCode }: MsgStoreCode) => AminoMsgStoreCode["value"];
         fromAmino: ({ sender, wasm_byte_code }: AminoMsgStoreCode["value"]) => MsgStoreCode;
+    };
+    "/wasmx.wasmx.MsgStoreCodeEvm": {
+        aminoType: string;
+        toAmino: ({ sender, evmByteCode }: MsgStoreCodeEvm) => AminoMsgStoreCodeEvm["value"];
+        fromAmino: ({ sender, evm_byte_code }: AminoMsgStoreCodeEvm["value"]) => MsgStoreCodeEvm;
     };
     "/wasmx.wasmx.MsgInstantiateContract": {
         aminoType: string;
@@ -106,5 +125,10 @@ export declare const AminoConverter: {
         aminoType: string;
         toAmino: ({ origin, sender, caller, codeContract, storageContract, msg, funds }: MsgExecuteDelegateContract) => AminoMsgExecuteDelegateContract["value"];
         fromAmino: ({ origin, sender, caller, code_contract, storage_contract, msg, funds }: AminoMsgExecuteDelegateContract["value"]) => MsgExecuteDelegateContract;
+    };
+    "/wasmx.wasmx.MsgCompileContract": {
+        aminoType: string;
+        toAmino: ({ sender, codeId }: MsgCompileContract) => AminoMsgCompileContract["value"];
+        fromAmino: ({ sender, codeId }: AminoMsgCompileContract["value"]) => MsgCompileContract;
     };
 };
