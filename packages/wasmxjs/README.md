@@ -69,7 +69,7 @@ const {
     executeContract,
     instantiateContract,
     storeCode,
-} = wasmx.wasmx.MessageComposer.withTypeUrl;
+} = wasmx.wasmx.v1.MessageComposer.withTypeUrl;
 ```
 
 #### IBC Messages

@@ -25,10 +25,10 @@
     "@jridgewell/gen-mapping" "^0.1.0"
     "@jridgewell/trace-mapping" "^0.3.9"
 
-"@ark-us/wasmxjs@^0.0.2":
-  version "0.0.2"
-  resolved "https://registry.yarnpkg.com/@ark-us/wasmxjs/-/wasmxjs-0.0.2.tgz#020a3637773460224ea3833c605b1d3dd005b86c"
-  integrity sha512-Uj/ucgbQbNguiWqcPdqzYb36MpCYzuW0XDyZWKb9goP8VkgJkT3v2G7tRGTnp8uXj59AQvQjaplfekNvODUHxA==
+"@ark-us/wasmxjs@^0.0.3":
+  version "0.0.3"
+  resolved "https://registry.yarnpkg.com/@ark-us/wasmxjs/-/wasmxjs-0.0.3.tgz#9b6389adfaccc4044aedb573f164b507a128bef6"
+  integrity sha512-f1WI1hBR3/7mpn16xeTgmTmWMIX49lvcIdiLtBCFsOSNT6T748l49k+zMb/Xk2yxGMgbjIETMkmvh9LNqiaKcg==
   dependencies:
     "@babel/runtime" "^7.19.4"
     "@cosmjs/amino" "^0.29.5"

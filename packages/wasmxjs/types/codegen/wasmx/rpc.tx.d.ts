@@ -3,7 +3,11 @@ export declare const createRPCMsgClient: ({ rpc }: {
     rpc: Rpc;
 }) => Promise<{
     wasmx: {
-        wasmx: import("./wasmx/tx.rpc.msg").MsgClientImpl;
-        websrv: import("./websrv/tx.rpc.msg").MsgClientImpl;
+        wasmx: {
+            v1: import("./wasmx/v1/tx.rpc.msg").MsgClientImpl;
+        };
+        websrv: {
+            v1: import("./websrv/v1/tx.rpc.msg").MsgClientImpl;
+        };
     };
 }>;

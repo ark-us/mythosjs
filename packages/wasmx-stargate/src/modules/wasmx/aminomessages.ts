@@ -72,7 +72,7 @@ export interface AminoMsgInstantiateContract {
 
 export function createWasmAminoConverters(): AminoConverters {
   return {
-    "/wasmx.wasmx.MsgStoreCode": {
+    "/wasmx.wasmx.v1.MsgStoreCode": {
       aminoType: "wasm/MsgStoreCode",
       toAmino: ({ sender, wasmByteCode }: MsgStoreCode): AminoMsgStoreCode["value"] => ({
         sender: sender,
@@ -83,7 +83,7 @@ export function createWasmAminoConverters(): AminoConverters {
         wasmByteCode: fromBase64(wasm_byte_code),
       }),
     },
-    "/wasmx.wasmx.MsgStoreCodeEvm": {
+    "/wasmx.wasmx.v1.MsgStoreCodeEvm": {
       aminoType: "wasm/MsgStoreCodeEvm",
       toAmino: ({ sender, evmByteCode }: MsgStoreCodeEvm): AminoMsgStoreCodeEvm["value"] => ({
         sender: sender,
@@ -94,7 +94,7 @@ export function createWasmAminoConverters(): AminoConverters {
         evmByteCode: fromBase64(evm_byte_code),
       }),
     },
-    "/wasmx.wasmx.MsgInstantiateContract": {
+    "/wasmx.wasmx.v1.MsgInstantiateContract": {
       aminoType: "wasm/MsgInstantiateContract",
       toAmino: ({
         sender,
@@ -124,7 +124,7 @@ export function createWasmAminoConverters(): AminoConverters {
         funds: [...funds],
       }),
     },
-    "/wasmx.wasmx.MsgExecuteContract": {
+    "/wasmx.wasmx.v1.MsgExecuteContract": {
       aminoType: "wasm/MsgExecuteContract",
       toAmino: ({ sender, contract, msg, funds, dependencies }: MsgExecuteContract): AminoMsgExecuteContract["value"] => ({
         sender: sender,

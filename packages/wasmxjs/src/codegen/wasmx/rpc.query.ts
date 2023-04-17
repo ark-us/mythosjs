@@ -16,8 +16,12 @@ export const createRPCQueryClient = async ({
       }
     },
     wasmx: {
-      wasmx: (await import("./wasmx/query.rpc.Query")).createRpcQueryExtension(client),
-      websrv: (await import("./websrv/query.rpc.Query")).createRpcQueryExtension(client)
+      wasmx: {
+        v1: (await import("./wasmx/v1/query.rpc.Query")).createRpcQueryExtension(client)
+      },
+      websrv: {
+        v1: (await import("./websrv/v1/query.rpc.Query")).createRpcQueryExtension(client)
+      }
     }
   };
 };

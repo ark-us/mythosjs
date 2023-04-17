@@ -2,20 +2,20 @@ import { GeneratedType, Registry, OfflineSigner } from "@cosmjs/proto-signing";
 import { AminoTypes, SigningStargateClient } from "@cosmjs/stargate";
 import { HttpEndpoint } from "@cosmjs/tendermint-rpc";
 export declare const wasmxAminoConverters: {
-    "/wasmx.websrv.MsgRegisterOAuthClient": {
+    "/wasmx.websrv.v1.MsgRegisterOAuthClient": {
         aminoType: string;
-        toAmino: ({ owner, domain }: import("./websrv/tx").MsgRegisterOAuthClient) => {
+        toAmino: ({ owner, domain }: import("./websrv/v1/tx").MsgRegisterOAuthClient) => {
             owner: string;
             domain: string;
         };
         fromAmino: ({ owner, domain }: {
             owner: string;
             domain: string;
-        }) => import("./websrv/tx").MsgRegisterOAuthClient;
+        }) => import("./websrv/v1/tx").MsgRegisterOAuthClient;
     };
-    "/wasmx.websrv.MsgEditOAuthClient": {
+    "/wasmx.websrv.v1.MsgEditOAuthClient": {
         aminoType: string;
-        toAmino: ({ owner, clientId, domain }: import("./websrv/tx").MsgEditOAuthClient) => {
+        toAmino: ({ owner, clientId, domain }: import("./websrv/v1/tx").MsgEditOAuthClient) => {
             owner: string;
             client_id: string;
             domain: string;
@@ -24,44 +24,44 @@ export declare const wasmxAminoConverters: {
             owner: string;
             client_id: string;
             domain: string;
-        }) => import("./websrv/tx").MsgEditOAuthClient;
+        }) => import("./websrv/v1/tx").MsgEditOAuthClient;
     };
-    "/wasmx.websrv.MsgDeregisterOAuthClient": {
+    "/wasmx.websrv.v1.MsgDeregisterOAuthClient": {
         aminoType: string;
-        toAmino: ({ owner, clientId }: import("./websrv/tx").MsgDeregisterOAuthClient) => {
+        toAmino: ({ owner, clientId }: import("./websrv/v1/tx").MsgDeregisterOAuthClient) => {
             owner: string;
             client_id: string;
         };
         fromAmino: ({ owner, client_id }: {
             owner: string;
             client_id: string;
-        }) => import("./websrv/tx").MsgDeregisterOAuthClient;
+        }) => import("./websrv/v1/tx").MsgDeregisterOAuthClient;
     };
-    "/wasmx.wasmx.MsgStoreCode": {
+    "/wasmx.wasmx.v1.MsgStoreCode": {
         aminoType: string;
-        toAmino: ({ sender, wasmByteCode }: import("./wasmx/tx").MsgStoreCode) => {
+        toAmino: ({ sender, wasmByteCode }: import("./wasmx/v1/tx").MsgStoreCode) => {
             sender: string;
             wasm_byte_code: Uint8Array;
         };
         fromAmino: ({ sender, wasm_byte_code }: {
             sender: string;
             wasm_byte_code: Uint8Array;
-        }) => import("./wasmx/tx").MsgStoreCode;
+        }) => import("./wasmx/v1/tx").MsgStoreCode;
     };
-    "/wasmx.wasmx.MsgStoreCodeEvm": {
+    "/wasmx.wasmx.v1.MsgStoreCodeEvm": {
         aminoType: string;
-        toAmino: ({ sender, evmByteCode }: import("./wasmx/tx").MsgStoreCodeEvm) => {
+        toAmino: ({ sender, evmByteCode }: import("./wasmx/v1/tx").MsgStoreCodeEvm) => {
             sender: string;
             evm_byte_code: Uint8Array;
         };
         fromAmino: ({ sender, evm_byte_code }: {
             sender: string;
             evm_byte_code: Uint8Array;
-        }) => import("./wasmx/tx").MsgStoreCodeEvm;
+        }) => import("./wasmx/v1/tx").MsgStoreCodeEvm;
     };
-    "/wasmx.wasmx.MsgInstantiateContract": {
+    "/wasmx.wasmx.v1.MsgInstantiateContract": {
         aminoType: string;
-        toAmino: ({ sender, codeId, label, msg, funds }: import("./wasmx/tx").MsgInstantiateContract) => {
+        toAmino: ({ sender, codeId, label, msg, funds }: import("./wasmx/v1/tx").MsgInstantiateContract) => {
             sender: string;
             code_id: string;
             label: string;
@@ -80,11 +80,11 @@ export declare const wasmxAminoConverters: {
                 denom: string;
                 amount: string;
             }[];
-        }) => import("./wasmx/tx").MsgInstantiateContract;
+        }) => import("./wasmx/v1/tx").MsgInstantiateContract;
     };
-    "/wasmx.wasmx.MsgInstantiateContract2": {
+    "/wasmx.wasmx.v1.MsgInstantiateContract2": {
         aminoType: string;
-        toAmino: ({ sender, codeId, label, msg, funds, salt, fixMsg }: import("./wasmx/tx").MsgInstantiateContract2) => {
+        toAmino: ({ sender, codeId, label, msg, funds, salt, fixMsg }: import("./wasmx/v1/tx").MsgInstantiateContract2) => {
             sender: string;
             code_id: string;
             label: string;
@@ -107,11 +107,11 @@ export declare const wasmxAminoConverters: {
             }[];
             salt: Uint8Array;
             fix_msg: boolean;
-        }) => import("./wasmx/tx").MsgInstantiateContract2;
+        }) => import("./wasmx/v1/tx").MsgInstantiateContract2;
     };
-    "/wasmx.wasmx.MsgExecuteContract": {
+    "/wasmx.wasmx.v1.MsgExecuteContract": {
         aminoType: string;
-        toAmino: ({ sender, contract, msg, funds, dependencies }: import("./wasmx/tx").MsgExecuteContract) => {
+        toAmino: ({ sender, contract, msg, funds, dependencies }: import("./wasmx/v1/tx").MsgExecuteContract) => {
             sender: string;
             contract: string;
             msg: Uint8Array;
@@ -130,11 +130,11 @@ export declare const wasmxAminoConverters: {
                 amount: string;
             }[];
             dependencies: string[];
-        }) => import("./wasmx/tx").MsgExecuteContract;
+        }) => import("./wasmx/v1/tx").MsgExecuteContract;
     };
-    "/wasmx.wasmx.MsgExecuteWithOriginContract": {
+    "/wasmx.wasmx.v1.MsgExecuteWithOriginContract": {
         aminoType: string;
-        toAmino: ({ origin, sender, contract, msg, funds }: import("./wasmx/tx").MsgExecuteWithOriginContract) => {
+        toAmino: ({ origin, sender, contract, msg, funds }: import("./wasmx/v1/tx").MsgExecuteWithOriginContract) => {
             origin: string;
             sender: string;
             contract: string;
@@ -153,11 +153,11 @@ export declare const wasmxAminoConverters: {
                 denom: string;
                 amount: string;
             }[];
-        }) => import("./wasmx/tx").MsgExecuteWithOriginContract;
+        }) => import("./wasmx/v1/tx").MsgExecuteWithOriginContract;
     };
-    "/wasmx.wasmx.MsgExecuteDelegateContract": {
+    "/wasmx.wasmx.v1.MsgExecuteDelegateContract": {
         aminoType: string;
-        toAmino: ({ origin, sender, caller, codeContract, storageContract, msg, funds }: import("./wasmx/tx").MsgExecuteDelegateContract) => {
+        toAmino: ({ origin, sender, caller, codeContract, storageContract, msg, funds }: import("./wasmx/v1/tx").MsgExecuteDelegateContract) => {
             origin: string;
             sender: string;
             caller: string;
@@ -180,18 +180,18 @@ export declare const wasmxAminoConverters: {
                 denom: string;
                 amount: string;
             }[];
-        }) => import("./wasmx/tx").MsgExecuteDelegateContract;
+        }) => import("./wasmx/v1/tx").MsgExecuteDelegateContract;
     };
-    "/wasmx.wasmx.MsgCompileContract": {
+    "/wasmx.wasmx.v1.MsgCompileContract": {
         aminoType: string;
-        toAmino: ({ sender, codeId }: import("./wasmx/tx").MsgCompileContract) => {
+        toAmino: ({ sender, codeId }: import("./wasmx/v1/tx").MsgCompileContract) => {
             sender: string;
             codeId: string;
         };
         fromAmino: ({ sender, codeId }: {
             sender: string;
             codeId: string;
-        }) => import("./wasmx/tx").MsgCompileContract;
+        }) => import("./wasmx/v1/tx").MsgCompileContract;
     };
 };
 export declare const wasmxProtoRegistry: ReadonlyArray<[string, GeneratedType]>;

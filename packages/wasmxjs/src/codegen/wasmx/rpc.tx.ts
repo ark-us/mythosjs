@@ -5,7 +5,11 @@ export const createRPCMsgClient = async ({
   rpc: Rpc;
 }) => ({
   wasmx: {
-    wasmx: new (await import("./wasmx/tx.rpc.msg")).MsgClientImpl(rpc),
-    websrv: new (await import("./websrv/tx.rpc.msg")).MsgClientImpl(rpc)
+    wasmx: {
+      v1: new (await import("./wasmx/v1/tx.rpc.msg")).MsgClientImpl(rpc)
+    },
+    websrv: {
+      v1: new (await import("./websrv/v1/tx.rpc.msg")).MsgClientImpl(rpc)
+    }
   }
 });
