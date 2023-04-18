@@ -36,7 +36,7 @@ import {
   CodeInfoResponse,
   QueryCodesResponse,
   QueryContractsByCodeResponse,
-} from "@ark-us/wasmxjs/types/codegen/wasmx/wasmx/query";
+} from "@ark-us/wasmxjs/types/codegen/mythos/wasmx/v1/query";
 
 import { JsonObject, setupWasmExtension, WasmExtension } from "./modules";
 
