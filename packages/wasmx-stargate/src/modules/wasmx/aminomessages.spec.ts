@@ -25,7 +25,7 @@ describe("AminoTypes", () => {
         wasmByteCode: fromBase64("WUVMTE9XIFNVQk1BUklORQ=="),
       };
       const aminoMsg = new AminoTypes(createWasmAminoConverters()).toAmino({
-        typeUrl: "/wasmx.wasmx.v1.MsgStoreCode",
+        typeUrl: "/mythos.wasmx.v1.MsgStoreCode",
         value: msg,
       });
       const expected: AminoMsgStoreCode = {
@@ -44,7 +44,7 @@ describe("AminoTypes", () => {
         evmByteCode: fromBase64("WUVMTE9XIFNVQk1BUklORQ=="),
       };
       const aminoMsg = new AminoTypes(createWasmAminoConverters()).toAmino({
-        typeUrl: "/wasmx.wasmx.v1.MsgStoreCodeEvm",
+        typeUrl: "/mythos.wasmx.v1.MsgStoreCodeEvm",
         value: msg,
       });
       const expected: AminoMsgStoreCodeEvm = {
@@ -69,7 +69,7 @@ describe("AminoTypes", () => {
           funds: coins(1234, "ucosm"),
         };
         const aminoMsg = new AminoTypes(createWasmAminoConverters()).toAmino({
-          typeUrl: "/wasmx.wasmx.v1.MsgInstantiateContract",
+          typeUrl: "/mythos.wasmx.v1.MsgInstantiateContract",
           value: msg,
         });
         const expected: AminoMsgInstantiateContract = {
@@ -96,7 +96,7 @@ describe("AminoTypes", () => {
           funds: coins(1234, "ucosm"),
         };
         const aminoMsg = new AminoTypes(createWasmAminoConverters()).toAmino({
-          typeUrl: "/wasmx.wasmx.v1.MsgInstantiateContract",
+          typeUrl: "/mythos.wasmx.v1.MsgInstantiateContract",
           value: msg,
         });
         const expected: AminoMsgInstantiateContract = {
@@ -122,7 +122,7 @@ describe("AminoTypes", () => {
         dependencies: [],
       };
       const aminoMsg = new AminoTypes(createWasmAminoConverters()).toAmino({
-        typeUrl: "/wasmx.wasmx.v1.MsgExecuteContract",
+        typeUrl: "/mythos.wasmx.v1.MsgExecuteContract",
         value: msg,
       });
       const expected: AminoMsgExecuteContract = {
@@ -154,7 +154,7 @@ describe("AminoTypes", () => {
         wasmByteCode: fromBase64("WUVMTE9XIFNVQk1BUklORQ=="),
       };
       expect(msg).toEqual({
-        typeUrl: "/wasmx.wasmx.v1.MsgStoreCode",
+        typeUrl: "/mythos.wasmx.v1.MsgStoreCode",
         value: expectedValue,
       });
     });
@@ -182,7 +182,7 @@ describe("AminoTypes", () => {
           funds: coins(1234, "ucosm"),
         };
         expect(msg).toEqual({
-          typeUrl: "/wasmx.wasmx.v1.MsgInstantiateContract",
+          typeUrl: "/mythos.wasmx.v1.MsgInstantiateContract",
           value: expectedValue,
         });
       }
@@ -209,7 +209,7 @@ describe("AminoTypes", () => {
           funds: coins(1234, "ucosm"),
         };
         expect(msg).toEqual({
-          typeUrl: "/wasmx.wasmx.v1.MsgInstantiateContract",
+          typeUrl: "/mythos.wasmx.v1.MsgInstantiateContract",
           value: expectedValue,
         });
       }
@@ -235,7 +235,7 @@ describe("AminoTypes", () => {
         dependencies: [],
       };
       expect(msg).toEqual({
-        typeUrl: "/wasmx.wasmx.v1.MsgExecuteContract",
+        typeUrl: "/mythos.wasmx.v1.MsgExecuteContract",
         value: expectedValue,
       });
     });

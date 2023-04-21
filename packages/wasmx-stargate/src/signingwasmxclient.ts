@@ -269,7 +269,7 @@ export class SigningWasmXClient extends WasmXClient {
   ): Promise<UploadResult> {
     const compressed = pako.gzip(wasmCode, { level: 9 });
     const storeCodeMsg: MsgStoreCodeEncodeObject = {
-      typeUrl: "/wasmx.wasmx.v1.MsgStoreCode",
+      typeUrl: "/mythos.wasmx.v1.MsgStoreCode",
       value: MsgStoreCode.fromPartial({
         sender: senderAddress,
         wasmByteCode: compressed,
@@ -305,7 +305,7 @@ export class SigningWasmXClient extends WasmXClient {
     memo = "",
   ): Promise<UploadResult> {
     const storeCodeEvmMsg: MsgStoreCodeEvmEncodeObject = {
-      typeUrl: "/wasmx.wasmx.v1.MsgStoreCodeEvm",
+      typeUrl: "/mythos.wasmx.v1.MsgStoreCodeEvm",
       value: MsgStoreCodeEvm.fromPartial({
         sender: senderAddress,
         evmByteCode: evmCode,
@@ -342,7 +342,7 @@ export class SigningWasmXClient extends WasmXClient {
     options: InstantiateOptions = {},
   ): Promise<InstantiateResult> {
     const instantiateContractMsg: MsgInstantiateContractEncodeObject = {
-      typeUrl: "/wasmx.wasmx.v1.MsgInstantiateContract",
+      typeUrl: "/mythos.wasmx.v1.MsgInstantiateContract",
       value: MsgInstantiateContract.fromPartial({
         sender: senderAddress,
         // @ts-ignore
@@ -395,7 +395,7 @@ export class SigningWasmXClient extends WasmXClient {
     memo = "",
   ): Promise<ExecuteResult> {
     const msgs: MsgExecuteContractEncodeObject[] = instructions.map((i) => ({
-      typeUrl: "/wasmx.wasmx.v1.MsgExecuteContract",
+      typeUrl: "/mythos.wasmx.v1.MsgExecuteContract",
       value: MsgExecuteContract.fromPartial({
         sender: senderAddress,
         contract: i.contractAddress,
