@@ -1,5 +1,5 @@
 import { Params, ParamsSDKType } from "./params";
-import { CodeInfo, CodeInfoSDKType, CodeMetadata, CodeMetadataSDKType, ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType } from "./contract";
+import { CodeMetadata, CodeMetadataSDKType, CodeInfo, CodeInfoSDKType, ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType } from "./contract";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, bytesFromBase64, base64FromBytes, Long } from "../../../helpers";
 /** GenesisState defines the wasmx module's genesis state. */
@@ -46,6 +46,7 @@ export interface SystemContract {
   initMessage: Uint8Array;
   pinned: boolean;
   native: boolean;
+  metadata?: CodeMetadata;
 }
 export interface SystemContractSDKType {
   address: string;
@@ -53,6 +54,7 @@ export interface SystemContractSDKType {
   init_message: Uint8Array;
   pinned: boolean;
   native: boolean;
+  metadata?: CodeMetadataSDKType;
 }
 /** Code - for importing and exporting code data */
 
@@ -60,7 +62,6 @@ export interface Code {
   codeId: Long;
   codeInfo?: CodeInfo;
   codeBytes: Uint8Array;
-  codeMetadata?: CodeMetadata;
 }
 /** Code - for importing and exporting code data */
 
@@ -68,7 +69,6 @@ export interface CodeSDKType {
   code_id: Long;
   code_info?: CodeInfoSDKType;
   code_bytes: Uint8Array;
-  code_metadata?: CodeMetadataSDKType;
 }
 /** Contract struct encompasses ContractAddress, ContractInfo, and ContractState */
 
@@ -253,7 +253,8 @@ function createBaseSystemContract(): SystemContract {
     label: "",
     initMessage: new Uint8Array(),
     pinned: false,
-    native: false
+    native: false,
+    metadata: undefined
   };
 }
 
@@ -277,6 +278,10 @@ export const SystemContract = {
 
     if (message.native === true) {
       writer.uint32(40).bool(message.native);
+    }
+
+    if (message.metadata !== undefined) {
+      CodeMetadata.encode(message.metadata, writer.uint32(50).fork()).ldelim();
     }
 
     return writer;
@@ -311,6 +316,10 @@ export const SystemContract = {
           message.native = reader.bool();
           break;
 
+        case 6:
+          message.metadata = CodeMetadata.decode(reader, reader.uint32());
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -326,7 +335,8 @@ export const SystemContract = {
       label: isSet(object.label) ? String(object.label) : "",
       initMessage: isSet(object.initMessage) ? bytesFromBase64(object.initMessage) : new Uint8Array(),
       pinned: isSet(object.pinned) ? Boolean(object.pinned) : false,
-      native: isSet(object.native) ? Boolean(object.native) : false
+      native: isSet(object.native) ? Boolean(object.native) : false,
+      metadata: isSet(object.metadata) ? CodeMetadata.fromJSON(object.metadata) : undefined
     };
   },
 
@@ -337,6 +347,7 @@ export const SystemContract = {
     message.initMessage !== undefined && (obj.initMessage = base64FromBytes(message.initMessage !== undefined ? message.initMessage : new Uint8Array()));
     message.pinned !== undefined && (obj.pinned = message.pinned);
     message.native !== undefined && (obj.native = message.native);
+    message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadata.toJSON(message.metadata) : undefined);
     return obj;
   },
 
@@ -347,6 +358,7 @@ export const SystemContract = {
     message.initMessage = object.initMessage ?? new Uint8Array();
     message.pinned = object.pinned ?? false;
     message.native = object.native ?? false;
+    message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadata.fromPartial(object.metadata) : undefined;
     return message;
   }
 
@@ -356,8 +368,7 @@ function createBaseCode(): Code {
   return {
     codeId: Long.UZERO,
     codeInfo: undefined,
-    codeBytes: new Uint8Array(),
-    codeMetadata: undefined
+    codeBytes: new Uint8Array()
   };
 }
 
@@ -373,10 +384,6 @@ export const Code = {
 
     if (message.codeBytes.length !== 0) {
       writer.uint32(26).bytes(message.codeBytes);
-    }
-
-    if (message.codeMetadata !== undefined) {
-      CodeMetadata.encode(message.codeMetadata, writer.uint32(34).fork()).ldelim();
     }
 
     return writer;
@@ -403,10 +410,6 @@ export const Code = {
           message.codeBytes = reader.bytes();
           break;
 
-        case 4:
-          message.codeMetadata = CodeMetadata.decode(reader, reader.uint32());
-          break;
-
         default:
           reader.skipType(tag & 7);
           break;
@@ -420,8 +423,7 @@ export const Code = {
     return {
       codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO,
       codeInfo: isSet(object.codeInfo) ? CodeInfo.fromJSON(object.codeInfo) : undefined,
-      codeBytes: isSet(object.codeBytes) ? bytesFromBase64(object.codeBytes) : new Uint8Array(),
-      codeMetadata: isSet(object.codeMetadata) ? CodeMetadata.fromJSON(object.codeMetadata) : undefined
+      codeBytes: isSet(object.codeBytes) ? bytesFromBase64(object.codeBytes) : new Uint8Array()
     };
   },
 
@@ -430,7 +432,6 @@ export const Code = {
     message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
     message.codeInfo !== undefined && (obj.codeInfo = message.codeInfo ? CodeInfo.toJSON(message.codeInfo) : undefined);
     message.codeBytes !== undefined && (obj.codeBytes = base64FromBytes(message.codeBytes !== undefined ? message.codeBytes : new Uint8Array()));
-    message.codeMetadata !== undefined && (obj.codeMetadata = message.codeMetadata ? CodeMetadata.toJSON(message.codeMetadata) : undefined);
     return obj;
   },
 
@@ -439,7 +440,6 @@ export const Code = {
     message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
     message.codeInfo = object.codeInfo !== undefined && object.codeInfo !== null ? CodeInfo.fromPartial(object.codeInfo) : undefined;
     message.codeBytes = object.codeBytes ?? new Uint8Array();
-    message.codeMetadata = object.codeMetadata !== undefined && object.codeMetadata !== null ? CodeMetadata.fromPartial(object.codeMetadata) : undefined;
     return message;
   }
 

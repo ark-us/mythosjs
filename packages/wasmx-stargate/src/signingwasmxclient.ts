@@ -43,6 +43,7 @@ import {
   MsgInstantiateContract,
   MsgStoreCode,
   MsgStoreCodeEvm,
+  CodeMetadata,
 } from "@ark-us/wasmxjs";
 import Long from 'long';
 import pako from "pako";
@@ -264,6 +265,7 @@ export class SigningWasmXClient extends WasmXClient {
   public async upload(
     senderAddress: string,
     wasmCode: Uint8Array,
+    metadata: object,
     fee: StdFee | "auto" | number,
     memo = "",
   ): Promise<UploadResult> {
@@ -273,6 +275,7 @@ export class SigningWasmXClient extends WasmXClient {
       value: MsgStoreCode.fromPartial({
         sender: senderAddress,
         wasmByteCode: compressed,
+        metadata: CodeMetadata.fromPartial(metadata),
       }),
     };
 
@@ -301,6 +304,7 @@ export class SigningWasmXClient extends WasmXClient {
   public async uploadEvm(
     senderAddress: string,
     evmCode: Uint8Array,
+    metadata: object,
     fee: StdFee | "auto" | number,
     memo = "",
   ): Promise<UploadResult> {
@@ -309,6 +313,7 @@ export class SigningWasmXClient extends WasmXClient {
       value: MsgStoreCodeEvm.fromPartial({
         sender: senderAddress,
         evmByteCode: evmCode,
+        metadata: CodeMetadata.fromPartial(metadata),
       }),
     };
 

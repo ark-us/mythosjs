@@ -1,6 +1,6 @@
 import { Rpc } from "../../../helpers";
 import { QueryClient } from "@cosmjs/stargate";
-import { QueryContractInfoRequest, QueryContractInfoResponse, QueryContractsByCodeRequest, QueryContractsByCodeResponse, QueryAllContractStateRequest, QueryAllContractStateResponse, QueryRawContractStateRequest, QueryRawContractStateResponse, QuerySmartContractCallRequest, QuerySmartContractCallResponse, QueryCodeRequest, QueryCodeResponse, QueryCodesRequest, QueryCodesResponse, QueryParamsRequest, QueryParamsResponse, QueryContractsByCreatorRequest, QueryContractsByCreatorResponse } from "./query";
+import { QueryContractInfoRequest, QueryContractInfoResponse, QueryContractsByCodeRequest, QueryContractsByCodeResponse, QueryAllContractStateRequest, QueryAllContractStateResponse, QueryRawContractStateRequest, QueryRawContractStateResponse, QuerySmartContractCallRequest, QuerySmartContractCallResponse, QueryCodeRequest, QueryCodeResponse, QueryCodeInfoRequest, QueryCodeInfoResponse, QueryCodesRequest, QueryCodesResponse, QueryParamsRequest, QueryParamsResponse, QueryContractsByCreatorRequest, QueryContractsByCreatorResponse } from "./query";
 /** Query provides defines the gRPC querier service */
 export interface Query {
     /** ContractInfo gets the contract meta data */
@@ -15,6 +15,8 @@ export interface Query {
     smartContractCall(request: QuerySmartContractCallRequest): Promise<QuerySmartContractCallResponse>;
     /** Code gets the binary code and metadata for a singe wasm code */
     code(request: QueryCodeRequest): Promise<QueryCodeResponse>;
+    /** CodeInfo gets the binary code and metadata for a singe wasm code */
+    codeInfo(request: QueryCodeInfoRequest): Promise<QueryCodeInfoResponse>;
     /** Codes gets the metadata for all stored wasm codes */
     codes(request?: QueryCodesRequest): Promise<QueryCodesResponse>;
     /** Params gets the module params */
@@ -31,6 +33,7 @@ export declare class QueryClientImpl implements Query {
     rawContractState(request: QueryRawContractStateRequest): Promise<QueryRawContractStateResponse>;
     smartContractCall(request: QuerySmartContractCallRequest): Promise<QuerySmartContractCallResponse>;
     code(request: QueryCodeRequest): Promise<QueryCodeResponse>;
+    codeInfo(request: QueryCodeInfoRequest): Promise<QueryCodeInfoResponse>;
     codes(request?: QueryCodesRequest): Promise<QueryCodesResponse>;
     params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
     contractsByCreator(request: QueryContractsByCreatorRequest): Promise<QueryContractsByCreatorResponse>;
@@ -42,6 +45,7 @@ export declare const createRpcQueryExtension: (base: QueryClient) => {
     rawContractState(request: QueryRawContractStateRequest): Promise<QueryRawContractStateResponse>;
     smartContractCall(request: QuerySmartContractCallRequest): Promise<QuerySmartContractCallResponse>;
     code(request: QueryCodeRequest): Promise<QueryCodeResponse>;
+    codeInfo(request: QueryCodeInfoRequest): Promise<QueryCodeInfoResponse>;
     codes(request?: QueryCodesRequest): Promise<QueryCodesResponse>;
     params(request?: QueryParamsRequest): Promise<QueryParamsResponse>;
     contractsByCreator(request: QueryContractsByCreatorRequest): Promise<QueryContractsByCreatorResponse>;

@@ -7,6 +7,19 @@ export interface AminoMsgStoreCode extends AminoMsg {
   value: {
     sender: string;
     wasm_byte_code: Uint8Array;
+    metadata: {
+      name: string;
+      categ: string[];
+      icon: string;
+      author: string;
+      site: string;
+      abi: string;
+      json_schema: string;
+      origin: {
+        chain_id: string;
+        address: string;
+      };
+    };
   };
 }
 export interface AminoMsgStoreCodeEvm extends AminoMsg {
@@ -14,6 +27,19 @@ export interface AminoMsgStoreCodeEvm extends AminoMsg {
   value: {
     sender: string;
     evm_byte_code: Uint8Array;
+    metadata: {
+      name: string;
+      categ: string[];
+      icon: string;
+      author: string;
+      site: string;
+      abi: string;
+      json_schema: string;
+      origin: {
+        chain_id: string;
+        address: string;
+      };
+    };
   };
 }
 export interface AminoMsgInstantiateContract extends AminoMsg {
@@ -97,20 +123,48 @@ export const AminoConverter = {
     aminoType: "/mythos.wasmx.v1.MsgStoreCode",
     toAmino: ({
       sender,
-      wasmByteCode
+      wasmByteCode,
+      metadata
     }: MsgStoreCode): AminoMsgStoreCode["value"] => {
       return {
         sender,
-        wasm_byte_code: wasmByteCode
+        wasm_byte_code: wasmByteCode,
+        metadata: {
+          name: metadata.name,
+          categ: metadata.categ,
+          icon: metadata.icon,
+          author: metadata.author,
+          site: metadata.site,
+          abi: metadata.abi,
+          json_schema: metadata.jsonSchema,
+          origin: {
+            chain_id: metadata.origin.chainId,
+            address: metadata.origin.address
+          }
+        }
       };
     },
     fromAmino: ({
       sender,
-      wasm_byte_code
+      wasm_byte_code,
+      metadata
     }: AminoMsgStoreCode["value"]): MsgStoreCode => {
       return {
         sender,
-        wasmByteCode: wasm_byte_code
+        wasmByteCode: wasm_byte_code,
+        metadata: {
+          name: metadata.name,
+          categ: metadata.categ,
+          icon: metadata.icon,
+          author: metadata.author,
+          site: metadata.site,
+          abi: metadata.abi,
+          jsonSchema: metadata.json_schema,
+          origin: {
+            chainId: metadata.origin.chain_id,
+            address: metadata.origin.address
+          }
+        }
       };
     }
   },
@@ -118,20 +172,48 @@ export const AminoConverter = {
     aminoType: "/mythos.wasmx.v1.MsgStoreCodeEvm",
     toAmino: ({
       sender,
-      evmByteCode
+      evmByteCode,
+      metadata
     }: MsgStoreCodeEvm): AminoMsgStoreCodeEvm["value"] => {
       return {
         sender,
-        evm_byte_code: evmByteCode
+        evm_byte_code: evmByteCode,
+        metadata: {
+          name: metadata.name,
+          categ: metadata.categ,
+          icon: metadata.icon,
+          author: metadata.author,
+          site: metadata.site,
+          abi: metadata.abi,
+          json_schema: metadata.jsonSchema,
+          origin: {
+            chain_id: metadata.origin.chainId,
+            address: metadata.origin.address
+          }
+        }
       };
     },
     fromAmino: ({
       sender,
-      evm_byte_code
+      evm_byte_code,
+      metadata
     }: AminoMsgStoreCodeEvm["value"]): MsgStoreCodeEvm => {
       return {
         sender,
-        evmByteCode: evm_byte_code
+        evmByteCode: evm_byte_code,
+        metadata: {
+          name: metadata.name,
+          categ: metadata.categ,
+          icon: metadata.icon,
+          author: metadata.author,
+          site: metadata.site,
+          abi: metadata.abi,
+          jsonSchema: metadata.json_schema,
+          origin: {
+            chainId: metadata.origin.chain_id,
+            address: metadata.origin.address
+          }
+        }
       };
     }
   },

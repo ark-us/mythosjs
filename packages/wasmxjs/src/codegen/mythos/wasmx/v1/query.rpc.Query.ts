@@ -1,7 +1,7 @@
 import { Rpc } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 import { QueryClient, createProtobufRpcClient } from "@cosmjs/stargate";
-import { QueryContractInfoRequest, QueryContractInfoResponse, QueryContractsByCodeRequest, QueryContractsByCodeResponse, QueryAllContractStateRequest, QueryAllContractStateResponse, QueryRawContractStateRequest, QueryRawContractStateResponse, QuerySmartContractCallRequest, QuerySmartContractCallResponse, QueryCodeRequest, QueryCodeResponse, QueryCodesRequest, QueryCodesResponse, QueryParamsRequest, QueryParamsResponse, QueryContractsByCreatorRequest, QueryContractsByCreatorResponse } from "./query";
+import { QueryContractInfoRequest, QueryContractInfoResponse, QueryContractsByCodeRequest, QueryContractsByCodeResponse, QueryAllContractStateRequest, QueryAllContractStateResponse, QueryRawContractStateRequest, QueryRawContractStateResponse, QuerySmartContractCallRequest, QuerySmartContractCallResponse, QueryCodeRequest, QueryCodeResponse, QueryCodeInfoRequest, QueryCodeInfoResponse, QueryCodesRequest, QueryCodesResponse, QueryParamsRequest, QueryParamsResponse, QueryContractsByCreatorRequest, QueryContractsByCreatorResponse } from "./query";
 /** Query provides defines the gRPC querier service */
 
 export interface Query {
@@ -22,6 +22,9 @@ export interface Query {
   /** Code gets the binary code and metadata for a singe wasm code */
 
   code(request: QueryCodeRequest): Promise<QueryCodeResponse>;
+  /** CodeInfo gets the binary code and metadata for a singe wasm code */
+
+  codeInfo(request: QueryCodeInfoRequest): Promise<QueryCodeInfoResponse>;
   /** Codes gets the metadata for all stored wasm codes */
 
   codes(request?: QueryCodesRequest): Promise<QueryCodesResponse>;
@@ -43,6 +46,7 @@ export class QueryClientImpl implements Query {
     this.rawContractState = this.rawContractState.bind(this);
     this.smartContractCall = this.smartContractCall.bind(this);
     this.code = this.code.bind(this);
+    this.codeInfo = this.codeInfo.bind(this);
     this.codes = this.codes.bind(this);
     this.params = this.params.bind(this);
     this.contractsByCreator = this.contractsByCreator.bind(this);
@@ -82,6 +86,12 @@ export class QueryClientImpl implements Query {
     const data = QueryCodeRequest.encode(request).finish();
     const promise = this.rpc.request("mythos.wasmx.v1.Query", "Code", data);
     return promise.then(data => QueryCodeResponse.decode(new _m0.Reader(data)));
+  }
+
+  codeInfo(request: QueryCodeInfoRequest): Promise<QueryCodeInfoResponse> {
+    const data = QueryCodeInfoRequest.encode(request).finish();
+    const promise = this.rpc.request("mythos.wasmx.v1.Query", "CodeInfo", data);
+    return promise.then(data => QueryCodeInfoResponse.decode(new _m0.Reader(data)));
   }
 
   codes(request: QueryCodesRequest = {
@@ -131,6 +141,10 @@ export const createRpcQueryExtension = (base: QueryClient) => {
 
     code(request: QueryCodeRequest): Promise<QueryCodeResponse> {
       return queryService.code(request);
+    },
+
+    codeInfo(request: QueryCodeInfoRequest): Promise<QueryCodeInfoResponse> {
+      return queryService.codeInfo(request);
     },
 
     codes(request?: QueryCodesRequest): Promise<QueryCodesResponse> {

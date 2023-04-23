@@ -25,6 +25,7 @@ export declare const createRPCQueryClient: ({ rpcEndpoint }: {
                 rawContractState(request: import("./wasmx/v1/query").QueryRawContractStateRequest): Promise<import("./wasmx/v1/query").QueryRawContractStateResponse>;
                 smartContractCall(request: import("./wasmx/v1/query").QuerySmartContractCallRequest): Promise<import("./wasmx/v1/query").QuerySmartContractCallResponse>;
                 code(request: import("./wasmx/v1/query").QueryCodeRequest): Promise<import("./wasmx/v1/query").QueryCodeResponse>;
+                codeInfo(request: import("./wasmx/v1/query").QueryCodeInfoRequest): Promise<import("./wasmx/v1/query").QueryCodeInfoResponse>;
                 codes(request?: import("./wasmx/v1/query").QueryCodesRequest): Promise<import("./wasmx/v1/query").QueryCodesResponse>;
                 params(request?: import("./wasmx/v1/query").QueryParamsRequest): Promise<import("./wasmx/v1/query").QueryParamsResponse>;
                 contractsByCreator(request: import("./wasmx/v1/query").QueryContractsByCreatorRequest): Promise<import("./wasmx/v1/query").QueryContractsByCreatorResponse>;

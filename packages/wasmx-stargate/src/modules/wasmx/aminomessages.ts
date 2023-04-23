@@ -2,6 +2,7 @@
 import { fromBase64, fromUtf8, toBase64, toUtf8 } from "@cosmjs/encoding";
 import { AminoConverters, Coin } from "@cosmjs/stargate";
 import {
+  CodeMetadata,
   MsgExecuteContract,
   MsgInstantiateContract,
   MsgStoreCode,
@@ -19,6 +20,7 @@ export interface AminoMsgStoreCode {
     readonly sender: string;
     /** Base64 encoded Wasm */
     readonly wasm_byte_code: string;
+    readonly metadata: CodeMetadata;
   };
 }
 
@@ -32,6 +34,7 @@ export interface AminoMsgStoreCodeEvm {
     readonly sender: string;
     /** Base64 encoded Wasm */
     readonly evm_byte_code: string;
+    readonly metadata: CodeMetadata;
   };
 }
 
@@ -74,9 +77,10 @@ export function createWasmAminoConverters(): AminoConverters {
   return {
     "/mythos.wasmx.v1.MsgStoreCode": {
       aminoType: "wasm/MsgStoreCode",
-      toAmino: ({ sender, wasmByteCode }: MsgStoreCode): AminoMsgStoreCode["value"] => ({
+      toAmino: ({ sender, wasmByteCode, metadata }: MsgStoreCode): AminoMsgStoreCode["value"] => ({
         sender: sender,
         wasm_byte_code: toBase64(wasmByteCode),
+        metadata: metadata || CodeMetadata.fromPartial({}),
       }),
       fromAmino: ({ sender, wasm_byte_code }: AminoMsgStoreCode["value"]): MsgStoreCode => ({
         sender: sender,
@@ -85,9 +89,10 @@ export function createWasmAminoConverters(): AminoConverters {
     },
     "/mythos.wasmx.v1.MsgStoreCodeEvm": {
       aminoType: "wasm/MsgStoreCodeEvm",
-      toAmino: ({ sender, evmByteCode }: MsgStoreCodeEvm): AminoMsgStoreCodeEvm["value"] => ({
+      toAmino: ({ sender, evmByteCode, metadata }: MsgStoreCodeEvm): AminoMsgStoreCodeEvm["value"] => ({
         sender: sender,
         evm_byte_code: toBase64(evmByteCode),
+        metadata: metadata || CodeMetadata.fromPartial({}),
       }),
       fromAmino: ({ sender, evm_byte_code }: AminoMsgStoreCodeEvm["value"]): MsgStoreCodeEvm => ({
         sender: sender,

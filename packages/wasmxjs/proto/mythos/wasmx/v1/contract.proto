@@ -14,8 +14,26 @@ message ContractStorage {
     bytes value = 2;
 }
 
+// Metadata for each codeId
+message CodeMetadata {
+    option (gogoproto.equal) = true;
+
+    string name = 1 [(gogoproto.nullable) = true];
+    // category paths e.g. "/dapps/history"
+    repeated string categ = 2 [(gogoproto.nullable) = true];
+    string icon = 3 [(gogoproto.nullable) = true];
+    // off-chain identifier
+    string author = 4 [(gogoproto.nullable) = true];
+    string site = 5 [(gogoproto.nullable) = true];
+    string abi = 6 [(gogoproto.nullable) = true];
+    string json_schema = 7 [(gogoproto.nullable) = true];
+    CodeOrigin origin = 8 [(gogoproto.nullable) = true];
+}
+
 // CodeInfo is data for the uploaded contract WASM code
 message CodeInfo {
+    option (gogoproto.equal) = true;
+
     // CodeHash is the unique identifier created by hashing the wasm code
     bytes code_hash = 1;
     // Creator address who initially stored the code
@@ -25,13 +43,16 @@ message CodeInfo {
     repeated string deps = 3;
     // Pinned contract
     bool pinned = 4;
-
+    CodeMetadata metadata = 5 [(gogoproto.nullable) = false];
 }
 
-// Metadata for each codeId
-message CodeMetadata {
-    string abi = 1;
-    string json_schema = 2;
+message CodeOrigin {
+    option (gogoproto.equal) = true;
+
+    // unique chain ID
+    string chain_id = 1;
+    // hex-encoded address
+    string address = 2;
 }
 
 // ContractInfo stores a WASM contract instance

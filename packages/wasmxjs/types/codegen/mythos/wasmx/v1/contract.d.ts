@@ -14,6 +14,32 @@ export interface ContractStorageSDKType {
     /** raw value */
     value: Uint8Array;
 }
+/** Metadata for each codeId */
+export interface CodeMetadata {
+    name: string;
+    /** category paths e.g. "/dapps/history" */
+    categ: string[];
+    icon: string;
+    /** off-chain identifier */
+    author: string;
+    site: string;
+    abi: string;
+    jsonSchema: string;
+    origin?: CodeOrigin;
+}
+/** Metadata for each codeId */
+export interface CodeMetadataSDKType {
+    name: string;
+    /** category paths e.g. "/dapps/history" */
+    categ: string[];
+    icon: string;
+    /** off-chain identifier */
+    author: string;
+    site: string;
+    abi: string;
+    json_schema: string;
+    origin?: CodeOriginSDKType;
+}
 /** CodeInfo is data for the uploaded contract WASM code */
 export interface CodeInfo {
     /** CodeHash is the unique identifier created by hashing the wasm code */
@@ -27,6 +53,7 @@ export interface CodeInfo {
     deps: string[];
     /** Pinned contract */
     pinned: boolean;
+    metadata?: CodeMetadata;
 }
 /** CodeInfo is data for the uploaded contract WASM code */
 export interface CodeInfoSDKType {
@@ -41,16 +68,19 @@ export interface CodeInfoSDKType {
     deps: string[];
     /** Pinned contract */
     pinned: boolean;
+    metadata?: CodeMetadataSDKType;
 }
-/** Metadata for each codeId */
-export interface CodeMetadata {
-    abi: string;
-    jsonSchema: string;
+export interface CodeOrigin {
+    /** unique chain ID */
+    chainId: string;
+    /** hex-encoded address */
+    address: string;
 }
-/** Metadata for each codeId */
-export interface CodeMetadataSDKType {
-    abi: string;
-    json_schema: string;
+export interface CodeOriginSDKType {
+    /** unique chain ID */
+    chain_id: string;
+    /** hex-encoded address */
+    address: string;
 }
 /** ContractInfo stores a WASM contract instance */
 export interface ContractInfo {
@@ -109,6 +139,13 @@ export declare const ContractStorage: {
     toJSON(message: ContractStorage): unknown;
     fromPartial(object: Partial<ContractStorage>): ContractStorage;
 };
+export declare const CodeMetadata: {
+    encode(message: CodeMetadata, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CodeMetadata;
+    fromJSON(object: any): CodeMetadata;
+    toJSON(message: CodeMetadata): unknown;
+    fromPartial(object: Partial<CodeMetadata>): CodeMetadata;
+};
 export declare const CodeInfo: {
     encode(message: CodeInfo, writer?: _m0.Writer): _m0.Writer;
     decode(input: _m0.Reader | Uint8Array, length?: number): CodeInfo;
@@ -116,12 +153,12 @@ export declare const CodeInfo: {
     toJSON(message: CodeInfo): unknown;
     fromPartial(object: Partial<CodeInfo>): CodeInfo;
 };
-export declare const CodeMetadata: {
-    encode(message: CodeMetadata, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): CodeMetadata;
-    fromJSON(object: any): CodeMetadata;
-    toJSON(message: CodeMetadata): unknown;
-    fromPartial(object: Partial<CodeMetadata>): CodeMetadata;
+export declare const CodeOrigin: {
+    encode(message: CodeOrigin, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): CodeOrigin;
+    fromJSON(object: any): CodeOrigin;
+    toJSON(message: CodeOrigin): unknown;
+    fromPartial(object: Partial<CodeOrigin>): CodeOrigin;
 };
 export declare const ContractInfo: {
     encode(message: ContractInfo, writer?: _m0.Writer): _m0.Writer;

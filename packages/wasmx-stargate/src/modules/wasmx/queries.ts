@@ -3,6 +3,7 @@ import { createPagination, createProtobufRpcClient, QueryClient, Coin } from "@c
 import {
   QueryAllContractStateResponse,
   QueryCodeResponse,
+  QueryCodeInfoResponse,
   QueryCodesResponse,
   QueryContractInfoResponse,
   QueryContractsByCodeResponse,
@@ -28,6 +29,7 @@ export interface WasmExtension {
      * Throws an error if no code with this id
      */
     readonly getCode: (id: number) => Promise<QueryCodeResponse>;
+    readonly getCodeInfo: (id: number) => Promise<QueryCodeInfoResponse>;
     readonly listContractsByCodeId: (
       id: number,
       paginationKey?: Uint8Array,
@@ -77,6 +79,11 @@ export function setupWasmExtension(base: QueryClient): WasmExtension {
         const request = { codeId: Long.fromNumber(id) };
         // @ts-ignore
         return queryService.code(request);
+      },
+      getCodeInfo: async (id: number) => {
+        const request = { codeId: Long.fromNumber(id) };
+        // @ts-ignore
+        return queryService.codeInfo(request);
       },
       listContractsByCodeId: async (id: number, paginationKey?: Uint8Array) => {
         const request = {

@@ -1,3 +1,4 @@
+import { CodeMetadata, CodeMetadataSDKType } from "./contract";
 import { Coin, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, bytesFromBase64, base64FromBytes, Long } from "../../../helpers";
@@ -9,6 +10,7 @@ export interface MsgStoreCode {
   /** WASMByteCode can be raw or gzip compressed */
 
   wasmByteCode: Uint8Array;
+  metadata?: CodeMetadata;
 }
 /** MsgStoreCode submit Wasm code to the system */
 
@@ -18,6 +20,7 @@ export interface MsgStoreCodeSDKType {
   /** WASMByteCode can be raw or gzip compressed */
 
   wasm_byte_code: Uint8Array;
+  metadata?: CodeMetadataSDKType;
 }
 /** MsgStoreCodeResponse returns store result data. */
 
@@ -45,6 +48,7 @@ export interface MsgStoreCodeEvm {
   /** EVM bytecode */
 
   evmByteCode: Uint8Array;
+  metadata?: CodeMetadata;
 }
 /** MsgStoreCodeEvm submit Wasm code to the system */
 
@@ -54,6 +58,7 @@ export interface MsgStoreCodeEvmSDKType {
   /** EVM bytecode */
 
   evm_byte_code: Uint8Array;
+  metadata?: CodeMetadataSDKType;
 }
 /** MsgStoreCodeEvmResponse returns store result data. */
 
@@ -387,7 +392,8 @@ export interface MsgCompileContractResponseSDKType {}
 function createBaseMsgStoreCode(): MsgStoreCode {
   return {
     sender: "",
-    wasmByteCode: new Uint8Array()
+    wasmByteCode: new Uint8Array(),
+    metadata: undefined
   };
 }
 
@@ -399,6 +405,10 @@ export const MsgStoreCode = {
 
     if (message.wasmByteCode.length !== 0) {
       writer.uint32(18).bytes(message.wasmByteCode);
+    }
+
+    if (message.metadata !== undefined) {
+      CodeMetadata.encode(message.metadata, writer.uint32(26).fork()).ldelim();
     }
 
     return writer;
@@ -421,6 +431,10 @@ export const MsgStoreCode = {
           message.wasmByteCode = reader.bytes();
           break;
 
+        case 3:
+          message.metadata = CodeMetadata.decode(reader, reader.uint32());
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -433,7 +447,8 @@ export const MsgStoreCode = {
   fromJSON(object: any): MsgStoreCode {
     return {
       sender: isSet(object.sender) ? String(object.sender) : "",
-      wasmByteCode: isSet(object.wasmByteCode) ? bytesFromBase64(object.wasmByteCode) : new Uint8Array()
+      wasmByteCode: isSet(object.wasmByteCode) ? bytesFromBase64(object.wasmByteCode) : new Uint8Array(),
+      metadata: isSet(object.metadata) ? CodeMetadata.fromJSON(object.metadata) : undefined
     };
   },
 
@@ -441,6 +456,7 @@ export const MsgStoreCode = {
     const obj: any = {};
     message.sender !== undefined && (obj.sender = message.sender);
     message.wasmByteCode !== undefined && (obj.wasmByteCode = base64FromBytes(message.wasmByteCode !== undefined ? message.wasmByteCode : new Uint8Array()));
+    message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadata.toJSON(message.metadata) : undefined);
     return obj;
   },
 
@@ -448,6 +464,7 @@ export const MsgStoreCode = {
     const message = createBaseMsgStoreCode();
     message.sender = object.sender ?? "";
     message.wasmByteCode = object.wasmByteCode ?? new Uint8Array();
+    message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadata.fromPartial(object.metadata) : undefined;
     return message;
   }
 
@@ -525,7 +542,8 @@ export const MsgStoreCodeResponse = {
 function createBaseMsgStoreCodeEvm(): MsgStoreCodeEvm {
   return {
     sender: "",
-    evmByteCode: new Uint8Array()
+    evmByteCode: new Uint8Array(),
+    metadata: undefined
   };
 }
 
@@ -537,6 +555,10 @@ export const MsgStoreCodeEvm = {
 
     if (message.evmByteCode.length !== 0) {
       writer.uint32(18).bytes(message.evmByteCode);
+    }
+
+    if (message.metadata !== undefined) {
+      CodeMetadata.encode(message.metadata, writer.uint32(26).fork()).ldelim();
     }
 
     return writer;
@@ -559,6 +581,10 @@ export const MsgStoreCodeEvm = {
           message.evmByteCode = reader.bytes();
           break;
 
+        case 3:
+          message.metadata = CodeMetadata.decode(reader, reader.uint32());
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -571,7 +597,8 @@ export const MsgStoreCodeEvm = {
   fromJSON(object: any): MsgStoreCodeEvm {
     return {
       sender: isSet(object.sender) ? String(object.sender) : "",
-      evmByteCode: isSet(object.evmByteCode) ? bytesFromBase64(object.evmByteCode) : new Uint8Array()
+      evmByteCode: isSet(object.evmByteCode) ? bytesFromBase64(object.evmByteCode) : new Uint8Array(),
+      metadata: isSet(object.metadata) ? CodeMetadata.fromJSON(object.metadata) : undefined
     };
   },
 
@@ -579,6 +606,7 @@ export const MsgStoreCodeEvm = {
     const obj: any = {};
     message.sender !== undefined && (obj.sender = message.sender);
     message.evmByteCode !== undefined && (obj.evmByteCode = base64FromBytes(message.evmByteCode !== undefined ? message.evmByteCode : new Uint8Array()));
+    message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadata.toJSON(message.metadata) : undefined);
     return obj;
   },
 
@@ -586,6 +614,7 @@ export const MsgStoreCodeEvm = {
     const message = createBaseMsgStoreCodeEvm();
     message.sender = object.sender ?? "";
     message.evmByteCode = object.evmByteCode ?? new Uint8Array();
+    message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadata.fromPartial(object.metadata) : undefined;
     return message;
   }
 

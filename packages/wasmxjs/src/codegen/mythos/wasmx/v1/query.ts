@@ -1,6 +1,6 @@
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
 import { Coin, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
-import { ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType } from "./contract";
+import { ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType, CodeInfo, CodeInfoSDKType } from "./contract";
 import { Params, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, Long, bytesFromBase64, base64FromBytes } from "../../../helpers";
@@ -250,31 +250,39 @@ export interface QueryCodeRequestSDKType {
   /** grpc-gateway_out does not support Go style CodID */
   code_id: Long;
 }
-/** CodeInfoResponse contains code meta data from CodeInfo */
-
-export interface CodeInfoResponse {
-  codeId: Long;
-  creator: string;
-  dataHash: Uint8Array;
-}
-/** CodeInfoResponse contains code meta data from CodeInfo */
-
-export interface CodeInfoResponseSDKType {
-  code_id: Long;
-  creator: string;
-  data_hash: Uint8Array;
-}
 /** QueryCodeResponse is the response type for the Query/Code RPC method */
 
 export interface QueryCodeResponse {
-  codeInfo?: CodeInfoResponse;
+  codeInfo?: CodeInfo;
   data: Uint8Array;
 }
 /** QueryCodeResponse is the response type for the Query/Code RPC method */
 
 export interface QueryCodeResponseSDKType {
-  code_info?: CodeInfoResponseSDKType;
+  code_info?: CodeInfoSDKType;
   data: Uint8Array;
+}
+/** QueryCodeInfoRequest is the request type for the Query/CodeInfo RPC method */
+
+export interface QueryCodeInfoRequest {
+  /** grpc-gateway_out does not support Go style CodID */
+  codeId: Long;
+}
+/** QueryCodeInfoRequest is the request type for the Query/CodeInfo RPC method */
+
+export interface QueryCodeInfoRequestSDKType {
+  /** grpc-gateway_out does not support Go style CodID */
+  code_id: Long;
+}
+/** QueryCodeInfoResponse is the response type for the Query/Code RPC method */
+
+export interface QueryCodeInfoResponse {
+  codeInfo?: CodeInfo;
+}
+/** QueryCodeInfoResponse is the response type for the Query/Code RPC method */
+
+export interface QueryCodeInfoResponseSDKType {
+  code_info?: CodeInfoSDKType;
 }
 /** QueryCodesRequest is the request type for the Query/Codes RPC method */
 
@@ -291,7 +299,7 @@ export interface QueryCodesRequestSDKType {
 /** QueryCodesResponse is the response type for the Query/Codes RPC method */
 
 export interface QueryCodesResponse {
-  codeInfos: CodeInfoResponse[];
+  codeInfos: CodeInfo[];
   /** pagination defines the pagination in the response. */
 
   pagination?: PageResponse;
@@ -299,7 +307,7 @@ export interface QueryCodesResponse {
 /** QueryCodesResponse is the response type for the Query/Codes RPC method */
 
 export interface QueryCodesResponseSDKType {
-  code_infos: CodeInfoResponseSDKType[];
+  code_infos: CodeInfoSDKType[];
   /** pagination defines the pagination in the response. */
 
   pagination?: PageResponseSDKType;
@@ -1141,87 +1149,6 @@ export const QueryCodeRequest = {
 
 };
 
-function createBaseCodeInfoResponse(): CodeInfoResponse {
-  return {
-    codeId: Long.UZERO,
-    creator: "",
-    dataHash: new Uint8Array()
-  };
-}
-
-export const CodeInfoResponse = {
-  encode(message: CodeInfoResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (!message.codeId.isZero()) {
-      writer.uint32(8).uint64(message.codeId);
-    }
-
-    if (message.creator !== "") {
-      writer.uint32(18).string(message.creator);
-    }
-
-    if (message.dataHash.length !== 0) {
-      writer.uint32(26).bytes(message.dataHash);
-    }
-
-    return writer;
-  },
-
-  decode(input: _m0.Reader | Uint8Array, length?: number): CodeInfoResponse {
-    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
-    let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCodeInfoResponse();
-
-    while (reader.pos < end) {
-      const tag = reader.uint32();
-
-      switch (tag >>> 3) {
-        case 1:
-          message.codeId = (reader.uint64() as Long);
-          break;
-
-        case 2:
-          message.creator = reader.string();
-          break;
-
-        case 3:
-          message.dataHash = reader.bytes();
-          break;
-
-        default:
-          reader.skipType(tag & 7);
-          break;
-      }
-    }
-
-    return message;
-  },
-
-  fromJSON(object: any): CodeInfoResponse {
-    return {
-      codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO,
-      creator: isSet(object.creator) ? String(object.creator) : "",
-      dataHash: isSet(object.dataHash) ? bytesFromBase64(object.dataHash) : new Uint8Array()
-    };
-  },
-
-  toJSON(message: CodeInfoResponse): unknown {
-    const obj: any = {};
-    message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
-    message.creator !== undefined && (obj.creator = message.creator);
-    message.dataHash !== undefined && (obj.dataHash = base64FromBytes(message.dataHash !== undefined ? message.dataHash : new Uint8Array()));
-    return obj;
-  },
-
-  fromPartial(object: Partial<CodeInfoResponse>): CodeInfoResponse {
-    const message = createBaseCodeInfoResponse();
-    message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
-    message.creator = object.creator ?? "";
-    message.dataHash = object.dataHash ?? new Uint8Array();
-    return message;
-  }
-
-};
-
 function createBaseQueryCodeResponse(): QueryCodeResponse {
   return {
     codeInfo: undefined,
@@ -1232,7 +1159,7 @@ function createBaseQueryCodeResponse(): QueryCodeResponse {
 export const QueryCodeResponse = {
   encode(message: QueryCodeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.codeInfo !== undefined) {
-      CodeInfoResponse.encode(message.codeInfo, writer.uint32(10).fork()).ldelim();
+      CodeInfo.encode(message.codeInfo, writer.uint32(10).fork()).ldelim();
     }
 
     if (message.data.length !== 0) {
@@ -1252,7 +1179,7 @@ export const QueryCodeResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.codeInfo = CodeInfoResponse.decode(reader, reader.uint32());
+          message.codeInfo = CodeInfo.decode(reader, reader.uint32());
           break;
 
         case 2:
@@ -1270,22 +1197,136 @@ export const QueryCodeResponse = {
 
   fromJSON(object: any): QueryCodeResponse {
     return {
-      codeInfo: isSet(object.codeInfo) ? CodeInfoResponse.fromJSON(object.codeInfo) : undefined,
+      codeInfo: isSet(object.codeInfo) ? CodeInfo.fromJSON(object.codeInfo) : undefined,
       data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array()
     };
   },
 
   toJSON(message: QueryCodeResponse): unknown {
     const obj: any = {};
-    message.codeInfo !== undefined && (obj.codeInfo = message.codeInfo ? CodeInfoResponse.toJSON(message.codeInfo) : undefined);
+    message.codeInfo !== undefined && (obj.codeInfo = message.codeInfo ? CodeInfo.toJSON(message.codeInfo) : undefined);
     message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
     return obj;
   },
 
   fromPartial(object: Partial<QueryCodeResponse>): QueryCodeResponse {
     const message = createBaseQueryCodeResponse();
-    message.codeInfo = object.codeInfo !== undefined && object.codeInfo !== null ? CodeInfoResponse.fromPartial(object.codeInfo) : undefined;
+    message.codeInfo = object.codeInfo !== undefined && object.codeInfo !== null ? CodeInfo.fromPartial(object.codeInfo) : undefined;
     message.data = object.data ?? new Uint8Array();
+    return message;
+  }
+
+};
+
+function createBaseQueryCodeInfoRequest(): QueryCodeInfoRequest {
+  return {
+    codeId: Long.UZERO
+  };
+}
+
+export const QueryCodeInfoRequest = {
+  encode(message: QueryCodeInfoRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (!message.codeId.isZero()) {
+      writer.uint32(8).uint64(message.codeId);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryCodeInfoRequest {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryCodeInfoRequest();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.codeId = (reader.uint64() as Long);
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryCodeInfoRequest {
+    return {
+      codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO
+    };
+  },
+
+  toJSON(message: QueryCodeInfoRequest): unknown {
+    const obj: any = {};
+    message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
+    return obj;
+  },
+
+  fromPartial(object: Partial<QueryCodeInfoRequest>): QueryCodeInfoRequest {
+    const message = createBaseQueryCodeInfoRequest();
+    message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
+    return message;
+  }
+
+};
+
+function createBaseQueryCodeInfoResponse(): QueryCodeInfoResponse {
+  return {
+    codeInfo: undefined
+  };
+}
+
+export const QueryCodeInfoResponse = {
+  encode(message: QueryCodeInfoResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.codeInfo !== undefined) {
+      CodeInfo.encode(message.codeInfo, writer.uint32(10).fork()).ldelim();
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): QueryCodeInfoResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseQueryCodeInfoResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.codeInfo = CodeInfo.decode(reader, reader.uint32());
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): QueryCodeInfoResponse {
+    return {
+      codeInfo: isSet(object.codeInfo) ? CodeInfo.fromJSON(object.codeInfo) : undefined
+    };
+  },
+
+  toJSON(message: QueryCodeInfoResponse): unknown {
+    const obj: any = {};
+    message.codeInfo !== undefined && (obj.codeInfo = message.codeInfo ? CodeInfo.toJSON(message.codeInfo) : undefined);
+    return obj;
+  },
+
+  fromPartial(object: Partial<QueryCodeInfoResponse>): QueryCodeInfoResponse {
+    const message = createBaseQueryCodeInfoResponse();
+    message.codeInfo = object.codeInfo !== undefined && object.codeInfo !== null ? CodeInfo.fromPartial(object.codeInfo) : undefined;
     return message;
   }
 
@@ -1358,7 +1399,7 @@ function createBaseQueryCodesResponse(): QueryCodesResponse {
 export const QueryCodesResponse = {
   encode(message: QueryCodesResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     for (const v of message.codeInfos) {
-      CodeInfoResponse.encode(v!, writer.uint32(10).fork()).ldelim();
+      CodeInfo.encode(v!, writer.uint32(10).fork()).ldelim();
     }
 
     if (message.pagination !== undefined) {
@@ -1378,7 +1419,7 @@ export const QueryCodesResponse = {
 
       switch (tag >>> 3) {
         case 1:
-          message.codeInfos.push(CodeInfoResponse.decode(reader, reader.uint32()));
+          message.codeInfos.push(CodeInfo.decode(reader, reader.uint32()));
           break;
 
         case 2:
@@ -1396,7 +1437,7 @@ export const QueryCodesResponse = {
 
   fromJSON(object: any): QueryCodesResponse {
     return {
-      codeInfos: Array.isArray(object?.codeInfos) ? object.codeInfos.map((e: any) => CodeInfoResponse.fromJSON(e)) : [],
+      codeInfos: Array.isArray(object?.codeInfos) ? object.codeInfos.map((e: any) => CodeInfo.fromJSON(e)) : [],
       pagination: isSet(object.pagination) ? PageResponse.fromJSON(object.pagination) : undefined
     };
   },
@@ -1405,7 +1446,7 @@ export const QueryCodesResponse = {
     const obj: any = {};
 
     if (message.codeInfos) {
-      obj.codeInfos = message.codeInfos.map(e => e ? CodeInfoResponse.toJSON(e) : undefined);
+      obj.codeInfos = message.codeInfos.map(e => e ? CodeInfo.toJSON(e) : undefined);
     } else {
       obj.codeInfos = [];
     }
@@ -1416,7 +1457,7 @@ export const QueryCodesResponse = {
 
   fromPartial(object: Partial<QueryCodesResponse>): QueryCodesResponse {
     const message = createBaseQueryCodesResponse();
-    message.codeInfos = object.codeInfos?.map(e => CodeInfoResponse.fromPartial(e)) || [];
+    message.codeInfos = object.codeInfos?.map(e => CodeInfo.fromPartial(e)) || [];
     message.pagination = object.pagination !== undefined && object.pagination !== null ? PageResponse.fromPartial(object.pagination) : undefined;
     return message;
   }

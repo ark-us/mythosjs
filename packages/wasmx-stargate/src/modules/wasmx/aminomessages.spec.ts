@@ -33,6 +33,7 @@ describe("AminoTypes", () => {
         value: {
           sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
           wasm_byte_code: "WUVMTE9XIFNVQk1BUklORQ==",
+          metadata: {name: "", categ: [], icon: "", author: "", site: "", abi: "", jsonSchema: ""},
         },
       };
       expect(aminoMsg).toEqual(expected);
@@ -52,6 +53,7 @@ describe("AminoTypes", () => {
         value: {
           sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
           evm_byte_code: "WUVMTE9XIFNVQk1BUklORQ==",
+          metadata: {name: "", categ: [], icon: "", author: "", site: "", abi: "", jsonSchema: ""},
         },
       };
       expect(aminoMsg).toEqual(expected);
@@ -146,6 +148,7 @@ describe("AminoTypes", () => {
         value: {
           sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
           wasm_byte_code: "WUVMTE9XIFNVQk1BUklORQ==",
+          metadata: {name: "", categ: [], icon: "", author: "", site: "", abi: "", jsonSchema: ""},
         },
       };
       const msg = new AminoTypes(createWasmAminoConverters()).fromAmino(aminoMsg);

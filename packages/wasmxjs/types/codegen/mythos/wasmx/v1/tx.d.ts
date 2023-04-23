@@ -1,3 +1,4 @@
+import { CodeMetadata, CodeMetadataSDKType } from "./contract";
 import { Coin, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { Long } from "../../../helpers";
@@ -7,6 +8,7 @@ export interface MsgStoreCode {
     sender: string;
     /** WASMByteCode can be raw or gzip compressed */
     wasmByteCode: Uint8Array;
+    metadata?: CodeMetadata;
 }
 /** MsgStoreCode submit Wasm code to the system */
 export interface MsgStoreCodeSDKType {
@@ -14,6 +16,7 @@ export interface MsgStoreCodeSDKType {
     sender: string;
     /** WASMByteCode can be raw or gzip compressed */
     wasm_byte_code: Uint8Array;
+    metadata?: CodeMetadataSDKType;
 }
 /** MsgStoreCodeResponse returns store result data. */
 export interface MsgStoreCodeResponse {
@@ -35,6 +38,7 @@ export interface MsgStoreCodeEvm {
     sender: string;
     /** EVM bytecode */
     evmByteCode: Uint8Array;
+    metadata?: CodeMetadata;
 }
 /** MsgStoreCodeEvm submit Wasm code to the system */
 export interface MsgStoreCodeEvmSDKType {
@@ -42,6 +46,7 @@ export interface MsgStoreCodeEvmSDKType {
     sender: string;
     /** EVM bytecode */
     evm_byte_code: Uint8Array;
+    metadata?: CodeMetadataSDKType;
 }
 /** MsgStoreCodeEvmResponse returns store result data. */
 export interface MsgStoreCodeEvmResponse {

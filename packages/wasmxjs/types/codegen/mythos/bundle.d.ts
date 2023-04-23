@@ -24,6 +24,7 @@ export declare namespace mythos {
                 rawContractState(request: _21.QueryRawContractStateRequest): Promise<_21.QueryRawContractStateResponse>;
                 smartContractCall(request: _21.QuerySmartContractCallRequest): Promise<_21.QuerySmartContractCallResponse>;
                 code(request: _21.QueryCodeRequest): Promise<_21.QueryCodeResponse>;
+                codeInfo(request: _21.QueryCodeInfoRequest): Promise<_21.QueryCodeInfoResponse>;
                 codes(request?: _21.QueryCodesRequest): Promise<_21.QueryCodesResponse>;
                 params(request?: _21.QueryParamsRequest): Promise<_21.QueryParamsResponse>;
                 contractsByCreator(request: _21.QueryContractsByCreatorRequest): Promise<_21.QueryContractsByCreatorResponse>;
@@ -205,24 +206,76 @@ export declare namespace mythos {
             AminoConverter: {
                 "/mythos.wasmx.v1.MsgStoreCode": {
                     aminoType: string;
-                    toAmino: ({ sender, wasmByteCode }: _22.MsgStoreCode) => {
+                    toAmino: ({ sender, wasmByteCode, metadata }: _22.MsgStoreCode) => {
                         sender: string;
                         wasm_byte_code: Uint8Array;
+                        metadata: {
+                            name: string;
+                            categ: string[];
+                            icon: string;
+                            author: string;
+                            site: string;
+                            abi: string;
+                            json_schema: string;
+                            origin: {
+                                chain_id: string;
+                                address: string;
+                            };
+                        };
                     };
-                    fromAmino: ({ sender, wasm_byte_code }: {
+                    fromAmino: ({ sender, wasm_byte_code, metadata }: {
                         sender: string;
                         wasm_byte_code: Uint8Array;
+                        metadata: {
+                            name: string;
+                            categ: string[];
+                            icon: string;
+                            author: string;
+                            site: string;
+                            abi: string;
+                            json_schema: string;
+                            origin: {
+                                chain_id: string;
+                                address: string;
+                            };
+                        };
                     }) => _22.MsgStoreCode;
                 };
                 "/mythos.wasmx.v1.MsgStoreCodeEvm": {
                     aminoType: string;
-                    toAmino: ({ sender, evmByteCode }: _22.MsgStoreCodeEvm) => {
+                    toAmino: ({ sender, evmByteCode, metadata }: _22.MsgStoreCodeEvm) => {
                         sender: string;
                         evm_byte_code: Uint8Array;
+                        metadata: {
+                            name: string;
+                            categ: string[];
+                            icon: string;
+                            author: string;
+                            site: string;
+                            abi: string;
+                            json_schema: string;
+                            origin: {
+                                chain_id: string;
+                                address: string;
+                            };
+                        };
                     };
-                    fromAmino: ({ sender, evm_byte_code }: {
+                    fromAmino: ({ sender, evm_byte_code, metadata }: {
                         sender: string;
                         evm_byte_code: Uint8Array;
+                        metadata: {
+                            name: string;
+                            categ: string[];
+                            icon: string;
+                            author: string;
+                            site: string;
+                            abi: string;
+                            json_schema: string;
+                            origin: {
+                                chain_id: string;
+                                address: string;
+                            };
+                        };
                     }) => _22.MsgStoreCodeEvm;
                 };
                 "/mythos.wasmx.v1.MsgInstantiateContract": {
@@ -542,19 +595,26 @@ export declare namespace mythos {
                 toJSON(message: _21.QueryCodeRequest): unknown;
                 fromPartial(object: Partial<_21.QueryCodeRequest>): _21.QueryCodeRequest;
             };
-            CodeInfoResponse: {
-                encode(message: _21.CodeInfoResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
-                decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _21.CodeInfoResponse;
-                fromJSON(object: any): _21.CodeInfoResponse;
-                toJSON(message: _21.CodeInfoResponse): unknown;
-                fromPartial(object: Partial<_21.CodeInfoResponse>): _21.CodeInfoResponse;
-            };
             QueryCodeResponse: {
                 encode(message: _21.QueryCodeResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
                 decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _21.QueryCodeResponse;
                 fromJSON(object: any): _21.QueryCodeResponse;
                 toJSON(message: _21.QueryCodeResponse): unknown;
                 fromPartial(object: Partial<_21.QueryCodeResponse>): _21.QueryCodeResponse;
+            };
+            QueryCodeInfoRequest: {
+                encode(message: _21.QueryCodeInfoRequest, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+                decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _21.QueryCodeInfoRequest;
+                fromJSON(object: any): _21.QueryCodeInfoRequest;
+                toJSON(message: _21.QueryCodeInfoRequest): unknown;
+                fromPartial(object: Partial<_21.QueryCodeInfoRequest>): _21.QueryCodeInfoRequest;
+            };
+            QueryCodeInfoResponse: {
+                encode(message: _21.QueryCodeInfoResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+                decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _21.QueryCodeInfoResponse;
+                fromJSON(object: any): _21.QueryCodeInfoResponse;
+                toJSON(message: _21.QueryCodeInfoResponse): unknown;
+                fromPartial(object: Partial<_21.QueryCodeInfoResponse>): _21.QueryCodeInfoResponse;
             };
             QueryCodesRequest: {
                 encode(message: _21.QueryCodesRequest, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
@@ -647,6 +707,13 @@ export declare namespace mythos {
                 toJSON(message: _18.ContractStorage): unknown;
                 fromPartial(object: Partial<_18.ContractStorage>): _18.ContractStorage;
             };
+            CodeMetadata: {
+                encode(message: _18.CodeMetadata, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+                decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _18.CodeMetadata;
+                fromJSON(object: any): _18.CodeMetadata;
+                toJSON(message: _18.CodeMetadata): unknown;
+                fromPartial(object: Partial<_18.CodeMetadata>): _18.CodeMetadata;
+            };
             CodeInfo: {
                 encode(message: _18.CodeInfo, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
                 decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _18.CodeInfo;
@@ -654,12 +721,12 @@ export declare namespace mythos {
                 toJSON(message: _18.CodeInfo): unknown;
                 fromPartial(object: Partial<_18.CodeInfo>): _18.CodeInfo;
             };
-            CodeMetadata: {
-                encode(message: _18.CodeMetadata, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
-                decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _18.CodeMetadata;
-                fromJSON(object: any): _18.CodeMetadata;
-                toJSON(message: _18.CodeMetadata): unknown;
-                fromPartial(object: Partial<_18.CodeMetadata>): _18.CodeMetadata;
+            CodeOrigin: {
+                encode(message: _18.CodeOrigin, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+                decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _18.CodeOrigin;
+                fromJSON(object: any): _18.CodeOrigin;
+                toJSON(message: _18.CodeOrigin): unknown;
+                fromPartial(object: Partial<_18.CodeOrigin>): _18.CodeOrigin;
             };
             ContractInfo: {
                 encode(message: _18.ContractInfo, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
@@ -1017,6 +1084,7 @@ export declare namespace mythos {
                         rawContractState(request: _21.QueryRawContractStateRequest): Promise<_21.QueryRawContractStateResponse>;
                         smartContractCall(request: _21.QuerySmartContractCallRequest): Promise<_21.QuerySmartContractCallResponse>;
                         code(request: _21.QueryCodeRequest): Promise<_21.QueryCodeResponse>;
+                        codeInfo(request: _21.QueryCodeInfoRequest): Promise<_21.QueryCodeInfoResponse>;
                         codes(request?: _21.QueryCodesRequest): Promise<_21.QueryCodesResponse>;
                         params(request?: _21.QueryParamsRequest): Promise<_21.QueryParamsResponse>;
                         contractsByCreator(request: _21.QueryContractsByCreatorRequest): Promise<_21.QueryContractsByCreatorResponse>;

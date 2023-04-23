@@ -33,11 +33,10 @@ import {
 import {TendermintClient} from './tendermintclient';
 import { assert, sleep } from "@cosmjs/utils";
 import {
-  CodeInfoResponse,
   QueryCodesResponse,
   QueryContractsByCodeResponse,
 } from "@ark-us/wasmxjs/types/codegen/mythos/wasmx/v1/query";
-
+import { CodeInfo } from "@ark-us/wasmxjs/types/codegen/mythos/wasmx/v1/contract";
 import { JsonObject, setupWasmExtension, WasmExtension } from "./modules";
 
 export interface Code {
@@ -83,6 +82,7 @@ export class WasmXClient {
     | (QueryClient & AuthExtension & BankExtension & TxExtension & WasmExtension)
     | undefined;
   private readonly codesCache = new Map<number, CodeDetails>();
+  private readonly codeInfosCache = new Map<number, CodeInfo>();
   private chainId: string = "";
 
   /**
@@ -338,12 +338,14 @@ export class WasmXClient {
       startAtKey = pagination?.nextKey;
     } while (startAtKey?.length !== 0);
 
-    return allCodes.map((entry: CodeInfoResponse): Code => {
-      assert(entry.creator && entry.codeId && entry.dataHash, "entry incomplete");
+    return allCodes.map((entry: CodeInfo): Code => {
+      // assert(entry.creator && entry.codeId && entry.codeHash, "entry incomplete");
+      assert(entry.creator && entry.codeHash, "entry incomplete");
       return {
-        id: entry.codeId.toNumber(),
+        // id: entry.codeId.toNumber(),
+        id: 0,
         creator: entry.creator,
-        checksum: toHex(entry.dataHash),
+        checksum: toHex(entry.codeHash),
       };
     });
   }
@@ -354,17 +356,30 @@ export class WasmXClient {
 
     const { codeInfo, data } = await this.forceGetQueryClient().wasm.getCode(codeId);
     assert(
-      codeInfo && codeInfo.codeId && codeInfo.creator && codeInfo.dataHash && data,
+      codeInfo && codeInfo.creator && codeInfo.codeHash && data,
       "codeInfo missing or incomplete",
     );
     const codeDetails: CodeDetails = {
-      id: codeInfo.codeId.toNumber(),
+      id: codeId,
       creator: codeInfo.creator,
-      checksum: toHex(codeInfo.dataHash),
+      checksum: toHex(codeInfo.codeHash),
       data: data,
     };
     this.codesCache.set(codeId, codeDetails);
     return codeDetails;
+  }
+
+  public async getCodeInfo(codeId: number): Promise<CodeInfo> {
+    const cached = this.codeInfosCache.get(codeId);
+    if (cached) return cached;
+
+    const { codeInfo } = await this.forceGetQueryClient().wasm.getCodeInfo(codeId);
+    assert(
+      codeInfo && codeInfo.creator && codeInfo.codeHash,
+      "codeInfo missing or incomplete",
+    );
+    this.codeInfosCache.set(codeId, codeInfo);
+    return codeInfo;
   }
 
   /**

@@ -1,6 +1,6 @@
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
 import { Coin, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
-import { ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType } from "./contract";
+import { ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType, CodeInfo, CodeInfoSDKType } from "./contract";
 import { Params, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { Long } from "../../../helpers";
@@ -216,27 +216,33 @@ export interface QueryCodeRequestSDKType {
     /** grpc-gateway_out does not support Go style CodID */
     code_id: Long;
 }
-/** CodeInfoResponse contains code meta data from CodeInfo */
-export interface CodeInfoResponse {
-    codeId: Long;
-    creator: string;
-    dataHash: Uint8Array;
-}
-/** CodeInfoResponse contains code meta data from CodeInfo */
-export interface CodeInfoResponseSDKType {
-    code_id: Long;
-    creator: string;
-    data_hash: Uint8Array;
-}
 /** QueryCodeResponse is the response type for the Query/Code RPC method */
 export interface QueryCodeResponse {
-    codeInfo?: CodeInfoResponse;
+    codeInfo?: CodeInfo;
     data: Uint8Array;
 }
 /** QueryCodeResponse is the response type for the Query/Code RPC method */
 export interface QueryCodeResponseSDKType {
-    code_info?: CodeInfoResponseSDKType;
+    code_info?: CodeInfoSDKType;
     data: Uint8Array;
+}
+/** QueryCodeInfoRequest is the request type for the Query/CodeInfo RPC method */
+export interface QueryCodeInfoRequest {
+    /** grpc-gateway_out does not support Go style CodID */
+    codeId: Long;
+}
+/** QueryCodeInfoRequest is the request type for the Query/CodeInfo RPC method */
+export interface QueryCodeInfoRequestSDKType {
+    /** grpc-gateway_out does not support Go style CodID */
+    code_id: Long;
+}
+/** QueryCodeInfoResponse is the response type for the Query/Code RPC method */
+export interface QueryCodeInfoResponse {
+    codeInfo?: CodeInfo;
+}
+/** QueryCodeInfoResponse is the response type for the Query/Code RPC method */
+export interface QueryCodeInfoResponseSDKType {
+    code_info?: CodeInfoSDKType;
 }
 /** QueryCodesRequest is the request type for the Query/Codes RPC method */
 export interface QueryCodesRequest {
@@ -250,13 +256,13 @@ export interface QueryCodesRequestSDKType {
 }
 /** QueryCodesResponse is the response type for the Query/Codes RPC method */
 export interface QueryCodesResponse {
-    codeInfos: CodeInfoResponse[];
+    codeInfos: CodeInfo[];
     /** pagination defines the pagination in the response. */
     pagination?: PageResponse;
 }
 /** QueryCodesResponse is the response type for the Query/Codes RPC method */
 export interface QueryCodesResponseSDKType {
-    code_infos: CodeInfoResponseSDKType[];
+    code_infos: CodeInfoSDKType[];
     /** pagination defines the pagination in the response. */
     pagination?: PageResponseSDKType;
 }
@@ -393,19 +399,26 @@ export declare const QueryCodeRequest: {
     toJSON(message: QueryCodeRequest): unknown;
     fromPartial(object: Partial<QueryCodeRequest>): QueryCodeRequest;
 };
-export declare const CodeInfoResponse: {
-    encode(message: CodeInfoResponse, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): CodeInfoResponse;
-    fromJSON(object: any): CodeInfoResponse;
-    toJSON(message: CodeInfoResponse): unknown;
-    fromPartial(object: Partial<CodeInfoResponse>): CodeInfoResponse;
-};
 export declare const QueryCodeResponse: {
     encode(message: QueryCodeResponse, writer?: _m0.Writer): _m0.Writer;
     decode(input: _m0.Reader | Uint8Array, length?: number): QueryCodeResponse;
     fromJSON(object: any): QueryCodeResponse;
     toJSON(message: QueryCodeResponse): unknown;
     fromPartial(object: Partial<QueryCodeResponse>): QueryCodeResponse;
+};
+export declare const QueryCodeInfoRequest: {
+    encode(message: QueryCodeInfoRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryCodeInfoRequest;
+    fromJSON(object: any): QueryCodeInfoRequest;
+    toJSON(message: QueryCodeInfoRequest): unknown;
+    fromPartial(object: Partial<QueryCodeInfoRequest>): QueryCodeInfoRequest;
+};
+export declare const QueryCodeInfoResponse: {
+    encode(message: QueryCodeInfoResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryCodeInfoResponse;
+    fromJSON(object: any): QueryCodeInfoResponse;
+    toJSON(message: QueryCodeInfoResponse): unknown;
+    fromPartial(object: Partial<QueryCodeInfoResponse>): QueryCodeInfoResponse;
 };
 export declare const QueryCodesRequest: {
     encode(message: QueryCodesRequest, writer?: _m0.Writer): _m0.Writer;

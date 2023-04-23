@@ -39,24 +39,76 @@ export declare const mythosAminoConverters: {
     };
     "/mythos.wasmx.v1.MsgStoreCode": {
         aminoType: string;
-        toAmino: ({ sender, wasmByteCode }: import("./wasmx/v1/tx").MsgStoreCode) => {
+        toAmino: ({ sender, wasmByteCode, metadata }: import("./wasmx/v1/tx").MsgStoreCode) => {
             sender: string;
             wasm_byte_code: Uint8Array;
+            metadata: {
+                name: string;
+                categ: string[];
+                icon: string;
+                author: string;
+                site: string;
+                abi: string;
+                json_schema: string;
+                origin: {
+                    chain_id: string;
+                    address: string;
+                };
+            };
         };
-        fromAmino: ({ sender, wasm_byte_code }: {
+        fromAmino: ({ sender, wasm_byte_code, metadata }: {
             sender: string;
             wasm_byte_code: Uint8Array;
+            metadata: {
+                name: string;
+                categ: string[];
+                icon: string;
+                author: string;
+                site: string;
+                abi: string;
+                json_schema: string;
+                origin: {
+                    chain_id: string;
+                    address: string;
+                };
+            };
         }) => import("./wasmx/v1/tx").MsgStoreCode;
     };
     "/mythos.wasmx.v1.MsgStoreCodeEvm": {
         aminoType: string;
-        toAmino: ({ sender, evmByteCode }: import("./wasmx/v1/tx").MsgStoreCodeEvm) => {
+        toAmino: ({ sender, evmByteCode, metadata }: import("./wasmx/v1/tx").MsgStoreCodeEvm) => {
             sender: string;
             evm_byte_code: Uint8Array;
+            metadata: {
+                name: string;
+                categ: string[];
+                icon: string;
+                author: string;
+                site: string;
+                abi: string;
+                json_schema: string;
+                origin: {
+                    chain_id: string;
+                    address: string;
+                };
+            };
         };
-        fromAmino: ({ sender, evm_byte_code }: {
+        fromAmino: ({ sender, evm_byte_code, metadata }: {
             sender: string;
             evm_byte_code: Uint8Array;
+            metadata: {
+                name: string;
+                categ: string[];
+                icon: string;
+                author: string;
+                site: string;
+                abi: string;
+                json_schema: string;
+                origin: {
+                    chain_id: string;
+                    address: string;
+                };
+            };
         }) => import("./wasmx/v1/tx").MsgStoreCodeEvm;
     };
     "/mythos.wasmx.v1.MsgInstantiateContract": {

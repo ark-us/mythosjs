@@ -1,5 +1,5 @@
 import { Params, ParamsSDKType } from "./params";
-import { CodeInfo, CodeInfoSDKType, CodeMetadata, CodeMetadataSDKType, ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType } from "./contract";
+import { CodeMetadata, CodeMetadataSDKType, CodeInfo, CodeInfoSDKType, ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType } from "./contract";
 import * as _m0 from "protobufjs/minimal";
 import { Long } from "../../../helpers";
 /** GenesisState defines the wasmx module's genesis state. */
@@ -40,6 +40,7 @@ export interface SystemContract {
     initMessage: Uint8Array;
     pinned: boolean;
     native: boolean;
+    metadata?: CodeMetadata;
 }
 export interface SystemContractSDKType {
     address: string;
@@ -47,20 +48,19 @@ export interface SystemContractSDKType {
     init_message: Uint8Array;
     pinned: boolean;
     native: boolean;
+    metadata?: CodeMetadataSDKType;
 }
 /** Code - for importing and exporting code data */
 export interface Code {
     codeId: Long;
     codeInfo?: CodeInfo;
     codeBytes: Uint8Array;
-    codeMetadata?: CodeMetadata;
 }
 /** Code - for importing and exporting code data */
 export interface CodeSDKType {
     code_id: Long;
     code_info?: CodeInfoSDKType;
     code_bytes: Uint8Array;
-    code_metadata?: CodeMetadataSDKType;
 }
 /** Contract struct encompasses ContractAddress, ContractInfo, and ContractState */
 export interface Contract {

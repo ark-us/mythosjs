@@ -5,6 +5,19 @@ export interface AminoMsgStoreCode extends AminoMsg {
     value: {
         sender: string;
         wasm_byte_code: Uint8Array;
+        metadata: {
+            name: string;
+            categ: string[];
+            icon: string;
+            author: string;
+            site: string;
+            abi: string;
+            json_schema: string;
+            origin: {
+                chain_id: string;
+                address: string;
+            };
+        };
     };
 }
 export interface AminoMsgStoreCodeEvm extends AminoMsg {
@@ -12,6 +25,19 @@ export interface AminoMsgStoreCodeEvm extends AminoMsg {
     value: {
         sender: string;
         evm_byte_code: Uint8Array;
+        metadata: {
+            name: string;
+            categ: string[];
+            icon: string;
+            author: string;
+            site: string;
+            abi: string;
+            json_schema: string;
+            origin: {
+                chain_id: string;
+                address: string;
+            };
+        };
     };
 }
 export interface AminoMsgInstantiateContract extends AminoMsg {
@@ -93,13 +119,13 @@ export interface AminoMsgCompileContract extends AminoMsg {
 export declare const AminoConverter: {
     "/mythos.wasmx.v1.MsgStoreCode": {
         aminoType: string;
-        toAmino: ({ sender, wasmByteCode }: MsgStoreCode) => AminoMsgStoreCode["value"];
-        fromAmino: ({ sender, wasm_byte_code }: AminoMsgStoreCode["value"]) => MsgStoreCode;
+        toAmino: ({ sender, wasmByteCode, metadata }: MsgStoreCode) => AminoMsgStoreCode["value"];
+        fromAmino: ({ sender, wasm_byte_code, metadata }: AminoMsgStoreCode["value"]) => MsgStoreCode;
     };
     "/mythos.wasmx.v1.MsgStoreCodeEvm": {
         aminoType: string;
-        toAmino: ({ sender, evmByteCode }: MsgStoreCodeEvm) => AminoMsgStoreCodeEvm["value"];
-        fromAmino: ({ sender, evm_byte_code }: AminoMsgStoreCodeEvm["value"]) => MsgStoreCodeEvm;
+        toAmino: ({ sender, evmByteCode, metadata }: MsgStoreCodeEvm) => AminoMsgStoreCodeEvm["value"];
+        fromAmino: ({ sender, evm_byte_code, metadata }: AminoMsgStoreCodeEvm["value"]) => MsgStoreCodeEvm;
     };
     "/mythos.wasmx.v1.MsgInstantiateContract": {
         aminoType: string;
