@@ -6,16 +6,34 @@ import { Long } from "../../../helpers";
 export interface MsgStoreCode {
     /** Sender is the that actor that signed the messages */
     sender: string;
-    /** WASMByteCode can be raw or gzip compressed */
-    wasmByteCode: Uint8Array;
+    /**
+     * WASMByteCode can be raw or gzip compressed
+     * can be interpreted bytecode
+     * constructor + runtime
+     */
+    byteCode: Uint8Array;
+    /**
+     * deps can be hex-formatted contract addresses (32 bytes) for interpreter contracts
+     * and/or versioned interface labels
+     */
+    deps: string[];
     metadata?: CodeMetadata;
 }
 /** MsgStoreCode submit Wasm code to the system */
 export interface MsgStoreCodeSDKType {
     /** Sender is the that actor that signed the messages */
     sender: string;
-    /** WASMByteCode can be raw or gzip compressed */
-    wasm_byte_code: Uint8Array;
+    /**
+     * WASMByteCode can be raw or gzip compressed
+     * can be interpreted bytecode
+     * constructor + runtime
+     */
+    byte_code: Uint8Array;
+    /**
+     * deps can be hex-formatted contract addresses (32 bytes) for interpreter contracts
+     * and/or versioned interface labels
+     */
+    deps: string[];
     metadata?: CodeMetadataSDKType;
 }
 /** MsgStoreCodeResponse returns store result data. */
@@ -32,35 +50,71 @@ export interface MsgStoreCodeResponseSDKType {
     /** Checksum is the sha256 hash of the stored code */
     checksum: Uint8Array;
 }
-/** MsgStoreCodeEvm submit Wasm code to the system */
-export interface MsgStoreCodeEvm {
+/** MsgStoreCode submit Wasm code to the system */
+export interface MsgDeployCode {
     /** Sender is the that actor that signed the messages */
     sender: string;
-    /** EVM bytecode */
-    evmByteCode: Uint8Array;
+    /**
+     * WASMByteCode can be raw or gzip compressed
+     * can be interpreted bytecode
+     * constructor + runtime
+     */
+    byteCode: Uint8Array;
+    /**
+     * deps can be hex-formatted contract addresses (32 bytes) for interpreter contracts
+     * and/or versioned interface labels
+     */
+    deps: string[];
     metadata?: CodeMetadata;
+    /**
+     * instantiation:
+     * Msg json encoded message to be passed to the contract on instantiation
+     */
+    msg: Uint8Array;
+    /** Funds coins that are transferred to the contract on instantiation */
+    funds: Coin[];
+    label: string;
 }
-/** MsgStoreCodeEvm submit Wasm code to the system */
-export interface MsgStoreCodeEvmSDKType {
+/** MsgStoreCode submit Wasm code to the system */
+export interface MsgDeployCodeSDKType {
     /** Sender is the that actor that signed the messages */
     sender: string;
-    /** EVM bytecode */
-    evm_byte_code: Uint8Array;
+    /**
+     * WASMByteCode can be raw or gzip compressed
+     * can be interpreted bytecode
+     * constructor + runtime
+     */
+    byte_code: Uint8Array;
+    /**
+     * deps can be hex-formatted contract addresses (32 bytes) for interpreter contracts
+     * and/or versioned interface labels
+     */
+    deps: string[];
     metadata?: CodeMetadataSDKType;
+    /**
+     * instantiation:
+     * Msg json encoded message to be passed to the contract on instantiation
+     */
+    msg: Uint8Array;
+    /** Funds coins that are transferred to the contract on instantiation */
+    funds: CoinSDKType[];
+    label: string;
 }
-/** MsgStoreCodeEvmResponse returns store result data. */
-export interface MsgStoreCodeEvmResponse {
+/** MsgDeployCodeResponse returns store result data. */
+export interface MsgDeployCodeResponse {
     /** CodeID is the reference to the stored WASM code */
     codeId: Long;
     /** Checksum is the sha256 hash of the stored code */
     checksum: Uint8Array;
+    address: string;
 }
-/** MsgStoreCodeEvmResponse returns store result data. */
-export interface MsgStoreCodeEvmResponseSDKType {
+/** MsgDeployCodeResponse returns store result data. */
+export interface MsgDeployCodeResponseSDKType {
     /** CodeID is the reference to the stored WASM code */
     code_id: Long;
     /** Checksum is the sha256 hash of the stored code */
     checksum: Uint8Array;
+    address: string;
 }
 /**
  * MsgInstantiateContract create a new smart contract instance for the given
@@ -71,12 +125,11 @@ export interface MsgInstantiateContract {
     sender: string;
     /** CodeID is the reference to the stored WASM code */
     codeId: Long;
-    /** Label is optional metadata to be stored with a contract instance. */
-    label: string;
     /** Msg json encoded message to be passed to the contract on instantiation */
     msg: Uint8Array;
     /** Funds coins that are transferred to the contract on instantiation */
     funds: Coin[];
+    label: string;
 }
 /**
  * MsgInstantiateContract create a new smart contract instance for the given
@@ -87,12 +140,11 @@ export interface MsgInstantiateContractSDKType {
     sender: string;
     /** CodeID is the reference to the stored WASM code */
     code_id: Long;
-    /** Label is optional metadata to be stored with a contract instance. */
-    label: string;
     /** Msg json encoded message to be passed to the contract on instantiation */
     msg: Uint8Array;
     /** Funds coins that are transferred to the contract on instantiation */
     funds: CoinSDKType[];
+    label: string;
 }
 /**
  * MsgInstantiateContract2 create a new smart contract instance for the given
@@ -103,12 +155,11 @@ export interface MsgInstantiateContract2 {
     sender: string;
     /** Admin is an optional address that can execute migrations */
     codeId: Long;
-    /** Label is optional metadata to be stored with a contract instance. */
-    label: string;
     /** Msg json encoded message to be passed to the contract on instantiation */
     msg: Uint8Array;
     /** Funds coins that are transferred to the contract on instantiation */
     funds: Coin[];
+    label: string;
     /** Salt is an arbitrary value provided by the sender. Size can be 1 to 64. */
     salt: Uint8Array;
     /**
@@ -126,12 +177,11 @@ export interface MsgInstantiateContract2SDKType {
     sender: string;
     /** Admin is an optional address that can execute migrations */
     code_id: Long;
-    /** Label is optional metadata to be stored with a contract instance. */
-    label: string;
     /** Msg json encoded message to be passed to the contract on instantiation */
     msg: Uint8Array;
     /** Funds coins that are transferred to the contract on instantiation */
     funds: CoinSDKType[];
+    label: string;
     /** Salt is an arbitrary value provided by the sender. Size can be 1 to 64. */
     salt: Uint8Array;
     /**
@@ -316,19 +366,19 @@ export declare const MsgStoreCodeResponse: {
     toJSON(message: MsgStoreCodeResponse): unknown;
     fromPartial(object: Partial<MsgStoreCodeResponse>): MsgStoreCodeResponse;
 };
-export declare const MsgStoreCodeEvm: {
-    encode(message: MsgStoreCodeEvm, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): MsgStoreCodeEvm;
-    fromJSON(object: any): MsgStoreCodeEvm;
-    toJSON(message: MsgStoreCodeEvm): unknown;
-    fromPartial(object: Partial<MsgStoreCodeEvm>): MsgStoreCodeEvm;
+export declare const MsgDeployCode: {
+    encode(message: MsgDeployCode, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeployCode;
+    fromJSON(object: any): MsgDeployCode;
+    toJSON(message: MsgDeployCode): unknown;
+    fromPartial(object: Partial<MsgDeployCode>): MsgDeployCode;
 };
-export declare const MsgStoreCodeEvmResponse: {
-    encode(message: MsgStoreCodeEvmResponse, writer?: _m0.Writer): _m0.Writer;
-    decode(input: _m0.Reader | Uint8Array, length?: number): MsgStoreCodeEvmResponse;
-    fromJSON(object: any): MsgStoreCodeEvmResponse;
-    toJSON(message: MsgStoreCodeEvmResponse): unknown;
-    fromPartial(object: Partial<MsgStoreCodeEvmResponse>): MsgStoreCodeEvmResponse;
+export declare const MsgDeployCodeResponse: {
+    encode(message: MsgDeployCodeResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeployCodeResponse;
+    fromJSON(object: any): MsgDeployCodeResponse;
+    toJSON(message: MsgDeployCodeResponse): unknown;
+    fromPartial(object: Partial<MsgDeployCodeResponse>): MsgDeployCodeResponse;
 };
 export declare const MsgInstantiateContract: {
     encode(message: MsgInstantiateContract, writer?: _m0.Writer): _m0.Writer;

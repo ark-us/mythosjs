@@ -1,12 +1,13 @@
 import { AminoMsg } from "@cosmjs/amino";
 import { fromUtf8, toUtf8 } from "@cosmjs/encoding";
 import { Long } from "../../../helpers";
-import { MsgStoreCode, MsgStoreCodeEvm, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
+import { MsgStoreCode, MsgDeployCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
 export interface AminoMsgStoreCode extends AminoMsg {
   type: "/mythos.wasmx.v1.MsgStoreCode";
   value: {
     sender: string;
-    wasm_byte_code: Uint8Array;
+    byte_code: Uint8Array;
+    deps: string[];
     metadata: {
       name: string;
       categ: string[];
@@ -22,11 +23,12 @@ export interface AminoMsgStoreCode extends AminoMsg {
     };
   };
 }
-export interface AminoMsgStoreCodeEvm extends AminoMsg {
-  type: "/mythos.wasmx.v1.MsgStoreCodeEvm";
+export interface AminoMsgDeployCode extends AminoMsg {
+  type: "/mythos.wasmx.v1.MsgDeployCode";
   value: {
     sender: string;
-    evm_byte_code: Uint8Array;
+    byte_code: Uint8Array;
+    deps: string[];
     metadata: {
       name: string;
       categ: string[];
@@ -40,6 +42,12 @@ export interface AminoMsgStoreCodeEvm extends AminoMsg {
         address: string;
       };
     };
+    msg: Uint8Array;
+    funds: {
+      denom: string;
+      amount: string;
+    }[];
+    label: string;
   };
 }
 export interface AminoMsgInstantiateContract extends AminoMsg {
@@ -47,12 +55,12 @@ export interface AminoMsgInstantiateContract extends AminoMsg {
   value: {
     sender: string;
     code_id: string;
-    label: string;
     msg: Uint8Array;
     funds: {
       denom: string;
       amount: string;
     }[];
+    label: string;
   };
 }
 export interface AminoMsgInstantiateContract2 extends AminoMsg {
@@ -60,12 +68,12 @@ export interface AminoMsgInstantiateContract2 extends AminoMsg {
   value: {
     sender: string;
     code_id: string;
-    label: string;
     msg: Uint8Array;
     funds: {
       denom: string;
       amount: string;
     }[];
+    label: string;
     salt: Uint8Array;
     fix_msg: boolean;
   };
@@ -123,12 +131,14 @@ export const AminoConverter = {
     aminoType: "/mythos.wasmx.v1.MsgStoreCode",
     toAmino: ({
       sender,
-      wasmByteCode,
+      byteCode,
+      deps,
       metadata
     }: MsgStoreCode): AminoMsgStoreCode["value"] => {
       return {
         sender,
-        wasm_byte_code: wasmByteCode,
+        byte_code: byteCode,
+        deps,
         metadata: {
           name: metadata.name,
           categ: metadata.categ,
@@ -146,12 +156,14 @@ export const AminoConverter = {
     },
     fromAmino: ({
       sender,
-      wasm_byte_code,
+      byte_code,
+      deps,
       metadata
     }: AminoMsgStoreCode["value"]): MsgStoreCode => {
       return {
         sender,
-        wasmByteCode: wasm_byte_code,
+        byteCode: byte_code,
+        deps,
         metadata: {
           name: metadata.name,
           categ: metadata.categ,
@@ -168,16 +180,21 @@ export const AminoConverter = {
       };
     }
   },
-  "/mythos.wasmx.v1.MsgStoreCodeEvm": {
-    aminoType: "/mythos.wasmx.v1.MsgStoreCodeEvm",
+  "/mythos.wasmx.v1.MsgDeployCode": {
+    aminoType: "/mythos.wasmx.v1.MsgDeployCode",
     toAmino: ({
       sender,
-      evmByteCode,
-      metadata
-    }: MsgStoreCodeEvm): AminoMsgStoreCodeEvm["value"] => {
+      byteCode,
+      deps,
+      metadata,
+      msg,
+      funds,
+      label
+    }: MsgDeployCode): AminoMsgDeployCode["value"] => {
       return {
         sender,
-        evm_byte_code: evmByteCode,
+        byte_code: byteCode,
+        deps,
         metadata: {
           name: metadata.name,
           categ: metadata.categ,
@@ -190,17 +207,28 @@ export const AminoConverter = {
             chain_id: metadata.origin.chainId,
             address: metadata.origin.address
           }
-        }
+        },
+        msg: JSON.parse(fromUtf8(msg)),
+        funds: funds.map(el0 => ({
+          denom: el0.denom,
+          amount: el0.amount
+        })),
+        label
       };
     },
     fromAmino: ({
       sender,
-      evm_byte_code,
-      metadata
-    }: AminoMsgStoreCodeEvm["value"]): MsgStoreCodeEvm => {
+      byte_code,
+      deps,
+      metadata,
+      msg,
+      funds,
+      label
+    }: AminoMsgDeployCode["value"]): MsgDeployCode => {
       return {
         sender,
-        evmByteCode: evm_byte_code,
+        byteCode: byte_code,
+        deps,
         metadata: {
           name: metadata.name,
           categ: metadata.categ,
@@ -213,7 +241,13 @@ export const AminoConverter = {
             chainId: metadata.origin.chain_id,
             address: metadata.origin.address
           }
-        }
+        },
+        msg: toUtf8(JSON.stringify(msg)),
+        funds: funds.map(el0 => ({
+          denom: el0.denom,
+          amount: el0.amount
+        })),
+        label
       };
     }
   },
@@ -222,37 +256,37 @@ export const AminoConverter = {
     toAmino: ({
       sender,
       codeId,
-      label,
       msg,
-      funds
+      funds,
+      label
     }: MsgInstantiateContract): AminoMsgInstantiateContract["value"] => {
       return {
         sender,
         code_id: codeId.toString(),
-        label,
         msg: JSON.parse(fromUtf8(msg)),
         funds: funds.map(el0 => ({
           denom: el0.denom,
           amount: el0.amount
-        }))
+        })),
+        label
       };
     },
     fromAmino: ({
       sender,
       code_id,
-      label,
       msg,
-      funds
+      funds,
+      label
     }: AminoMsgInstantiateContract["value"]): MsgInstantiateContract => {
       return {
         sender,
         codeId: Long.fromString(code_id),
-        label,
         msg: toUtf8(JSON.stringify(msg)),
         funds: funds.map(el0 => ({
           denom: el0.denom,
           amount: el0.amount
-        }))
+        })),
+        label
       };
     }
   },
@@ -261,21 +295,21 @@ export const AminoConverter = {
     toAmino: ({
       sender,
       codeId,
-      label,
       msg,
       funds,
+      label,
       salt,
       fixMsg
     }: MsgInstantiateContract2): AminoMsgInstantiateContract2["value"] => {
       return {
         sender,
         code_id: codeId.toString(),
-        label,
         msg: JSON.parse(fromUtf8(msg)),
         funds: funds.map(el0 => ({
           denom: el0.denom,
           amount: el0.amount
         })),
+        label,
         salt,
         fix_msg: fixMsg
       };
@@ -283,21 +317,21 @@ export const AminoConverter = {
     fromAmino: ({
       sender,
       code_id,
-      label,
       msg,
       funds,
+      label,
       salt,
       fix_msg
     }: AminoMsgInstantiateContract2["value"]): MsgInstantiateContract2 => {
       return {
         sender,
         codeId: Long.fromString(code_id),
-        label,
         msg: toUtf8(JSON.stringify(msg)),
         funds: funds.map(el0 => ({
           denom: el0.denom,
           amount: el0.amount
         })),
+        label,
         salt,
         fixMsg: fix_msg
       };

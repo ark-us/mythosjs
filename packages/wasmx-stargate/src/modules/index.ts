@@ -2,7 +2,7 @@ export {
   AminoMsgExecuteContract,
   AminoMsgInstantiateContract,
   AminoMsgStoreCode,
-  AminoMsgStoreCodeEvm,
+  AminoMsgDeployCode,
   wasmXTypes,
   createWasmAminoConverters,
 } from "./wasmx/aminomessages";
@@ -10,11 +10,11 @@ export {
   isMsgExecuteEncodeObject,
   isMsgInstantiateContractEncodeObject,
   isMsgStoreCodeEncodeObject,
-  isMsgStoreCodeEvmEncodeObject,
+  isMsgDeployCodeEncodeObject,
   MsgExecuteContractEncodeObject,
   MsgInstantiateContractEncodeObject,
   MsgStoreCodeEncodeObject,
-  MsgStoreCodeEvmEncodeObject,
+  MsgDeployCodeEncodeObject,
   wasmTypes,
 } from "./wasmx/messages";
 export { JsonObject, setupWasmExtension, WasmExtension } from "./wasmx/queries";

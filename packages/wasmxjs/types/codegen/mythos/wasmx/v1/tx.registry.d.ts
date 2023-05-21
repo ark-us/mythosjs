@@ -1,5 +1,5 @@
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgStoreCode, MsgStoreCodeEvm, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
+import { MsgStoreCode, MsgDeployCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
 export declare const registry: ReadonlyArray<[string, GeneratedType]>;
 export declare const load: (protoRegistry: Registry) => void;
 export declare const MessageComposer: {
@@ -8,7 +8,7 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: Uint8Array;
         };
-        storeCodeEvm(value: MsgStoreCodeEvm): {
+        deployCode(value: MsgDeployCode): {
             typeUrl: string;
             value: Uint8Array;
         };
@@ -42,9 +42,9 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: MsgStoreCode;
         };
-        storeCodeEvm(value: MsgStoreCodeEvm): {
+        deployCode(value: MsgDeployCode): {
             typeUrl: string;
-            value: MsgStoreCodeEvm;
+            value: MsgDeployCode;
         };
         instantiateContract(value: MsgInstantiateContract): {
             typeUrl: string;
@@ -76,7 +76,7 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: unknown;
         };
-        storeCodeEvm(value: MsgStoreCodeEvm): {
+        deployCode(value: MsgDeployCode): {
             typeUrl: string;
             value: unknown;
         };
@@ -110,9 +110,9 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: MsgStoreCode;
         };
-        storeCodeEvm(value: any): {
+        deployCode(value: any): {
             typeUrl: string;
-            value: MsgStoreCodeEvm;
+            value: MsgDeployCode;
         };
         instantiateContract(value: any): {
             typeUrl: string;
@@ -144,9 +144,9 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: MsgStoreCode;
         };
-        storeCodeEvm(value: MsgStoreCodeEvm): {
+        deployCode(value: MsgDeployCode): {
             typeUrl: string;
-            value: MsgStoreCodeEvm;
+            value: MsgDeployCode;
         };
         instantiateContract(value: MsgInstantiateContract): {
             typeUrl: string;

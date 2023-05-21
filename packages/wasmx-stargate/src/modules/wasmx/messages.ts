@@ -3,13 +3,13 @@ import {
   MsgExecuteContract,
   MsgInstantiateContract,
   MsgStoreCode,
-  MsgStoreCodeEvm,
+  MsgDeployCode,
 } from "@ark-us/wasmxjs";
 
 export const wasmTypes: ReadonlyArray<[string, GeneratedType]> = [
   ["/mythos.wasmx.v1.MsgExecuteContract", MsgExecuteContract],
   ["/mythos.wasmx.v1.MsgStoreCode", MsgStoreCode],
-  ["/mythos.wasmx.v1.MsgStoreCodeEvm", MsgStoreCodeEvm],
+  ["/mythos.wasmx.v1.MsgDeployCode", MsgDeployCode],
   ["/mythos.wasmx.v1.MsgInstantiateContract", MsgInstantiateContract],
 ];
 
@@ -22,13 +22,13 @@ export function isMsgStoreCodeEncodeObject(object: EncodeObject): object is MsgS
   return (object as MsgStoreCodeEncodeObject).typeUrl === "/mythos.wasmx.v1.MsgStoreCode";
 }
 
-export interface MsgStoreCodeEvmEncodeObject extends EncodeObject {
-  readonly typeUrl: "/mythos.wasmx.v1.MsgStoreCodeEvm";
-  readonly value: Partial<MsgStoreCodeEvm>;
+export interface MsgDeployCodeEncodeObject extends EncodeObject {
+  readonly typeUrl: "/mythos.wasmx.v1.MsgDeployCode";
+  readonly value: Partial<MsgDeployCode>;
 }
 
-export function isMsgStoreCodeEvmEncodeObject(object: EncodeObject): object is MsgStoreCodeEvmEncodeObject {
-  return (object as MsgStoreCodeEvmEncodeObject).typeUrl === "/mythos.wasmx.v1.MsgStoreCodeEvm";
+export function isMsgDeployCodeEncodeObject(object: EncodeObject): object is MsgDeployCodeEncodeObject {
+  return (object as MsgDeployCodeEncodeObject).typeUrl === "/mythos.wasmx.v1.MsgDeployCode";
 }
 
 export interface MsgInstantiateContractEncodeObject extends EncodeObject {

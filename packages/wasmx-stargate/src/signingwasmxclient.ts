@@ -42,7 +42,7 @@ import {
   MsgExecuteContract,
   MsgInstantiateContract,
   MsgStoreCode,
-  MsgStoreCodeEvm,
+  MsgDeployCode,
   CodeMetadata,
 } from "@ark-us/wasmxjs";
 import Long from 'long';
@@ -55,7 +55,7 @@ import {
   MsgExecuteContractEncodeObject,
   MsgInstantiateContractEncodeObject,
   MsgStoreCodeEncodeObject,
-  MsgStoreCodeEvmEncodeObject,
+  MsgDeployCodeEncodeObject,
   wasmTypes,
 } from "./modules";
 
@@ -80,6 +80,21 @@ export interface UploadResult {
   readonly gasUsed: number;
 }
 
+export interface DeployResult {
+  readonly checksum: string;
+  /** The ID of the code asigned by the chain */
+  readonly codeId: number;
+  readonly contractAddress: string;
+  readonly logs: readonly logs.Log[];
+  /** Block height in which the transaction is included */
+  readonly height: number;
+  /** Transaction hash (might be used as transaction ID). Guaranteed to be non-empty upper-case hex */
+  readonly transactionHash: string;
+  readonly events: readonly Event[];
+  readonly gasWanted: number;
+  readonly gasUsed: number;
+}
+
 /**
  * The options of an .instantiate() call.
  * All properties are optional.
@@ -94,11 +109,6 @@ export interface InstantiateOptions {
    * Only native tokens are supported.
    */
   readonly funds?: readonly Coin[];
-  /**
-   * A bech32 encoded address of an admin account.
-   * Caution: an admin has the privilege to upgrade a contract. If this is not desired, do not set this value.
-   */
-  readonly admin?: string;
 }
 
 export interface InstantiateResult {
@@ -274,7 +284,7 @@ export class SigningWasmXClient extends WasmXClient {
       typeUrl: "/mythos.wasmx.v1.MsgStoreCode",
       value: MsgStoreCode.fromPartial({
         sender: senderAddress,
-        wasmByteCode: compressed,
+        byteCode: compressed,
         metadata: CodeMetadata.fromPartial(metadata),
       }),
     };
@@ -301,34 +311,40 @@ export class SigningWasmXClient extends WasmXClient {
   }
 
   /** Uploads code and returns a receipt, including the code ID */
-  public async uploadEvm(
+  public async deployCode(
     senderAddress: string,
-    evmCode: Uint8Array,
+    code: Uint8Array,
     metadata: object,
+    deps: string[],
+    msg: JsonObject,
+    label: string,
     fee: StdFee | "auto" | number,
-    memo = "",
-  ): Promise<UploadResult> {
-    const storeCodeEvmMsg: MsgStoreCodeEvmEncodeObject = {
-      typeUrl: "/mythos.wasmx.v1.MsgStoreCodeEvm",
-      value: MsgStoreCodeEvm.fromPartial({
+    options: InstantiateOptions = {},
+  ): Promise<DeployResult> {
+    const storeCodeEvmMsg: MsgDeployCodeEncodeObject = {
+      typeUrl: "/mythos.wasmx.v1.MsgDeployCode",
+      value: MsgDeployCode.fromPartial({
         sender: senderAddress,
-        evmByteCode: evmCode,
+        byteCode: code,
         metadata: CodeMetadata.fromPartial(metadata),
+        deps: deps,
+        label: label,
+        msg: toUtf8(JSON.stringify(msg)),
+        funds: [...(options.funds || [])],
       }),
     };
 
-    const result = await this.signAndBroadcast(senderAddress, [storeCodeEvmMsg], fee, memo);
+    const result = await this.signAndBroadcast(senderAddress, [storeCodeEvmMsg], fee, options.memo);
     if (isDeliverTxFailure(result)) {
       throw new Error(createDeliverTxResponseErrorMessage(result));
     }
     const parsedLogs = logs.parseRawLog(result.rawLog);
     const codeIdAttr = logs.findAttribute(parsedLogs, "store_code", "code_id");
+    const contractAddress = logs.findAttribute(parsedLogs, "instantiate", "contract_address");
     return {
-      originalSize: evmCode.length,
-      originalChecksum: toHex(sha256(evmCode)),
-      compressedSize: evmCode.length,
-      compressedChecksum: toHex(sha256(evmCode)),
+      checksum: toHex(sha256(code)),
       codeId: Number.parseInt(codeIdAttr.value, 10),
+      contractAddress: contractAddress.value,
       logs: parsedLogs,
       height: result.height,
       transactionHash: result.transactionHash,

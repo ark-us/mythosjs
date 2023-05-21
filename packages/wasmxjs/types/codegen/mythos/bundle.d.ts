@@ -37,7 +37,7 @@ export declare namespace mythos {
                         typeUrl: string;
                         value: Uint8Array;
                     };
-                    storeCodeEvm(value: _22.MsgStoreCodeEvm): {
+                    deployCode(value: _22.MsgDeployCode): {
                         typeUrl: string;
                         value: Uint8Array;
                     };
@@ -71,9 +71,9 @@ export declare namespace mythos {
                         typeUrl: string;
                         value: _22.MsgStoreCode;
                     };
-                    storeCodeEvm(value: _22.MsgStoreCodeEvm): {
+                    deployCode(value: _22.MsgDeployCode): {
                         typeUrl: string;
-                        value: _22.MsgStoreCodeEvm;
+                        value: _22.MsgDeployCode;
                     };
                     instantiateContract(value: _22.MsgInstantiateContract): {
                         typeUrl: string;
@@ -105,7 +105,7 @@ export declare namespace mythos {
                         typeUrl: string;
                         value: unknown;
                     };
-                    storeCodeEvm(value: _22.MsgStoreCodeEvm): {
+                    deployCode(value: _22.MsgDeployCode): {
                         typeUrl: string;
                         value: unknown;
                     };
@@ -139,9 +139,9 @@ export declare namespace mythos {
                         typeUrl: string;
                         value: _22.MsgStoreCode;
                     };
-                    storeCodeEvm(value: any): {
+                    deployCode(value: any): {
                         typeUrl: string;
-                        value: _22.MsgStoreCodeEvm;
+                        value: _22.MsgDeployCode;
                     };
                     instantiateContract(value: any): {
                         typeUrl: string;
@@ -173,9 +173,9 @@ export declare namespace mythos {
                         typeUrl: string;
                         value: _22.MsgStoreCode;
                     };
-                    storeCodeEvm(value: _22.MsgStoreCodeEvm): {
+                    deployCode(value: _22.MsgDeployCode): {
                         typeUrl: string;
-                        value: _22.MsgStoreCodeEvm;
+                        value: _22.MsgDeployCode;
                     };
                     instantiateContract(value: _22.MsgInstantiateContract): {
                         typeUrl: string;
@@ -206,9 +206,10 @@ export declare namespace mythos {
             AminoConverter: {
                 "/mythos.wasmx.v1.MsgStoreCode": {
                     aminoType: string;
-                    toAmino: ({ sender, wasmByteCode, metadata }: _22.MsgStoreCode) => {
+                    toAmino: ({ sender, byteCode, deps, metadata }: _22.MsgStoreCode) => {
                         sender: string;
-                        wasm_byte_code: Uint8Array;
+                        byte_code: Uint8Array;
+                        deps: string[];
                         metadata: {
                             name: string;
                             categ: string[];
@@ -223,9 +224,10 @@ export declare namespace mythos {
                             };
                         };
                     };
-                    fromAmino: ({ sender, wasm_byte_code, metadata }: {
+                    fromAmino: ({ sender, byte_code, deps, metadata }: {
                         sender: string;
-                        wasm_byte_code: Uint8Array;
+                        byte_code: Uint8Array;
+                        deps: string[];
                         metadata: {
                             name: string;
                             categ: string[];
@@ -241,11 +243,12 @@ export declare namespace mythos {
                         };
                     }) => _22.MsgStoreCode;
                 };
-                "/mythos.wasmx.v1.MsgStoreCodeEvm": {
+                "/mythos.wasmx.v1.MsgDeployCode": {
                     aminoType: string;
-                    toAmino: ({ sender, evmByteCode, metadata }: _22.MsgStoreCodeEvm) => {
+                    toAmino: ({ sender, byteCode, deps, metadata, msg, funds, label }: _22.MsgDeployCode) => {
                         sender: string;
-                        evm_byte_code: Uint8Array;
+                        byte_code: Uint8Array;
+                        deps: string[];
                         metadata: {
                             name: string;
                             categ: string[];
@@ -259,10 +262,17 @@ export declare namespace mythos {
                                 address: string;
                             };
                         };
+                        msg: Uint8Array;
+                        funds: {
+                            denom: string;
+                            amount: string;
+                        }[];
+                        label: string;
                     };
-                    fromAmino: ({ sender, evm_byte_code, metadata }: {
+                    fromAmino: ({ sender, byte_code, deps, metadata, msg, funds, label }: {
                         sender: string;
-                        evm_byte_code: Uint8Array;
+                        byte_code: Uint8Array;
+                        deps: string[];
                         metadata: {
                             name: string;
                             categ: string[];
@@ -276,54 +286,60 @@ export declare namespace mythos {
                                 address: string;
                             };
                         };
-                    }) => _22.MsgStoreCodeEvm;
+                        msg: Uint8Array;
+                        funds: {
+                            denom: string;
+                            amount: string;
+                        }[];
+                        label: string;
+                    }) => _22.MsgDeployCode;
                 };
                 "/mythos.wasmx.v1.MsgInstantiateContract": {
                     aminoType: string;
-                    toAmino: ({ sender, codeId, label, msg, funds }: _22.MsgInstantiateContract) => {
+                    toAmino: ({ sender, codeId, msg, funds, label }: _22.MsgInstantiateContract) => {
                         sender: string;
                         code_id: string;
-                        label: string;
                         msg: Uint8Array;
                         funds: {
                             denom: string;
                             amount: string;
                         }[];
+                        label: string;
                     };
-                    fromAmino: ({ sender, code_id, label, msg, funds }: {
+                    fromAmino: ({ sender, code_id, msg, funds, label }: {
                         sender: string;
                         code_id: string;
-                        label: string;
                         msg: Uint8Array;
                         funds: {
                             denom: string;
                             amount: string;
                         }[];
+                        label: string;
                     }) => _22.MsgInstantiateContract;
                 };
                 "/mythos.wasmx.v1.MsgInstantiateContract2": {
                     aminoType: string;
-                    toAmino: ({ sender, codeId, label, msg, funds, salt, fixMsg }: _22.MsgInstantiateContract2) => {
+                    toAmino: ({ sender, codeId, msg, funds, label, salt, fixMsg }: _22.MsgInstantiateContract2) => {
                         sender: string;
                         code_id: string;
-                        label: string;
                         msg: Uint8Array;
                         funds: {
                             denom: string;
                             amount: string;
                         }[];
+                        label: string;
                         salt: Uint8Array;
                         fix_msg: boolean;
                     };
-                    fromAmino: ({ sender, code_id, label, msg, funds, salt, fix_msg }: {
+                    fromAmino: ({ sender, code_id, msg, funds, label, salt, fix_msg }: {
                         sender: string;
                         code_id: string;
-                        label: string;
                         msg: Uint8Array;
                         funds: {
                             denom: string;
                             amount: string;
                         }[];
+                        label: string;
                         salt: Uint8Array;
                         fix_msg: boolean;
                     }) => _22.MsgInstantiateContract2;
@@ -427,19 +443,19 @@ export declare namespace mythos {
                 toJSON(message: _22.MsgStoreCodeResponse): unknown;
                 fromPartial(object: Partial<_22.MsgStoreCodeResponse>): _22.MsgStoreCodeResponse;
             };
-            MsgStoreCodeEvm: {
-                encode(message: _22.MsgStoreCodeEvm, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
-                decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _22.MsgStoreCodeEvm;
-                fromJSON(object: any): _22.MsgStoreCodeEvm;
-                toJSON(message: _22.MsgStoreCodeEvm): unknown;
-                fromPartial(object: Partial<_22.MsgStoreCodeEvm>): _22.MsgStoreCodeEvm;
+            MsgDeployCode: {
+                encode(message: _22.MsgDeployCode, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+                decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _22.MsgDeployCode;
+                fromJSON(object: any): _22.MsgDeployCode;
+                toJSON(message: _22.MsgDeployCode): unknown;
+                fromPartial(object: Partial<_22.MsgDeployCode>): _22.MsgDeployCode;
             };
-            MsgStoreCodeEvmResponse: {
-                encode(message: _22.MsgStoreCodeEvmResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
-                decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _22.MsgStoreCodeEvmResponse;
-                fromJSON(object: any): _22.MsgStoreCodeEvmResponse;
-                toJSON(message: _22.MsgStoreCodeEvmResponse): unknown;
-                fromPartial(object: Partial<_22.MsgStoreCodeEvmResponse>): _22.MsgStoreCodeEvmResponse;
+            MsgDeployCodeResponse: {
+                encode(message: _22.MsgDeployCodeResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+                decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _22.MsgDeployCodeResponse;
+                fromJSON(object: any): _22.MsgDeployCodeResponse;
+                toJSON(message: _22.MsgDeployCodeResponse): unknown;
+                fromPartial(object: Partial<_22.MsgDeployCodeResponse>): _22.MsgDeployCodeResponse;
             };
             MsgInstantiateContract: {
                 encode(message: _22.MsgInstantiateContract, writer?: import("protobufjs").Writer): import("protobufjs").Writer;

@@ -1,6 +1,6 @@
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgStoreCode, MsgStoreCodeEvm, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/mythos.wasmx.v1.MsgStoreCode", MsgStoreCode], ["/mythos.wasmx.v1.MsgStoreCodeEvm", MsgStoreCodeEvm], ["/mythos.wasmx.v1.MsgInstantiateContract", MsgInstantiateContract], ["/mythos.wasmx.v1.MsgInstantiateContract2", MsgInstantiateContract2], ["/mythos.wasmx.v1.MsgExecuteContract", MsgExecuteContract], ["/mythos.wasmx.v1.MsgExecuteWithOriginContract", MsgExecuteWithOriginContract], ["/mythos.wasmx.v1.MsgExecuteDelegateContract", MsgExecuteDelegateContract], ["/mythos.wasmx.v1.MsgCompileContract", MsgCompileContract]];
+import { MsgStoreCode, MsgDeployCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/mythos.wasmx.v1.MsgStoreCode", MsgStoreCode], ["/mythos.wasmx.v1.MsgDeployCode", MsgDeployCode], ["/mythos.wasmx.v1.MsgInstantiateContract", MsgInstantiateContract], ["/mythos.wasmx.v1.MsgInstantiateContract2", MsgInstantiateContract2], ["/mythos.wasmx.v1.MsgExecuteContract", MsgExecuteContract], ["/mythos.wasmx.v1.MsgExecuteWithOriginContract", MsgExecuteWithOriginContract], ["/mythos.wasmx.v1.MsgExecuteDelegateContract", MsgExecuteDelegateContract], ["/mythos.wasmx.v1.MsgCompileContract", MsgCompileContract]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -15,10 +15,10 @@ export const MessageComposer = {
       };
     },
 
-    storeCodeEvm(value: MsgStoreCodeEvm) {
+    deployCode(value: MsgDeployCode) {
       return {
-        typeUrl: "/mythos.wasmx.v1.MsgStoreCodeEvm",
-        value: MsgStoreCodeEvm.encode(value).finish()
+        typeUrl: "/mythos.wasmx.v1.MsgDeployCode",
+        value: MsgDeployCode.encode(value).finish()
       };
     },
 
@@ -73,9 +73,9 @@ export const MessageComposer = {
       };
     },
 
-    storeCodeEvm(value: MsgStoreCodeEvm) {
+    deployCode(value: MsgDeployCode) {
       return {
-        typeUrl: "/mythos.wasmx.v1.MsgStoreCodeEvm",
+        typeUrl: "/mythos.wasmx.v1.MsgDeployCode",
         value
       };
     },
@@ -131,10 +131,10 @@ export const MessageComposer = {
       };
     },
 
-    storeCodeEvm(value: MsgStoreCodeEvm) {
+    deployCode(value: MsgDeployCode) {
       return {
-        typeUrl: "/mythos.wasmx.v1.MsgStoreCodeEvm",
-        value: MsgStoreCodeEvm.toJSON(value)
+        typeUrl: "/mythos.wasmx.v1.MsgDeployCode",
+        value: MsgDeployCode.toJSON(value)
       };
     },
 
@@ -189,10 +189,10 @@ export const MessageComposer = {
       };
     },
 
-    storeCodeEvm(value: any) {
+    deployCode(value: any) {
       return {
-        typeUrl: "/mythos.wasmx.v1.MsgStoreCodeEvm",
-        value: MsgStoreCodeEvm.fromJSON(value)
+        typeUrl: "/mythos.wasmx.v1.MsgDeployCode",
+        value: MsgDeployCode.fromJSON(value)
       };
     },
 
@@ -247,10 +247,10 @@ export const MessageComposer = {
       };
     },
 
-    storeCodeEvm(value: MsgStoreCodeEvm) {
+    deployCode(value: MsgDeployCode) {
       return {
-        typeUrl: "/mythos.wasmx.v1.MsgStoreCodeEvm",
-        value: MsgStoreCodeEvm.fromPartial(value)
+        typeUrl: "/mythos.wasmx.v1.MsgDeployCode",
+        value: MsgDeployCode.fromPartial(value)
       };
     },
 
