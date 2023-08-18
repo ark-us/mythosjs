@@ -42,7 +42,10 @@ export interface CodeMetadataSDKType {
 }
 /** CodeInfo is data for the uploaded contract WASM code */
 export interface CodeInfo {
-    /** CodeHash is the unique identifier created by hashing the wasm code */
+    /**
+     * CodeHash is the unique identifier created by hashing the
+     * wasm or interpreted code
+     */
     codeHash: Uint8Array;
     /** Creator address who initially stored the code */
     creator: string;
@@ -54,10 +57,17 @@ export interface CodeInfo {
     /** Pinned contract */
     pinned: boolean;
     metadata?: CodeMetadata;
+    /** for code that has a different runtime, like EVM */
+    interpretedBytecodeDeployment: Uint8Array;
+    interpretedBytecodeRuntime: Uint8Array;
+    runtimeHash: Uint8Array;
 }
 /** CodeInfo is data for the uploaded contract WASM code */
 export interface CodeInfoSDKType {
-    /** CodeHash is the unique identifier created by hashing the wasm code */
+    /**
+     * CodeHash is the unique identifier created by hashing the
+     * wasm or interpreted code
+     */
     code_hash: Uint8Array;
     /** Creator address who initially stored the code */
     creator: string;
@@ -69,6 +79,10 @@ export interface CodeInfoSDKType {
     /** Pinned contract */
     pinned: boolean;
     metadata?: CodeMetadataSDKType;
+    /** for code that has a different runtime, like EVM */
+    interpreted_bytecode_deployment: Uint8Array;
+    interpreted_bytecode_runtime: Uint8Array;
+    runtime_hash: Uint8Array;
 }
 export interface CodeOrigin {
     /** unique chain ID */
@@ -92,6 +106,8 @@ export interface ContractInfo {
     label: string;
     /** Initialization message */
     initMessage: Uint8Array;
+    /** factory/deployer address */
+    provenance: string;
     ibcPortId: string;
 }
 /** ContractInfo stores a WASM contract instance */
@@ -104,6 +120,8 @@ export interface ContractInfoSDKType {
     label: string;
     /** Initialization message */
     init_message: Uint8Array;
+    /** factory/deployer address */
+    provenance: string;
     ibc_port_id: string;
 }
 /**

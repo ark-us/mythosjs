@@ -1,10 +1,11 @@
 import { AminoMsg } from "@cosmjs/amino";
-import { MsgStoreCode, MsgStoreCodeEvm, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
+import { MsgStoreCode, MsgDeployCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
 export interface AminoMsgStoreCode extends AminoMsg {
     type: "/mythos.wasmx.v1.MsgStoreCode";
     value: {
         sender: string;
-        wasm_byte_code: Uint8Array;
+        byte_code: Uint8Array;
+        deps: string[];
         metadata: {
             name: string;
             categ: string[];
@@ -20,11 +21,12 @@ export interface AminoMsgStoreCode extends AminoMsg {
         };
     };
 }
-export interface AminoMsgStoreCodeEvm extends AminoMsg {
-    type: "/mythos.wasmx.v1.MsgStoreCodeEvm";
+export interface AminoMsgDeployCode extends AminoMsg {
+    type: "/mythos.wasmx.v1.MsgDeployCode";
     value: {
         sender: string;
-        evm_byte_code: Uint8Array;
+        byte_code: Uint8Array;
+        deps: string[];
         metadata: {
             name: string;
             categ: string[];
@@ -38,6 +40,12 @@ export interface AminoMsgStoreCodeEvm extends AminoMsg {
                 address: string;
             };
         };
+        msg: Uint8Array;
+        funds: {
+            denom: string;
+            amount: string;
+        }[];
+        label: string;
     };
 }
 export interface AminoMsgInstantiateContract extends AminoMsg {
@@ -45,12 +53,12 @@ export interface AminoMsgInstantiateContract extends AminoMsg {
     value: {
         sender: string;
         code_id: string;
-        label: string;
         msg: Uint8Array;
         funds: {
             denom: string;
             amount: string;
         }[];
+        label: string;
     };
 }
 export interface AminoMsgInstantiateContract2 extends AminoMsg {
@@ -58,12 +66,12 @@ export interface AminoMsgInstantiateContract2 extends AminoMsg {
     value: {
         sender: string;
         code_id: string;
-        label: string;
         msg: Uint8Array;
         funds: {
             denom: string;
             amount: string;
         }[];
+        label: string;
         salt: Uint8Array;
         fix_msg: boolean;
     };
@@ -119,23 +127,23 @@ export interface AminoMsgCompileContract extends AminoMsg {
 export declare const AminoConverter: {
     "/mythos.wasmx.v1.MsgStoreCode": {
         aminoType: string;
-        toAmino: ({ sender, wasmByteCode, metadata }: MsgStoreCode) => AminoMsgStoreCode["value"];
-        fromAmino: ({ sender, wasm_byte_code, metadata }: AminoMsgStoreCode["value"]) => MsgStoreCode;
+        toAmino: ({ sender, byteCode, deps, metadata }: MsgStoreCode) => AminoMsgStoreCode["value"];
+        fromAmino: ({ sender, byte_code, deps, metadata }: AminoMsgStoreCode["value"]) => MsgStoreCode;
     };
-    "/mythos.wasmx.v1.MsgStoreCodeEvm": {
+    "/mythos.wasmx.v1.MsgDeployCode": {
         aminoType: string;
-        toAmino: ({ sender, evmByteCode, metadata }: MsgStoreCodeEvm) => AminoMsgStoreCodeEvm["value"];
-        fromAmino: ({ sender, evm_byte_code, metadata }: AminoMsgStoreCodeEvm["value"]) => MsgStoreCodeEvm;
+        toAmino: ({ sender, byteCode, deps, metadata, msg, funds, label }: MsgDeployCode) => AminoMsgDeployCode["value"];
+        fromAmino: ({ sender, byte_code, deps, metadata, msg, funds, label }: AminoMsgDeployCode["value"]) => MsgDeployCode;
     };
     "/mythos.wasmx.v1.MsgInstantiateContract": {
         aminoType: string;
-        toAmino: ({ sender, codeId, label, msg, funds }: MsgInstantiateContract) => AminoMsgInstantiateContract["value"];
-        fromAmino: ({ sender, code_id, label, msg, funds }: AminoMsgInstantiateContract["value"]) => MsgInstantiateContract;
+        toAmino: ({ sender, codeId, msg, funds, label }: MsgInstantiateContract) => AminoMsgInstantiateContract["value"];
+        fromAmino: ({ sender, code_id, msg, funds, label }: AminoMsgInstantiateContract["value"]) => MsgInstantiateContract;
     };
     "/mythos.wasmx.v1.MsgInstantiateContract2": {
         aminoType: string;
-        toAmino: ({ sender, codeId, label, msg, funds, salt, fixMsg }: MsgInstantiateContract2) => AminoMsgInstantiateContract2["value"];
-        fromAmino: ({ sender, code_id, label, msg, funds, salt, fix_msg }: AminoMsgInstantiateContract2["value"]) => MsgInstantiateContract2;
+        toAmino: ({ sender, codeId, msg, funds, label, salt, fixMsg }: MsgInstantiateContract2) => AminoMsgInstantiateContract2["value"];
+        fromAmino: ({ sender, code_id, msg, funds, label, salt, fix_msg }: AminoMsgInstantiateContract2["value"]) => MsgInstantiateContract2;
     };
     "/mythos.wasmx.v1.MsgExecuteContract": {
         aminoType: string;

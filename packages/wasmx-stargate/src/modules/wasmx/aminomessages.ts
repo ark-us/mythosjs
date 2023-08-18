@@ -6,7 +6,7 @@ import {
   MsgExecuteContract,
   MsgInstantiateContract,
   MsgStoreCode,
-  MsgStoreCodeEvm,
+  MsgDeployCode,
 } from "@ark-us/wasmxjs";
 import Long from 'long';
 
@@ -19,22 +19,28 @@ export interface AminoMsgStoreCode {
     /** Bech32 account address */
     readonly sender: string;
     /** Base64 encoded Wasm */
-    readonly wasm_byte_code: string;
+    readonly byte_code: string;
+    readonly deps: string[];
     readonly metadata: CodeMetadata;
   };
 }
 
 /**
- * The Amino JSON representation of [MsgStoreCodeEvm].
+ * The Amino JSON representation of [MsgDeployCode].
  */
-export interface AminoMsgStoreCodeEvm {
-  type: "wasmx/MsgStoreCodeEvm";
+export interface AminoMsgDeployCode {
+  type: "wasmx/MsgDeployCode";
   value: {
     /** Bech32 account address */
     readonly sender: string;
     /** Base64 encoded Wasm */
-    readonly evm_byte_code: string;
+    readonly byte_code: string;
+    readonly deps: string[];
     readonly metadata: CodeMetadata;
+    /** Instantiate message as JavaScript object */
+    readonly msg: any;
+    readonly funds: readonly Coin[];
+    readonly label: string;
   };
 }
 
@@ -77,26 +83,38 @@ export function createWasmAminoConverters(): AminoConverters {
   return {
     "/mythos.wasmx.v1.MsgStoreCode": {
       aminoType: "wasm/MsgStoreCode",
-      toAmino: ({ sender, wasmByteCode, metadata }: MsgStoreCode): AminoMsgStoreCode["value"] => ({
+      toAmino: ({ sender, byteCode, metadata, deps }: MsgStoreCode): AminoMsgStoreCode["value"] => ({
         sender: sender,
-        wasm_byte_code: toBase64(wasmByteCode),
+        byte_code: toBase64(byteCode),
         metadata: metadata || CodeMetadata.fromPartial({}),
+        deps: deps,
       }),
-      fromAmino: ({ sender, wasm_byte_code }: AminoMsgStoreCode["value"]): MsgStoreCode => ({
+      fromAmino: ({ sender, byte_code, deps, metadata }: AminoMsgStoreCode["value"]): MsgStoreCode => ({
         sender: sender,
-        wasmByteCode: fromBase64(wasm_byte_code),
+        byteCode: fromBase64(byte_code),
+        deps: deps,
+        metadata: metadata || CodeMetadata.fromPartial({}),
       }),
     },
-    "/mythos.wasmx.v1.MsgStoreCodeEvm": {
-      aminoType: "wasm/MsgStoreCodeEvm",
-      toAmino: ({ sender, evmByteCode, metadata }: MsgStoreCodeEvm): AminoMsgStoreCodeEvm["value"] => ({
+    "/mythos.wasmx.v1.MsgDeployCode": {
+      aminoType: "wasm/MsgDeployCode",
+      toAmino: ({ sender, byteCode, metadata, deps, msg, funds, label }: MsgDeployCode): AminoMsgDeployCode["value"] => ({
         sender: sender,
-        evm_byte_code: toBase64(evmByteCode),
+        byte_code: toBase64(byteCode),
         metadata: metadata || CodeMetadata.fromPartial({}),
+        deps: deps,
+        msg: JSON.parse(fromUtf8(msg)),
+        funds: funds,
+        label: label,
       }),
-      fromAmino: ({ sender, evm_byte_code }: AminoMsgStoreCodeEvm["value"]): MsgStoreCodeEvm => ({
+      fromAmino: ({ sender, byte_code, metadata, deps, msg, funds, label }: AminoMsgDeployCode["value"]): MsgDeployCode => ({
         sender: sender,
-        evmByteCode: fromBase64(evm_byte_code),
+        byteCode: fromBase64(byte_code),
+        deps: deps,
+        label: label,
+        msg: toUtf8(JSON.stringify(msg)),
+        funds: [...funds],
+        metadata: metadata || CodeMetadata.fromPartial({}),
       }),
     },
     "/mythos.wasmx.v1.MsgInstantiateContract": {

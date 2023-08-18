@@ -1,11 +1,11 @@
 import { Rpc } from "../../../helpers";
-import { MsgStoreCode, MsgStoreCodeResponse, MsgStoreCodeEvm, MsgStoreCodeEvmResponse, MsgInstantiateContract, MsgInstantiateContractResponse, MsgInstantiateContract2, MsgInstantiateContract2Response, MsgExecuteContract, MsgExecuteContractResponse, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgExecuteDelegateContractResponse, MsgCompileContract, MsgCompileContractResponse } from "./tx";
+import { MsgStoreCode, MsgStoreCodeResponse, MsgDeployCode, MsgDeployCodeResponse, MsgInstantiateContract, MsgInstantiateContractResponse, MsgInstantiateContract2, MsgInstantiateContract2Response, MsgExecuteContract, MsgExecuteContractResponse, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgExecuteDelegateContractResponse, MsgCompileContract, MsgCompileContractResponse } from "./tx";
 /** Msg defines the wasm Msg service. */
 export interface Msg {
     /** StoreCode to submit Wasm code to the system */
     storeCode(request: MsgStoreCode): Promise<MsgStoreCodeResponse>;
-    /** StoreCode to submit Wasm code to the system */
-    storeCodeEvm(request: MsgStoreCodeEvm): Promise<MsgStoreCodeEvmResponse>;
+    /** DeployCode stores and instantiates */
+    deployCode(request: MsgDeployCode): Promise<MsgDeployCodeResponse>;
     /**
      * InstantiateContract creates a new smart contract instance for the given
      *  code id.
@@ -29,7 +29,7 @@ export declare class MsgClientImpl implements Msg {
     private readonly rpc;
     constructor(rpc: Rpc);
     storeCode(request: MsgStoreCode): Promise<MsgStoreCodeResponse>;
-    storeCodeEvm(request: MsgStoreCodeEvm): Promise<MsgStoreCodeEvmResponse>;
+    deployCode(request: MsgDeployCode): Promise<MsgDeployCodeResponse>;
     instantiateContract(request: MsgInstantiateContract): Promise<MsgInstantiateContractResponse>;
     instantiateContract2(request: MsgInstantiateContract2): Promise<MsgInstantiateContract2Response>;
     executeContract(request: MsgExecuteContract): Promise<MsgExecuteContractResponse>;

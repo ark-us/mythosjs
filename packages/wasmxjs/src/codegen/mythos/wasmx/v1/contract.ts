@@ -53,7 +53,10 @@ export interface CodeMetadataSDKType {
 /** CodeInfo is data for the uploaded contract WASM code */
 
 export interface CodeInfo {
-  /** CodeHash is the unique identifier created by hashing the wasm code */
+  /**
+   * CodeHash is the unique identifier created by hashing the
+   * wasm or interpreted code
+   */
   codeHash: Uint8Array;
   /** Creator address who initially stored the code */
 
@@ -68,11 +71,19 @@ export interface CodeInfo {
 
   pinned: boolean;
   metadata?: CodeMetadata;
+  /** for code that has a different runtime, like EVM */
+
+  interpretedBytecodeDeployment: Uint8Array;
+  interpretedBytecodeRuntime: Uint8Array;
+  runtimeHash: Uint8Array;
 }
 /** CodeInfo is data for the uploaded contract WASM code */
 
 export interface CodeInfoSDKType {
-  /** CodeHash is the unique identifier created by hashing the wasm code */
+  /**
+   * CodeHash is the unique identifier created by hashing the
+   * wasm or interpreted code
+   */
   code_hash: Uint8Array;
   /** Creator address who initially stored the code */
 
@@ -87,6 +98,11 @@ export interface CodeInfoSDKType {
 
   pinned: boolean;
   metadata?: CodeMetadataSDKType;
+  /** for code that has a different runtime, like EVM */
+
+  interpreted_bytecode_deployment: Uint8Array;
+  interpreted_bytecode_runtime: Uint8Array;
+  runtime_hash: Uint8Array;
 }
 export interface CodeOrigin {
   /** unique chain ID */
@@ -116,6 +132,9 @@ export interface ContractInfo {
   /** Initialization message */
 
   initMessage: Uint8Array;
+  /** factory/deployer address */
+
+  provenance: string;
   ibcPortId: string;
 }
 /** ContractInfo stores a WASM contract instance */
@@ -132,6 +151,9 @@ export interface ContractInfoSDKType {
   /** Initialization message */
 
   init_message: Uint8Array;
+  /** factory/deployer address */
+
+  provenance: string;
   ibc_port_id: string;
 }
 /**
@@ -237,7 +259,7 @@ export const ContractStorage = {
 function createBaseCodeMetadata(): CodeMetadata {
   return {
     name: undefined,
-    categ: undefined,
+    categ: [],
     icon: undefined,
     author: undefined,
     site: undefined,
@@ -387,7 +409,10 @@ function createBaseCodeInfo(): CodeInfo {
     creator: "",
     deps: [],
     pinned: false,
-    metadata: undefined
+    metadata: undefined,
+    interpretedBytecodeDeployment: new Uint8Array(),
+    interpretedBytecodeRuntime: new Uint8Array(),
+    runtimeHash: new Uint8Array()
   };
 }
 
@@ -411,6 +436,18 @@ export const CodeInfo = {
 
     if (message.metadata !== undefined) {
       CodeMetadata.encode(message.metadata, writer.uint32(42).fork()).ldelim();
+    }
+
+    if (message.interpretedBytecodeDeployment.length !== 0) {
+      writer.uint32(50).bytes(message.interpretedBytecodeDeployment);
+    }
+
+    if (message.interpretedBytecodeRuntime.length !== 0) {
+      writer.uint32(58).bytes(message.interpretedBytecodeRuntime);
+    }
+
+    if (message.runtimeHash.length !== 0) {
+      writer.uint32(66).bytes(message.runtimeHash);
     }
 
     return writer;
@@ -445,6 +482,18 @@ export const CodeInfo = {
           message.metadata = CodeMetadata.decode(reader, reader.uint32());
           break;
 
+        case 6:
+          message.interpretedBytecodeDeployment = reader.bytes();
+          break;
+
+        case 7:
+          message.interpretedBytecodeRuntime = reader.bytes();
+          break;
+
+        case 8:
+          message.runtimeHash = reader.bytes();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -460,7 +509,10 @@ export const CodeInfo = {
       creator: isSet(object.creator) ? String(object.creator) : "",
       deps: Array.isArray(object?.deps) ? object.deps.map((e: any) => String(e)) : [],
       pinned: isSet(object.pinned) ? Boolean(object.pinned) : false,
-      metadata: isSet(object.metadata) ? CodeMetadata.fromJSON(object.metadata) : undefined
+      metadata: isSet(object.metadata) ? CodeMetadata.fromJSON(object.metadata) : undefined,
+      interpretedBytecodeDeployment: isSet(object.interpretedBytecodeDeployment) ? bytesFromBase64(object.interpretedBytecodeDeployment) : new Uint8Array(),
+      interpretedBytecodeRuntime: isSet(object.interpretedBytecodeRuntime) ? bytesFromBase64(object.interpretedBytecodeRuntime) : new Uint8Array(),
+      runtimeHash: isSet(object.runtimeHash) ? bytesFromBase64(object.runtimeHash) : new Uint8Array()
     };
   },
 
@@ -477,6 +529,9 @@ export const CodeInfo = {
 
     message.pinned !== undefined && (obj.pinned = message.pinned);
     message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadata.toJSON(message.metadata) : undefined);
+    message.interpretedBytecodeDeployment !== undefined && (obj.interpretedBytecodeDeployment = base64FromBytes(message.interpretedBytecodeDeployment !== undefined ? message.interpretedBytecodeDeployment : new Uint8Array()));
+    message.interpretedBytecodeRuntime !== undefined && (obj.interpretedBytecodeRuntime = base64FromBytes(message.interpretedBytecodeRuntime !== undefined ? message.interpretedBytecodeRuntime : new Uint8Array()));
+    message.runtimeHash !== undefined && (obj.runtimeHash = base64FromBytes(message.runtimeHash !== undefined ? message.runtimeHash : new Uint8Array()));
     return obj;
   },
 
@@ -487,6 +542,9 @@ export const CodeInfo = {
     message.deps = object.deps?.map(e => e) || [];
     message.pinned = object.pinned ?? false;
     message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadata.fromPartial(object.metadata) : undefined;
+    message.interpretedBytecodeDeployment = object.interpretedBytecodeDeployment ?? new Uint8Array();
+    message.interpretedBytecodeRuntime = object.interpretedBytecodeRuntime ?? new Uint8Array();
+    message.runtimeHash = object.runtimeHash ?? new Uint8Array();
     return message;
   }
 
@@ -567,6 +625,7 @@ function createBaseContractInfo(): ContractInfo {
     creator: "",
     label: "",
     initMessage: new Uint8Array(),
+    provenance: "",
     ibcPortId: ""
   };
 }
@@ -589,8 +648,12 @@ export const ContractInfo = {
       writer.uint32(34).bytes(message.initMessage);
     }
 
+    if (message.provenance !== "") {
+      writer.uint32(42).string(message.provenance);
+    }
+
     if (message.ibcPortId !== "") {
-      writer.uint32(42).string(message.ibcPortId);
+      writer.uint32(50).string(message.ibcPortId);
     }
 
     return writer;
@@ -622,6 +685,10 @@ export const ContractInfo = {
           break;
 
         case 5:
+          message.provenance = reader.string();
+          break;
+
+        case 6:
           message.ibcPortId = reader.string();
           break;
 
@@ -640,6 +707,7 @@ export const ContractInfo = {
       creator: isSet(object.creator) ? String(object.creator) : "",
       label: isSet(object.label) ? String(object.label) : "",
       initMessage: isSet(object.initMessage) ? bytesFromBase64(object.initMessage) : new Uint8Array(),
+      provenance: isSet(object.provenance) ? String(object.provenance) : "",
       ibcPortId: isSet(object.ibcPortId) ? String(object.ibcPortId) : ""
     };
   },
@@ -650,6 +718,7 @@ export const ContractInfo = {
     message.creator !== undefined && (obj.creator = message.creator);
     message.label !== undefined && (obj.label = message.label);
     message.initMessage !== undefined && (obj.initMessage = base64FromBytes(message.initMessage !== undefined ? message.initMessage : new Uint8Array()));
+    message.provenance !== undefined && (obj.provenance = message.provenance);
     message.ibcPortId !== undefined && (obj.ibcPortId = message.ibcPortId);
     return obj;
   },
@@ -660,6 +729,7 @@ export const ContractInfo = {
     message.creator = object.creator ?? "";
     message.label = object.label ?? "";
     message.initMessage = object.initMessage ?? new Uint8Array();
+    message.provenance = object.provenance ?? "";
     message.ibcPortId = object.ibcPortId ?? "";
     return message;
   }

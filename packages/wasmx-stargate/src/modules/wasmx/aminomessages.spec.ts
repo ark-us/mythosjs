@@ -5,7 +5,7 @@ import {
   MsgExecuteContract,
   MsgInstantiateContract,
   MsgStoreCode,
-  MsgStoreCodeEvm,
+  MsgDeployCode,
 } from "@ark-us/wasmxjs";
 import Long from 'long';
 
@@ -13,7 +13,7 @@ import {
   AminoMsgExecuteContract,
   AminoMsgInstantiateContract,
   AminoMsgStoreCode,
-  AminoMsgStoreCodeEvm,
+  AminoMsgDeployCode,
   createWasmAminoConverters,
 } from "./aminomessages";
 
@@ -22,7 +22,8 @@ describe("AminoTypes", () => {
     it("works for MsgStoreCode", () => {
       const msg: MsgStoreCode = {
         sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
-        wasmByteCode: fromBase64("WUVMTE9XIFNVQk1BUklORQ=="),
+        byteCode: fromBase64("WUVMTE9XIFNVQk1BUklORQ=="),
+        deps: [],
       };
       const aminoMsg = new AminoTypes(createWasmAminoConverters()).toAmino({
         typeUrl: "/mythos.wasmx.v1.MsgStoreCode",
@@ -32,28 +33,37 @@ describe("AminoTypes", () => {
         type: "wasmx/MsgStoreCode",
         value: {
           sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
-          wasm_byte_code: "WUVMTE9XIFNVQk1BUklORQ==",
+          byte_code: "WUVMTE9XIFNVQk1BUklORQ==",
           metadata: {name: "", categ: [], icon: "", author: "", site: "", abi: "", jsonSchema: ""},
+          deps: [],
         },
       };
       expect(aminoMsg).toEqual(expected);
     });
 
-    it("works for MsgStoreCodeEvm", () => {
-      const msg: MsgStoreCodeEvm = {
+    it("works for MsgDeployCode", () => {
+      const msg: MsgDeployCode = {
         sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
-        evmByteCode: fromBase64("WUVMTE9XIFNVQk1BUklORQ=="),
+        byteCode: fromBase64("WUVMTE9XIFNVQk1BUklORQ=="),
+        deps: [],
+        msg: toUtf8(`{"data":"0x"}`),
+        funds: coins(0, "ucosm"),
+        label: "label",
       };
       const aminoMsg = new AminoTypes(createWasmAminoConverters()).toAmino({
-        typeUrl: "/mythos.wasmx.v1.MsgStoreCodeEvm",
+        typeUrl: "/mythos.wasmx.v1.MsgDeployCode",
         value: msg,
       });
-      const expected: AminoMsgStoreCodeEvm = {
-        type: "wasmx/MsgStoreCodeEvm",
+      const expected: AminoMsgDeployCode = {
+        type: "wasmx/MsgDeployCode",
         value: {
           sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
-          evm_byte_code: "WUVMTE9XIFNVQk1BUklORQ==",
+          byte_code: "WUVMTE9XIFNVQk1BUklORQ==",
           metadata: {name: "", categ: [], icon: "", author: "", site: "", abi: "", jsonSchema: ""},
+          deps: [],
+          msg: {"data":"0x"},
+          funds: coins(0, "ucosm"),
+          label: "label",
         },
       };
       expect(aminoMsg).toEqual(expected);
@@ -147,14 +157,16 @@ describe("AminoTypes", () => {
         type: "wasmx/MsgStoreCode",
         value: {
           sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
-          wasm_byte_code: "WUVMTE9XIFNVQk1BUklORQ==",
+          byte_code: "WUVMTE9XIFNVQk1BUklORQ==",
           metadata: {name: "", categ: [], icon: "", author: "", site: "", abi: "", jsonSchema: ""},
+          deps: [],
         },
       };
       const msg = new AminoTypes(createWasmAminoConverters()).fromAmino(aminoMsg);
       const expectedValue: MsgStoreCode = {
         sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
-        wasmByteCode: fromBase64("WUVMTE9XIFNVQk1BUklORQ=="),
+        byteCode: fromBase64("WUVMTE9XIFNVQk1BUklORQ=="),
+        deps: [],
       };
       expect(msg).toEqual({
         typeUrl: "/mythos.wasmx.v1.MsgStoreCode",

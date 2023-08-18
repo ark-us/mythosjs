@@ -7,9 +7,19 @@ import { isSet, bytesFromBase64, base64FromBytes, Long } from "../../../helpers"
 export interface MsgStoreCode {
   /** Sender is the that actor that signed the messages */
   sender: string;
-  /** WASMByteCode can be raw or gzip compressed */
+  /**
+   * WASMByteCode can be raw or gzip compressed
+   * can be interpreted bytecode
+   * constructor + runtime
+   */
 
-  wasmByteCode: Uint8Array;
+  byteCode: Uint8Array;
+  /**
+   * deps can be hex-formatted contract addresses (32 bytes) for interpreter contracts
+   * and/or versioned interface labels
+   */
+
+  deps: string[];
   metadata?: CodeMetadata;
 }
 /** MsgStoreCode submit Wasm code to the system */
@@ -17,9 +27,19 @@ export interface MsgStoreCode {
 export interface MsgStoreCodeSDKType {
   /** Sender is the that actor that signed the messages */
   sender: string;
-  /** WASMByteCode can be raw or gzip compressed */
+  /**
+   * WASMByteCode can be raw or gzip compressed
+   * can be interpreted bytecode
+   * constructor + runtime
+   */
 
-  wasm_byte_code: Uint8Array;
+  byte_code: Uint8Array;
+  /**
+   * deps can be hex-formatted contract addresses (32 bytes) for interpreter contracts
+   * and/or versioned interface labels
+   */
+
+  deps: string[];
   metadata?: CodeMetadataSDKType;
 }
 /** MsgStoreCodeResponse returns store result data. */
@@ -40,43 +60,85 @@ export interface MsgStoreCodeResponseSDKType {
 
   checksum: Uint8Array;
 }
-/** MsgStoreCodeEvm submit Wasm code to the system */
+/** MsgStoreCode submit Wasm code to the system */
 
-export interface MsgStoreCodeEvm {
+export interface MsgDeployCode {
   /** Sender is the that actor that signed the messages */
   sender: string;
-  /** EVM bytecode */
+  /**
+   * WASMByteCode can be raw or gzip compressed
+   * can be interpreted bytecode
+   * constructor + runtime
+   */
 
-  evmByteCode: Uint8Array;
+  byteCode: Uint8Array;
+  /**
+   * deps can be hex-formatted contract addresses (32 bytes) for interpreter contracts
+   * and/or versioned interface labels
+   */
+
+  deps: string[];
   metadata?: CodeMetadata;
-}
-/** MsgStoreCodeEvm submit Wasm code to the system */
+  /**
+   * instantiation:
+   * Msg json encoded message to be passed to the contract on instantiation
+   */
 
-export interface MsgStoreCodeEvmSDKType {
+  msg: Uint8Array;
+  /** Funds coins that are transferred to the contract on instantiation */
+
+  funds: Coin[];
+  label: string;
+}
+/** MsgStoreCode submit Wasm code to the system */
+
+export interface MsgDeployCodeSDKType {
   /** Sender is the that actor that signed the messages */
   sender: string;
-  /** EVM bytecode */
+  /**
+   * WASMByteCode can be raw or gzip compressed
+   * can be interpreted bytecode
+   * constructor + runtime
+   */
 
-  evm_byte_code: Uint8Array;
+  byte_code: Uint8Array;
+  /**
+   * deps can be hex-formatted contract addresses (32 bytes) for interpreter contracts
+   * and/or versioned interface labels
+   */
+
+  deps: string[];
   metadata?: CodeMetadataSDKType;
-}
-/** MsgStoreCodeEvmResponse returns store result data. */
+  /**
+   * instantiation:
+   * Msg json encoded message to be passed to the contract on instantiation
+   */
 
-export interface MsgStoreCodeEvmResponse {
+  msg: Uint8Array;
+  /** Funds coins that are transferred to the contract on instantiation */
+
+  funds: CoinSDKType[];
+  label: string;
+}
+/** MsgDeployCodeResponse returns store result data. */
+
+export interface MsgDeployCodeResponse {
   /** CodeID is the reference to the stored WASM code */
   codeId: Long;
   /** Checksum is the sha256 hash of the stored code */
 
   checksum: Uint8Array;
+  address: string;
 }
-/** MsgStoreCodeEvmResponse returns store result data. */
+/** MsgDeployCodeResponse returns store result data. */
 
-export interface MsgStoreCodeEvmResponseSDKType {
+export interface MsgDeployCodeResponseSDKType {
   /** CodeID is the reference to the stored WASM code */
   code_id: Long;
   /** Checksum is the sha256 hash of the stored code */
 
   checksum: Uint8Array;
+  address: string;
 }
 /**
  * MsgInstantiateContract create a new smart contract instance for the given
@@ -89,15 +151,13 @@ export interface MsgInstantiateContract {
   /** CodeID is the reference to the stored WASM code */
 
   codeId: Long;
-  /** Label is optional metadata to be stored with a contract instance. */
-
-  label: string;
   /** Msg json encoded message to be passed to the contract on instantiation */
 
   msg: Uint8Array;
   /** Funds coins that are transferred to the contract on instantiation */
 
   funds: Coin[];
+  label: string;
 }
 /**
  * MsgInstantiateContract create a new smart contract instance for the given
@@ -110,15 +170,13 @@ export interface MsgInstantiateContractSDKType {
   /** CodeID is the reference to the stored WASM code */
 
   code_id: Long;
-  /** Label is optional metadata to be stored with a contract instance. */
-
-  label: string;
   /** Msg json encoded message to be passed to the contract on instantiation */
 
   msg: Uint8Array;
   /** Funds coins that are transferred to the contract on instantiation */
 
   funds: CoinSDKType[];
+  label: string;
 }
 /**
  * MsgInstantiateContract2 create a new smart contract instance for the given
@@ -131,15 +189,13 @@ export interface MsgInstantiateContract2 {
   /** Admin is an optional address that can execute migrations */
 
   codeId: Long;
-  /** Label is optional metadata to be stored with a contract instance. */
-
-  label: string;
   /** Msg json encoded message to be passed to the contract on instantiation */
 
   msg: Uint8Array;
   /** Funds coins that are transferred to the contract on instantiation */
 
   funds: Coin[];
+  label: string;
   /** Salt is an arbitrary value provided by the sender. Size can be 1 to 64. */
 
   salt: Uint8Array;
@@ -161,15 +217,13 @@ export interface MsgInstantiateContract2SDKType {
   /** Admin is an optional address that can execute migrations */
 
   code_id: Long;
-  /** Label is optional metadata to be stored with a contract instance. */
-
-  label: string;
   /** Msg json encoded message to be passed to the contract on instantiation */
 
   msg: Uint8Array;
   /** Funds coins that are transferred to the contract on instantiation */
 
   funds: CoinSDKType[];
+  label: string;
   /** Salt is an arbitrary value provided by the sender. Size can be 1 to 64. */
 
   salt: Uint8Array;
@@ -392,7 +446,8 @@ export interface MsgCompileContractResponseSDKType {}
 function createBaseMsgStoreCode(): MsgStoreCode {
   return {
     sender: "",
-    wasmByteCode: new Uint8Array(),
+    byteCode: new Uint8Array(),
+    deps: [],
     metadata: undefined
   };
 }
@@ -403,12 +458,16 @@ export const MsgStoreCode = {
       writer.uint32(10).string(message.sender);
     }
 
-    if (message.wasmByteCode.length !== 0) {
-      writer.uint32(18).bytes(message.wasmByteCode);
+    if (message.byteCode.length !== 0) {
+      writer.uint32(18).bytes(message.byteCode);
+    }
+
+    for (const v of message.deps) {
+      writer.uint32(26).string(v!);
     }
 
     if (message.metadata !== undefined) {
-      CodeMetadata.encode(message.metadata, writer.uint32(26).fork()).ldelim();
+      CodeMetadata.encode(message.metadata, writer.uint32(34).fork()).ldelim();
     }
 
     return writer;
@@ -428,10 +487,14 @@ export const MsgStoreCode = {
           break;
 
         case 2:
-          message.wasmByteCode = reader.bytes();
+          message.byteCode = reader.bytes();
           break;
 
         case 3:
+          message.deps.push(reader.string());
+          break;
+
+        case 4:
           message.metadata = CodeMetadata.decode(reader, reader.uint32());
           break;
 
@@ -447,7 +510,8 @@ export const MsgStoreCode = {
   fromJSON(object: any): MsgStoreCode {
     return {
       sender: isSet(object.sender) ? String(object.sender) : "",
-      wasmByteCode: isSet(object.wasmByteCode) ? bytesFromBase64(object.wasmByteCode) : new Uint8Array(),
+      byteCode: isSet(object.byteCode) ? bytesFromBase64(object.byteCode) : new Uint8Array(),
+      deps: Array.isArray(object?.deps) ? object.deps.map((e: any) => String(e)) : [],
       metadata: isSet(object.metadata) ? CodeMetadata.fromJSON(object.metadata) : undefined
     };
   },
@@ -455,7 +519,14 @@ export const MsgStoreCode = {
   toJSON(message: MsgStoreCode): unknown {
     const obj: any = {};
     message.sender !== undefined && (obj.sender = message.sender);
-    message.wasmByteCode !== undefined && (obj.wasmByteCode = base64FromBytes(message.wasmByteCode !== undefined ? message.wasmByteCode : new Uint8Array()));
+    message.byteCode !== undefined && (obj.byteCode = base64FromBytes(message.byteCode !== undefined ? message.byteCode : new Uint8Array()));
+
+    if (message.deps) {
+      obj.deps = message.deps.map(e => e);
+    } else {
+      obj.deps = [];
+    }
+
     message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadata.toJSON(message.metadata) : undefined);
     return obj;
   },
@@ -463,7 +534,8 @@ export const MsgStoreCode = {
   fromPartial(object: Partial<MsgStoreCode>): MsgStoreCode {
     const message = createBaseMsgStoreCode();
     message.sender = object.sender ?? "";
-    message.wasmByteCode = object.wasmByteCode ?? new Uint8Array();
+    message.byteCode = object.byteCode ?? new Uint8Array();
+    message.deps = object.deps?.map(e => e) || [];
     message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadata.fromPartial(object.metadata) : undefined;
     return message;
   }
@@ -539,35 +611,55 @@ export const MsgStoreCodeResponse = {
 
 };
 
-function createBaseMsgStoreCodeEvm(): MsgStoreCodeEvm {
+function createBaseMsgDeployCode(): MsgDeployCode {
   return {
     sender: "",
-    evmByteCode: new Uint8Array(),
-    metadata: undefined
+    byteCode: new Uint8Array(),
+    deps: [],
+    metadata: undefined,
+    msg: new Uint8Array(),
+    funds: [],
+    label: ""
   };
 }
 
-export const MsgStoreCodeEvm = {
-  encode(message: MsgStoreCodeEvm, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const MsgDeployCode = {
+  encode(message: MsgDeployCode, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.sender !== "") {
       writer.uint32(10).string(message.sender);
     }
 
-    if (message.evmByteCode.length !== 0) {
-      writer.uint32(18).bytes(message.evmByteCode);
+    if (message.byteCode.length !== 0) {
+      writer.uint32(18).bytes(message.byteCode);
+    }
+
+    for (const v of message.deps) {
+      writer.uint32(26).string(v!);
     }
 
     if (message.metadata !== undefined) {
-      CodeMetadata.encode(message.metadata, writer.uint32(26).fork()).ldelim();
+      CodeMetadata.encode(message.metadata, writer.uint32(34).fork()).ldelim();
+    }
+
+    if (message.msg.length !== 0) {
+      writer.uint32(42).bytes(message.msg);
+    }
+
+    for (const v of message.funds) {
+      Coin.encode(v!, writer.uint32(50).fork()).ldelim();
+    }
+
+    if (message.label !== "") {
+      writer.uint32(58).string(message.label);
     }
 
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgStoreCodeEvm {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeployCode {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgStoreCodeEvm();
+    const message = createBaseMsgDeployCode();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -578,11 +670,27 @@ export const MsgStoreCodeEvm = {
           break;
 
         case 2:
-          message.evmByteCode = reader.bytes();
+          message.byteCode = reader.bytes();
           break;
 
         case 3:
+          message.deps.push(reader.string());
+          break;
+
+        case 4:
           message.metadata = CodeMetadata.decode(reader, reader.uint32());
+          break;
+
+        case 5:
+          message.msg = reader.bytes();
+          break;
+
+        case 6:
+          message.funds.push(Coin.decode(reader, reader.uint32()));
+          break;
+
+        case 7:
+          message.label = reader.string();
           break;
 
         default:
@@ -594,41 +702,66 @@ export const MsgStoreCodeEvm = {
     return message;
   },
 
-  fromJSON(object: any): MsgStoreCodeEvm {
+  fromJSON(object: any): MsgDeployCode {
     return {
       sender: isSet(object.sender) ? String(object.sender) : "",
-      evmByteCode: isSet(object.evmByteCode) ? bytesFromBase64(object.evmByteCode) : new Uint8Array(),
-      metadata: isSet(object.metadata) ? CodeMetadata.fromJSON(object.metadata) : undefined
+      byteCode: isSet(object.byteCode) ? bytesFromBase64(object.byteCode) : new Uint8Array(),
+      deps: Array.isArray(object?.deps) ? object.deps.map((e: any) => String(e)) : [],
+      metadata: isSet(object.metadata) ? CodeMetadata.fromJSON(object.metadata) : undefined,
+      msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array(),
+      funds: Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : [],
+      label: isSet(object.label) ? String(object.label) : ""
     };
   },
 
-  toJSON(message: MsgStoreCodeEvm): unknown {
+  toJSON(message: MsgDeployCode): unknown {
     const obj: any = {};
     message.sender !== undefined && (obj.sender = message.sender);
-    message.evmByteCode !== undefined && (obj.evmByteCode = base64FromBytes(message.evmByteCode !== undefined ? message.evmByteCode : new Uint8Array()));
+    message.byteCode !== undefined && (obj.byteCode = base64FromBytes(message.byteCode !== undefined ? message.byteCode : new Uint8Array()));
+
+    if (message.deps) {
+      obj.deps = message.deps.map(e => e);
+    } else {
+      obj.deps = [];
+    }
+
     message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadata.toJSON(message.metadata) : undefined);
+    message.msg !== undefined && (obj.msg = base64FromBytes(message.msg !== undefined ? message.msg : new Uint8Array()));
+
+    if (message.funds) {
+      obj.funds = message.funds.map(e => e ? Coin.toJSON(e) : undefined);
+    } else {
+      obj.funds = [];
+    }
+
+    message.label !== undefined && (obj.label = message.label);
     return obj;
   },
 
-  fromPartial(object: Partial<MsgStoreCodeEvm>): MsgStoreCodeEvm {
-    const message = createBaseMsgStoreCodeEvm();
+  fromPartial(object: Partial<MsgDeployCode>): MsgDeployCode {
+    const message = createBaseMsgDeployCode();
     message.sender = object.sender ?? "";
-    message.evmByteCode = object.evmByteCode ?? new Uint8Array();
+    message.byteCode = object.byteCode ?? new Uint8Array();
+    message.deps = object.deps?.map(e => e) || [];
     message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadata.fromPartial(object.metadata) : undefined;
+    message.msg = object.msg ?? new Uint8Array();
+    message.funds = object.funds?.map(e => Coin.fromPartial(e)) || [];
+    message.label = object.label ?? "";
     return message;
   }
 
 };
 
-function createBaseMsgStoreCodeEvmResponse(): MsgStoreCodeEvmResponse {
+function createBaseMsgDeployCodeResponse(): MsgDeployCodeResponse {
   return {
     codeId: Long.UZERO,
-    checksum: new Uint8Array()
+    checksum: new Uint8Array(),
+    address: ""
   };
 }
 
-export const MsgStoreCodeEvmResponse = {
-  encode(message: MsgStoreCodeEvmResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const MsgDeployCodeResponse = {
+  encode(message: MsgDeployCodeResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (!message.codeId.isZero()) {
       writer.uint32(8).uint64(message.codeId);
     }
@@ -637,13 +770,17 @@ export const MsgStoreCodeEvmResponse = {
       writer.uint32(18).bytes(message.checksum);
     }
 
+    if (message.address !== "") {
+      writer.uint32(26).string(message.address);
+    }
+
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): MsgStoreCodeEvmResponse {
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeployCodeResponse {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseMsgStoreCodeEvmResponse();
+    const message = createBaseMsgDeployCodeResponse();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -657,6 +794,10 @@ export const MsgStoreCodeEvmResponse = {
           message.checksum = reader.bytes();
           break;
 
+        case 3:
+          message.address = reader.string();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -666,24 +807,27 @@ export const MsgStoreCodeEvmResponse = {
     return message;
   },
 
-  fromJSON(object: any): MsgStoreCodeEvmResponse {
+  fromJSON(object: any): MsgDeployCodeResponse {
     return {
       codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO,
-      checksum: isSet(object.checksum) ? bytesFromBase64(object.checksum) : new Uint8Array()
+      checksum: isSet(object.checksum) ? bytesFromBase64(object.checksum) : new Uint8Array(),
+      address: isSet(object.address) ? String(object.address) : ""
     };
   },
 
-  toJSON(message: MsgStoreCodeEvmResponse): unknown {
+  toJSON(message: MsgDeployCodeResponse): unknown {
     const obj: any = {};
     message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
     message.checksum !== undefined && (obj.checksum = base64FromBytes(message.checksum !== undefined ? message.checksum : new Uint8Array()));
+    message.address !== undefined && (obj.address = message.address);
     return obj;
   },
 
-  fromPartial(object: Partial<MsgStoreCodeEvmResponse>): MsgStoreCodeEvmResponse {
-    const message = createBaseMsgStoreCodeEvmResponse();
+  fromPartial(object: Partial<MsgDeployCodeResponse>): MsgDeployCodeResponse {
+    const message = createBaseMsgDeployCodeResponse();
     message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
     message.checksum = object.checksum ?? new Uint8Array();
+    message.address = object.address ?? "";
     return message;
   }
 
@@ -693,9 +837,9 @@ function createBaseMsgInstantiateContract(): MsgInstantiateContract {
   return {
     sender: "",
     codeId: Long.UZERO,
-    label: "",
     msg: new Uint8Array(),
-    funds: []
+    funds: [],
+    label: ""
   };
 }
 
@@ -709,16 +853,16 @@ export const MsgInstantiateContract = {
       writer.uint32(16).uint64(message.codeId);
     }
 
-    if (message.label !== "") {
-      writer.uint32(26).string(message.label);
-    }
-
     if (message.msg.length !== 0) {
-      writer.uint32(34).bytes(message.msg);
+      writer.uint32(26).bytes(message.msg);
     }
 
     for (const v of message.funds) {
-      Coin.encode(v!, writer.uint32(50).fork()).ldelim();
+      Coin.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+
+    if (message.label !== "") {
+      writer.uint32(42).string(message.label);
     }
 
     return writer;
@@ -742,15 +886,15 @@ export const MsgInstantiateContract = {
           break;
 
         case 3:
-          message.label = reader.string();
-          break;
-
-        case 4:
           message.msg = reader.bytes();
           break;
 
-        case 6:
+        case 4:
           message.funds.push(Coin.decode(reader, reader.uint32()));
+          break;
+
+        case 5:
+          message.label = reader.string();
           break;
 
         default:
@@ -766,9 +910,9 @@ export const MsgInstantiateContract = {
     return {
       sender: isSet(object.sender) ? String(object.sender) : "",
       codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO,
-      label: isSet(object.label) ? String(object.label) : "",
       msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array(),
-      funds: Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : []
+      funds: Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : [],
+      label: isSet(object.label) ? String(object.label) : ""
     };
   },
 
@@ -776,7 +920,6 @@ export const MsgInstantiateContract = {
     const obj: any = {};
     message.sender !== undefined && (obj.sender = message.sender);
     message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
-    message.label !== undefined && (obj.label = message.label);
     message.msg !== undefined && (obj.msg = base64FromBytes(message.msg !== undefined ? message.msg : new Uint8Array()));
 
     if (message.funds) {
@@ -785,6 +928,7 @@ export const MsgInstantiateContract = {
       obj.funds = [];
     }
 
+    message.label !== undefined && (obj.label = message.label);
     return obj;
   },
 
@@ -792,9 +936,9 @@ export const MsgInstantiateContract = {
     const message = createBaseMsgInstantiateContract();
     message.sender = object.sender ?? "";
     message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
-    message.label = object.label ?? "";
     message.msg = object.msg ?? new Uint8Array();
     message.funds = object.funds?.map(e => Coin.fromPartial(e)) || [];
+    message.label = object.label ?? "";
     return message;
   }
 
@@ -804,9 +948,9 @@ function createBaseMsgInstantiateContract2(): MsgInstantiateContract2 {
   return {
     sender: "",
     codeId: Long.UZERO,
-    label: "",
     msg: new Uint8Array(),
     funds: [],
+    label: "",
     salt: new Uint8Array(),
     fixMsg: false
   };
@@ -822,16 +966,16 @@ export const MsgInstantiateContract2 = {
       writer.uint32(16).uint64(message.codeId);
     }
 
-    if (message.label !== "") {
-      writer.uint32(26).string(message.label);
-    }
-
     if (message.msg.length !== 0) {
-      writer.uint32(34).bytes(message.msg);
+      writer.uint32(26).bytes(message.msg);
     }
 
     for (const v of message.funds) {
-      Coin.encode(v!, writer.uint32(42).fork()).ldelim();
+      Coin.encode(v!, writer.uint32(34).fork()).ldelim();
+    }
+
+    if (message.label !== "") {
+      writer.uint32(42).string(message.label);
     }
 
     if (message.salt.length !== 0) {
@@ -863,15 +1007,15 @@ export const MsgInstantiateContract2 = {
           break;
 
         case 3:
-          message.label = reader.string();
-          break;
-
-        case 4:
           message.msg = reader.bytes();
           break;
 
-        case 5:
+        case 4:
           message.funds.push(Coin.decode(reader, reader.uint32()));
+          break;
+
+        case 5:
+          message.label = reader.string();
           break;
 
         case 6:
@@ -895,9 +1039,9 @@ export const MsgInstantiateContract2 = {
     return {
       sender: isSet(object.sender) ? String(object.sender) : "",
       codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO,
-      label: isSet(object.label) ? String(object.label) : "",
       msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array(),
       funds: Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : [],
+      label: isSet(object.label) ? String(object.label) : "",
       salt: isSet(object.salt) ? bytesFromBase64(object.salt) : new Uint8Array(),
       fixMsg: isSet(object.fixMsg) ? Boolean(object.fixMsg) : false
     };
@@ -907,7 +1051,6 @@ export const MsgInstantiateContract2 = {
     const obj: any = {};
     message.sender !== undefined && (obj.sender = message.sender);
     message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
-    message.label !== undefined && (obj.label = message.label);
     message.msg !== undefined && (obj.msg = base64FromBytes(message.msg !== undefined ? message.msg : new Uint8Array()));
 
     if (message.funds) {
@@ -916,6 +1059,7 @@ export const MsgInstantiateContract2 = {
       obj.funds = [];
     }
 
+    message.label !== undefined && (obj.label = message.label);
     message.salt !== undefined && (obj.salt = base64FromBytes(message.salt !== undefined ? message.salt : new Uint8Array()));
     message.fixMsg !== undefined && (obj.fixMsg = message.fixMsg);
     return obj;
@@ -925,9 +1069,9 @@ export const MsgInstantiateContract2 = {
     const message = createBaseMsgInstantiateContract2();
     message.sender = object.sender ?? "";
     message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
-    message.label = object.label ?? "";
     message.msg = object.msg ?? new Uint8Array();
     message.funds = object.funds?.map(e => Coin.fromPartial(e)) || [];
+    message.label = object.label ?? "";
     message.salt = object.salt ?? new Uint8Array();
     message.fixMsg = object.fixMsg ?? false;
     return message;

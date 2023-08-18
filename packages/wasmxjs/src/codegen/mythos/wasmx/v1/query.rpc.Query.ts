@@ -22,7 +22,7 @@ export interface Query {
   /** Code gets the binary code and metadata for a singe wasm code */
 
   code(request: QueryCodeRequest): Promise<QueryCodeResponse>;
-  /** CodeInfo gets the binary code and metadata for a singe wasm code */
+  /** CodeInfo gets the metadata for a singe wasm code */
 
   codeInfo(request: QueryCodeInfoRequest): Promise<QueryCodeInfoResponse>;
   /** Codes gets the metadata for all stored wasm codes */
