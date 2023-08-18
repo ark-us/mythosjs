@@ -39,7 +39,7 @@ export declare const mythosAminoConverters: {
     };
     "/mythos.wasmx.v1.MsgStoreCode": {
         aminoType: string;
-        toAmino: ({ sender, byteCode, deps, metadata }: import("./wasmx/v1/tx").MsgStoreCode) => {
+        toAmino: ({ sender, byteCode, deps, metadata }: import(".").MsgStoreCode) => {
             sender: string;
             byte_code: Uint8Array;
             deps: string[];
@@ -74,11 +74,11 @@ export declare const mythosAminoConverters: {
                     address: string;
                 };
             };
-        }) => import("./wasmx/v1/tx").MsgStoreCode;
+        }) => import(".").MsgStoreCode;
     };
     "/mythos.wasmx.v1.MsgDeployCode": {
         aminoType: string;
-        toAmino: ({ sender, byteCode, deps, metadata, msg, funds, label }: import("./wasmx/v1/tx").MsgDeployCode) => {
+        toAmino: ({ sender, byteCode, deps, metadata, msg, funds, label }: import(".").MsgDeployCode) => {
             sender: string;
             byte_code: Uint8Array;
             deps: string[];
@@ -125,11 +125,11 @@ export declare const mythosAminoConverters: {
                 amount: string;
             }[];
             label: string;
-        }) => import("./wasmx/v1/tx").MsgDeployCode;
+        }) => import(".").MsgDeployCode;
     };
     "/mythos.wasmx.v1.MsgInstantiateContract": {
         aminoType: string;
-        toAmino: ({ sender, codeId, msg, funds, label }: import("./wasmx/v1/tx").MsgInstantiateContract) => {
+        toAmino: ({ sender, codeId, msg, funds, label }: import(".").MsgInstantiateContract) => {
             sender: string;
             code_id: string;
             msg: Uint8Array;
@@ -148,11 +148,11 @@ export declare const mythosAminoConverters: {
                 amount: string;
             }[];
             label: string;
-        }) => import("./wasmx/v1/tx").MsgInstantiateContract;
+        }) => import(".").MsgInstantiateContract;
     };
     "/mythos.wasmx.v1.MsgInstantiateContract2": {
         aminoType: string;
-        toAmino: ({ sender, codeId, msg, funds, label, salt, fixMsg }: import("./wasmx/v1/tx").MsgInstantiateContract2) => {
+        toAmino: ({ sender, codeId, msg, funds, label, salt, fixMsg }: import(".").MsgInstantiateContract2) => {
             sender: string;
             code_id: string;
             msg: Uint8Array;
@@ -175,11 +175,11 @@ export declare const mythosAminoConverters: {
             label: string;
             salt: Uint8Array;
             fix_msg: boolean;
-        }) => import("./wasmx/v1/tx").MsgInstantiateContract2;
+        }) => import(".").MsgInstantiateContract2;
     };
     "/mythos.wasmx.v1.MsgExecuteContract": {
         aminoType: string;
-        toAmino: ({ sender, contract, msg, funds, dependencies }: import("./wasmx/v1/tx").MsgExecuteContract) => {
+        toAmino: ({ sender, contract, msg, funds, dependencies }: import(".").MsgExecuteContract) => {
             sender: string;
             contract: string;
             msg: Uint8Array;
@@ -198,11 +198,11 @@ export declare const mythosAminoConverters: {
                 amount: string;
             }[];
             dependencies: string[];
-        }) => import("./wasmx/v1/tx").MsgExecuteContract;
+        }) => import(".").MsgExecuteContract;
     };
     "/mythos.wasmx.v1.MsgExecuteWithOriginContract": {
         aminoType: string;
-        toAmino: ({ origin, sender, contract, msg, funds }: import("./wasmx/v1/tx").MsgExecuteWithOriginContract) => {
+        toAmino: ({ origin, sender, contract, msg, funds }: import(".").MsgExecuteWithOriginContract) => {
             origin: string;
             sender: string;
             contract: string;
@@ -221,11 +221,11 @@ export declare const mythosAminoConverters: {
                 denom: string;
                 amount: string;
             }[];
-        }) => import("./wasmx/v1/tx").MsgExecuteWithOriginContract;
+        }) => import(".").MsgExecuteWithOriginContract;
     };
     "/mythos.wasmx.v1.MsgExecuteDelegateContract": {
         aminoType: string;
-        toAmino: ({ origin, sender, caller, codeContract, storageContract, msg, funds }: import("./wasmx/v1/tx").MsgExecuteDelegateContract) => {
+        toAmino: ({ origin, sender, caller, codeContract, storageContract, msg, funds }: import(".").MsgExecuteDelegateContract) => {
             origin: string;
             sender: string;
             caller: string;
@@ -248,18 +248,18 @@ export declare const mythosAminoConverters: {
                 denom: string;
                 amount: string;
             }[];
-        }) => import("./wasmx/v1/tx").MsgExecuteDelegateContract;
+        }) => import(".").MsgExecuteDelegateContract;
     };
     "/mythos.wasmx.v1.MsgCompileContract": {
         aminoType: string;
-        toAmino: ({ sender, codeId }: import("./wasmx/v1/tx").MsgCompileContract) => {
+        toAmino: ({ sender, codeId }: import(".").MsgCompileContract) => {
             sender: string;
             codeId: string;
         };
         fromAmino: ({ sender, codeId }: {
             sender: string;
             codeId: string;
-        }) => import("./wasmx/v1/tx").MsgCompileContract;
+        }) => import(".").MsgCompileContract;
     };
 };
 export declare const mythosProtoRegistry: ReadonlyArray<[string, GeneratedType]>;

@@ -275,6 +275,7 @@ export class SigningWasmXClient extends WasmXClient {
   public async upload(
     senderAddress: string,
     wasmCode: Uint8Array,
+    deps: string[],
     metadata: object,
     fee: StdFee | "auto" | number,
     memo = "",
@@ -285,6 +286,7 @@ export class SigningWasmXClient extends WasmXClient {
       value: MsgStoreCode.fromPartial({
         sender: senderAddress,
         byteCode: compressed,
+        deps: deps,
         metadata: CodeMetadata.fromPartial(metadata),
       }),
     };
