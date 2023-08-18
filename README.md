@@ -13,4 +13,5 @@ yarn publish
 ```
 cd packages/wasmx-stargate
 
+yarn build
 ```
