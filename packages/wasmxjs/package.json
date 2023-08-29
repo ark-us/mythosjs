@@ -1,6 +1,6 @@
 {
   "name": "@ark-us/wasmxjs",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Typescript Protobuf Messages for Mythos",
   "author": "Loredana Cirstea <loredana.cirstea@gmail.com>",
   "homepage": "https://github.com/ark-us/wasmxjs#readme",
