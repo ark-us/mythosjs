@@ -2,7 +2,7 @@
 
 ```
 cd packages/wasmxjs
-
+yarn
 yarn buidl
 yarn codegen
 
@@ -12,6 +12,6 @@ yarn publish
 
 ```
 cd packages/wasmx-stargate
-
+yarn
 yarn build
 ```
