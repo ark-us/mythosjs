@@ -10,7 +10,7 @@ import {
   BroadcastTxError,
   Coin,
   DeliverTxResponse,
-  fromTendermint34Event,
+  fromTendermintEvent,
   IndexedTx,
   isSearchByHeightQuery,
   isSearchBySentFromOrToQuery,
@@ -295,6 +295,7 @@ export class WasmXClient {
             events: result.events,
             gasUsed: result.gasUsed,
             gasWanted: result.gasWanted,
+            txIndex: 0,
           }
         : pollForTx(txId);
     };
@@ -481,11 +482,12 @@ export class WasmXClient {
         height: tx.height,
         hash: toHex(tx.hash).toUpperCase(),
         code: tx.result.code,
-        events: tx.result.events.map(fromTendermint34Event),
+        events: tx.result.events.map(fromTendermintEvent),
         rawLog: tx.result.log || "",
         tx: tx.tx,
         gasUsed: tx.result.gasUsed,
         gasWanted: tx.result.gasWanted,
+        txIndex: tx.result.index,
       };
     });
   }
