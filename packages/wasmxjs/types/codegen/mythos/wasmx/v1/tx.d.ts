@@ -1,3 +1,4 @@
+/// <reference types="long" />
 import { CodeMetadata, CodeMetadataSDKType } from "./contract";
 import { Coin, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";

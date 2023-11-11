@@ -1,3 +1,4 @@
+/// <reference types="long" />
 import * as _m0 from "protobufjs/minimal";
 import { Long } from "../../helpers";
 export declare enum FieldDescriptorProto_Type {

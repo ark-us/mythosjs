@@ -1,3 +1,4 @@
+/// <reference types="long" />
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
 import { Params, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";

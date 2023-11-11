@@ -1,3 +1,4 @@
+/// <reference types="long" />
 import { PublicKey, PublicKeySDKType } from "../crypto/keys";
 import * as _m0 from "protobufjs/minimal";
 import { Long } from "../../helpers";

@@ -1,3 +1,4 @@
+/// <reference types="long" />
 import { Params, ParamsSDKType } from "./params";
 import { CodeMetadata, CodeMetadataSDKType, CodeInfo, CodeInfoSDKType, ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType } from "./contract";
 import * as _m0 from "protobufjs/minimal";
