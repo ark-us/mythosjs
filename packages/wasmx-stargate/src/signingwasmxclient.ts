@@ -295,8 +295,13 @@ export class SigningWasmXClient extends WasmXClient {
     if (isDeliverTxFailure(result)) {
       throw new Error(createDeliverTxResponseErrorMessage(result));
     }
-    const parsedLogs = logs.parseRawLog(result.rawLog);
-    const codeIdAttr = logs.findAttribute(parsedLogs, "store_code", "code_id");
+    console.log("result", result);
+    const parsedLogs = logs.parseRawLog(result.rawLog || "[]");
+    // const codeIdAttr = logs.findAttribute(parsedLogs, "store_code", "code_id");
+    const storeCodeEvent = result.events.find((ev: any) => ev.type === "store_code")
+    if (!storeCodeEvent) throw new Error("No store_code event found in receipt: " + JSON.stringify(result));
+    const codeIdAttr = storeCodeEvent.attributes.find((attr: any) => attr.key === "code_id");
+    if (!codeIdAttr) throw new Error("No code_id attribute found in event: " + JSON.stringify(result));
     return {
       originalSize: wasmCode.length,
       originalChecksum: toHex(sha256(wasmCode)),
@@ -340,9 +345,20 @@ export class SigningWasmXClient extends WasmXClient {
     if (isDeliverTxFailure(result)) {
       throw new Error(createDeliverTxResponseErrorMessage(result));
     }
-    const parsedLogs = logs.parseRawLog(result.rawLog);
-    const codeIdAttr = logs.findAttribute(parsedLogs, "store_code", "code_id");
-    const contractAddress = logs.findAttribute(parsedLogs, "instantiate", "contract_address");
+    const parsedLogs = logs.parseRawLog(result.rawLog || "[]");
+
+    // const codeIdAttr = logs.findAttribute(parsedLogs, "store_code", "code_id");
+    const storeCodeEvent = result.events.find((ev: any) => ev.type === "store_code")
+    if (!storeCodeEvent) throw new Error("No store_code event found in receipt: " + JSON.stringify(result));
+    const codeIdAttr = storeCodeEvent.attributes.find((attr: any) => attr.key === "code_id");
+    if (!codeIdAttr) throw new Error("No code_id attribute found in store_code event: " + JSON.stringify(result));
+
+    // const contractAddress = logs.findAttribute(parsedLogs, "instantiate", "contract_address");
+    const instantiateEvent = result.events.find((ev: any) => ev.type === "instantiate")
+    if (!instantiateEvent) throw new Error("No instantiate event found in receipt: " + JSON.stringify(result));
+    const contractAddress = instantiateEvent.attributes.find((attr: any) => attr.key === "contract_address");
+    if (!contractAddress) throw new Error("No contract_address attribute found in instantiate event: " + JSON.stringify(result));
+
     return {
       checksum: toHex(sha256(code)),
       codeId: Number.parseInt(codeIdAttr.value, 10),
@@ -379,8 +395,14 @@ export class SigningWasmXClient extends WasmXClient {
     if (isDeliverTxFailure(result)) {
       throw new Error(createDeliverTxResponseErrorMessage(result));
     }
-    const parsedLogs = logs.parseRawLog(result.rawLog);
-    const contractAddressAttr = logs.findAttribute(parsedLogs, "instantiate", "contract_address");
+    const parsedLogs = logs.parseRawLog(result.rawLog || "[]");
+
+    // const contractAddressAttr = logs.findAttribute(parsedLogs, "instantiate", "contract_address");
+    const instantiateEvent = result.events.find((ev: any) => ev.type === "instantiate")
+    if (!instantiateEvent) throw new Error("No instantiate event found in receipt: " + JSON.stringify(result));
+    const contractAddressAttr = instantiateEvent.attributes.find((attr: any) => attr.key === "contract_address");
+    if (!contractAddressAttr) throw new Error("No contract_address attribute found in instantiate event: " + JSON.stringify(result));
+
     return {
       contractAddress: contractAddressAttr.value,
       logs: parsedLogs,
@@ -431,7 +453,7 @@ export class SigningWasmXClient extends WasmXClient {
       throw new Error(createDeliverTxResponseErrorMessage(result));
     }
     return {
-      logs: logs.parseRawLog(result.rawLog),
+      logs: logs.parseRawLog(result.rawLog || "[]"),
       height: result.height,
       transactionHash: result.transactionHash,
       events: result.events,
