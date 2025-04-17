@@ -1,0 +1,69 @@
+syntax = "proto3";
+package mythos.network.v1;
+
+import "gogoproto/gogo.proto";
+import "google/protobuf/any.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/v1beta1/coin.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "mythos/network/v1/custom.proto";
+
+option go_package = "github.com/loredanacirstea/wasmx/x/network/types";
+option (gogoproto.goproto_getters_all) = false;
+option (gogoproto.equal_all) = false;
+
+// Query provides defines the gRPC querier service
+service Query {
+  // ContractCall
+  rpc ContractCall(QueryContractCallRequest) returns (QueryContractCallResponse) {
+    option (google.api.http).get =
+        "/network/v1/{multi_chain_id}/contract/{address}/call/{query_data}";
+  }
+
+  rpc QueryMultiChain(QueryMultiChainRequest) returns (QueryMultiChainResponse) {
+    option (google.api.http).get =
+        "/network/v1/{multi_chain_id}/data/{query_data}";
+  }
+}
+
+// QueryMultiChainRequest is the request type for the
+// Query/QueryMultiChain RPC method
+message QueryMultiChainRequest {
+  option (gogoproto.equal)           = false;
+  option (gogoproto.goproto_getters) = true;
+
+  string multi_chain_id = 1;
+  bytes query_data = 2 [ (gogoproto.casttype) = "RawContractMessage" ];
+}
+
+// QueryMultiChainResponse is the response type for the
+message QueryMultiChainResponse {
+  // Data contains the json data returned from the smart contract
+  bytes data = 1 [ (gogoproto.casttype) = "RawContractMessage" ];
+}
+
+// QueryContractCallRequest is the request type for the
+// Query/ContractCall RPC method
+message QueryContractCallRequest {
+  string multi_chain_id = 1;
+  // Sender is the that actor that signed the messages
+  string sender = 2;
+  // Address is the address of the smart contract
+  string address = 3;
+  bytes query_data = 4 [ (gogoproto.casttype) = "RawContractMessage" ];
+  // Funds coins that are transferred to the contract on execution
+  repeated cosmos.base.v1beta1.Coin funds = 5 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
+  // Array of either hex-encoded contract addresses or contract labels
+  // on which the execution of this message depends on
+  repeated string dependencies = 6;
+}
+
+// QueryContractCallResponse is the response type for the
+// Query/ContractCall RPC method
+message QueryContractCallResponse {
+  // Data contains the json data returned from the smart contract
+  bytes data = 1 [ (gogoproto.casttype) = "RawContractMessage" ];
+}

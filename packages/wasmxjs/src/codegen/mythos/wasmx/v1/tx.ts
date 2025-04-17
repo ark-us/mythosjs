@@ -1,4 +1,4 @@
-import { CodeMetadata, CodeMetadataSDKType } from "./contract";
+import { CodeMetadataPB, CodeMetadataPBSDKType } from "./contract";
 import { Coin, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, bytesFromBase64, base64FromBytes, Long } from "../../../helpers";
@@ -20,7 +20,7 @@ export interface MsgStoreCode {
    */
 
   deps: string[];
-  metadata?: CodeMetadata;
+  metadata?: CodeMetadataPB;
 }
 /** MsgStoreCode submit Wasm code to the system */
 
@@ -40,7 +40,7 @@ export interface MsgStoreCodeSDKType {
    */
 
   deps: string[];
-  metadata?: CodeMetadataSDKType;
+  metadata?: CodeMetadataPBSDKType;
 }
 /** MsgStoreCodeResponse returns store result data. */
 
@@ -78,7 +78,7 @@ export interface MsgDeployCode {
    */
 
   deps: string[];
-  metadata?: CodeMetadata;
+  metadata?: CodeMetadataPB;
   /**
    * instantiation:
    * Msg json encoded message to be passed to the contract on instantiation
@@ -108,7 +108,7 @@ export interface MsgDeployCodeSDKType {
    */
 
   deps: string[];
-  metadata?: CodeMetadataSDKType;
+  metadata?: CodeMetadataPBSDKType;
   /**
    * instantiation:
    * Msg json encoded message to be passed to the contract on instantiation
@@ -324,6 +324,50 @@ export interface MsgExecuteContractResponseSDKType {
   /** Data contains bytes to returned from the contract */
   data: Uint8Array;
 }
+/** MsgExecuteEth submits an Ethereum-like RLP-encoded transaction */
+
+export interface MsgExecuteEth {
+  /**
+   * data is RLP-encoded transaction data of the Ethereum transaction
+   * we use Any for its caching feature
+   * google.protobuf.Any data = 1;
+   */
+  data: Uint8Array;
+  /** from is a bech32 address decoded from the transaction signature */
+
+  sender: string;
+}
+/** MsgExecuteEth submits an Ethereum-like RLP-encoded transaction */
+
+export interface MsgExecuteEthSDKType {
+  /**
+   * data is RLP-encoded transaction data of the Ethereum transaction
+   * we use Any for its caching feature
+   * google.protobuf.Any data = 1;
+   */
+  data: Uint8Array;
+  /** from is a bech32 address decoded from the transaction signature */
+
+  sender: string;
+}
+/** MsgExecuteEthResponse returns execution result data. */
+
+export interface MsgExecuteEthResponse {
+  /** Data contains bytes to returned from the contract */
+  data: Uint8Array;
+}
+/** MsgExecuteEthResponse returns execution result data. */
+
+export interface MsgExecuteEthResponseSDKType {
+  /** Data contains bytes to returned from the contract */
+  data: Uint8Array;
+}
+/** ExtensionOptionEthereumTx is an extension option for ethereum transactions */
+
+export interface ExtensionOptionEthereumTx {}
+/** ExtensionOptionEthereumTx is an extension option for ethereum transactions */
+
+export interface ExtensionOptionEthereumTxSDKType {}
 /**
  * MsgExecuteWithOriginContract forwards a message data from a smart contract
  * to another smart contract
@@ -427,18 +471,20 @@ export interface MsgExecuteDelegateContractResponseSDKType {
   data: Uint8Array;
 }
 export interface MsgCompileContract {
-  /** Sender is the that actor that signed the messages */
-  sender: string;
+  /** authority is the address that controls the module. */
+  authority: string;
   /** Contract is the address of the smart contract */
 
   codeId: Long;
+  meteringOff: boolean;
 }
 export interface MsgCompileContractSDKType {
-  /** Sender is the that actor that signed the messages */
-  sender: string;
+  /** authority is the address that controls the module. */
+  authority: string;
   /** Contract is the address of the smart contract */
 
   codeId: Long;
+  metering_off: boolean;
 }
 export interface MsgCompileContractResponse {}
 export interface MsgCompileContractResponseSDKType {}
@@ -467,7 +513,7 @@ export const MsgStoreCode = {
     }
 
     if (message.metadata !== undefined) {
-      CodeMetadata.encode(message.metadata, writer.uint32(34).fork()).ldelim();
+      CodeMetadataPB.encode(message.metadata, writer.uint32(34).fork()).ldelim();
     }
 
     return writer;
@@ -495,7 +541,7 @@ export const MsgStoreCode = {
           break;
 
         case 4:
-          message.metadata = CodeMetadata.decode(reader, reader.uint32());
+          message.metadata = CodeMetadataPB.decode(reader, reader.uint32());
           break;
 
         default:
@@ -512,7 +558,7 @@ export const MsgStoreCode = {
       sender: isSet(object.sender) ? String(object.sender) : "",
       byteCode: isSet(object.byteCode) ? bytesFromBase64(object.byteCode) : new Uint8Array(),
       deps: Array.isArray(object?.deps) ? object.deps.map((e: any) => String(e)) : [],
-      metadata: isSet(object.metadata) ? CodeMetadata.fromJSON(object.metadata) : undefined
+      metadata: isSet(object.metadata) ? CodeMetadataPB.fromJSON(object.metadata) : undefined
     };
   },
 
@@ -527,7 +573,7 @@ export const MsgStoreCode = {
       obj.deps = [];
     }
 
-    message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadata.toJSON(message.metadata) : undefined);
+    message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadataPB.toJSON(message.metadata) : undefined);
     return obj;
   },
 
@@ -536,7 +582,7 @@ export const MsgStoreCode = {
     message.sender = object.sender ?? "";
     message.byteCode = object.byteCode ?? new Uint8Array();
     message.deps = object.deps?.map(e => e) || [];
-    message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadata.fromPartial(object.metadata) : undefined;
+    message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadataPB.fromPartial(object.metadata) : undefined;
     return message;
   }
 
@@ -638,7 +684,7 @@ export const MsgDeployCode = {
     }
 
     if (message.metadata !== undefined) {
-      CodeMetadata.encode(message.metadata, writer.uint32(34).fork()).ldelim();
+      CodeMetadataPB.encode(message.metadata, writer.uint32(34).fork()).ldelim();
     }
 
     if (message.msg.length !== 0) {
@@ -678,7 +724,7 @@ export const MsgDeployCode = {
           break;
 
         case 4:
-          message.metadata = CodeMetadata.decode(reader, reader.uint32());
+          message.metadata = CodeMetadataPB.decode(reader, reader.uint32());
           break;
 
         case 5:
@@ -707,7 +753,7 @@ export const MsgDeployCode = {
       sender: isSet(object.sender) ? String(object.sender) : "",
       byteCode: isSet(object.byteCode) ? bytesFromBase64(object.byteCode) : new Uint8Array(),
       deps: Array.isArray(object?.deps) ? object.deps.map((e: any) => String(e)) : [],
-      metadata: isSet(object.metadata) ? CodeMetadata.fromJSON(object.metadata) : undefined,
+      metadata: isSet(object.metadata) ? CodeMetadataPB.fromJSON(object.metadata) : undefined,
       msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array(),
       funds: Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : [],
       label: isSet(object.label) ? String(object.label) : ""
@@ -725,7 +771,7 @@ export const MsgDeployCode = {
       obj.deps = [];
     }
 
-    message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadata.toJSON(message.metadata) : undefined);
+    message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadataPB.toJSON(message.metadata) : undefined);
     message.msg !== undefined && (obj.msg = base64FromBytes(message.msg !== undefined ? message.msg : new Uint8Array()));
 
     if (message.funds) {
@@ -743,7 +789,7 @@ export const MsgDeployCode = {
     message.sender = object.sender ?? "";
     message.byteCode = object.byteCode ?? new Uint8Array();
     message.deps = object.deps?.map(e => e) || [];
-    message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadata.fromPartial(object.metadata) : undefined;
+    message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadataPB.fromPartial(object.metadata) : undefined;
     message.msg = object.msg ?? new Uint8Array();
     message.funds = object.funds?.map(e => Coin.fromPartial(e)) || [];
     message.label = object.label ?? "";
@@ -1390,6 +1436,175 @@ export const MsgExecuteContractResponse = {
 
 };
 
+function createBaseMsgExecuteEth(): MsgExecuteEth {
+  return {
+    data: new Uint8Array(),
+    sender: ""
+  };
+}
+
+export const MsgExecuteEth = {
+  encode(message: MsgExecuteEth, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.data.length !== 0) {
+      writer.uint32(10).bytes(message.data);
+    }
+
+    if (message.sender !== "") {
+      writer.uint32(18).string(message.sender);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgExecuteEth {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgExecuteEth();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.data = reader.bytes();
+          break;
+
+        case 2:
+          message.sender = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgExecuteEth {
+    return {
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(),
+      sender: isSet(object.sender) ? String(object.sender) : ""
+    };
+  },
+
+  toJSON(message: MsgExecuteEth): unknown {
+    const obj: any = {};
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    message.sender !== undefined && (obj.sender = message.sender);
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgExecuteEth>): MsgExecuteEth {
+    const message = createBaseMsgExecuteEth();
+    message.data = object.data ?? new Uint8Array();
+    message.sender = object.sender ?? "";
+    return message;
+  }
+
+};
+
+function createBaseMsgExecuteEthResponse(): MsgExecuteEthResponse {
+  return {
+    data: new Uint8Array()
+  };
+}
+
+export const MsgExecuteEthResponse = {
+  encode(message: MsgExecuteEthResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.data.length !== 0) {
+      writer.uint32(10).bytes(message.data);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgExecuteEthResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgExecuteEthResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.data = reader.bytes();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgExecuteEthResponse {
+    return {
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: MsgExecuteEthResponse): unknown {
+    const obj: any = {};
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgExecuteEthResponse>): MsgExecuteEthResponse {
+    const message = createBaseMsgExecuteEthResponse();
+    message.data = object.data ?? new Uint8Array();
+    return message;
+  }
+
+};
+
+function createBaseExtensionOptionEthereumTx(): ExtensionOptionEthereumTx {
+  return {};
+}
+
+export const ExtensionOptionEthereumTx = {
+  encode(_: ExtensionOptionEthereumTx, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): ExtensionOptionEthereumTx {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseExtensionOptionEthereumTx();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): ExtensionOptionEthereumTx {
+    return {};
+  },
+
+  toJSON(_: ExtensionOptionEthereumTx): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: Partial<ExtensionOptionEthereumTx>): ExtensionOptionEthereumTx {
+    const message = createBaseExtensionOptionEthereumTx();
+    return message;
+  }
+
+};
+
 function createBaseMsgExecuteWithOriginContract(): MsgExecuteWithOriginContract {
   return {
     origin: "",
@@ -1695,19 +1910,24 @@ export const MsgExecuteDelegateContractResponse = {
 
 function createBaseMsgCompileContract(): MsgCompileContract {
   return {
-    sender: "",
-    codeId: Long.UZERO
+    authority: "",
+    codeId: Long.UZERO,
+    meteringOff: false
   };
 }
 
 export const MsgCompileContract = {
   encode(message: MsgCompileContract, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
-    if (message.sender !== "") {
-      writer.uint32(10).string(message.sender);
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
     }
 
     if (!message.codeId.isZero()) {
       writer.uint32(16).uint64(message.codeId);
+    }
+
+    if (message.meteringOff === true) {
+      writer.uint32(24).bool(message.meteringOff);
     }
 
     return writer;
@@ -1723,11 +1943,15 @@ export const MsgCompileContract = {
 
       switch (tag >>> 3) {
         case 1:
-          message.sender = reader.string();
+          message.authority = reader.string();
           break;
 
         case 2:
           message.codeId = (reader.uint64() as Long);
+          break;
+
+        case 3:
+          message.meteringOff = reader.bool();
           break;
 
         default:
@@ -1741,22 +1965,25 @@ export const MsgCompileContract = {
 
   fromJSON(object: any): MsgCompileContract {
     return {
-      sender: isSet(object.sender) ? String(object.sender) : "",
-      codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO,
+      meteringOff: isSet(object.meteringOff) ? Boolean(object.meteringOff) : false
     };
   },
 
   toJSON(message: MsgCompileContract): unknown {
     const obj: any = {};
-    message.sender !== undefined && (obj.sender = message.sender);
+    message.authority !== undefined && (obj.authority = message.authority);
     message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
+    message.meteringOff !== undefined && (obj.meteringOff = message.meteringOff);
     return obj;
   },
 
   fromPartial(object: Partial<MsgCompileContract>): MsgCompileContract {
     const message = createBaseMsgCompileContract();
-    message.sender = object.sender ?? "";
+    message.authority = object.authority ?? "";
     message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
+    message.meteringOff = object.meteringOff ?? false;
     return message;
   }
 

@@ -1,6 +1,7 @@
 /// <reference types="long" />
 import { Any, AnySDKType } from "../../../../google/protobuf/any";
 import { Event, EventSDKType } from "../../../../tendermint/abci/types";
+import { Block, BlockSDKType } from "../../../../tendermint/types/block";
 import * as _m0 from "protobufjs/minimal";
 import { Long } from "../../../../helpers";
 /**
@@ -42,7 +43,7 @@ export interface TxResponse {
     /**
      * Events defines all the events emitted by processing a transaction. Note,
      * these events include those emitted by processing all the messages and those
-     * emitted from the ante handler. Whereas Logs contains the events, with
+     * emitted from the ante. Whereas Logs contains the events, with
      * additional metadata, emitted only by processing the messages.
      *
      * Since: cosmos-sdk 0.42.11, 0.44.5, 0.45
@@ -88,7 +89,7 @@ export interface TxResponseSDKType {
     /**
      * Events defines all the events emitted by processing a transaction. Note,
      * these events include those emitted by processing all the messages and those
-     * emitted from the ante handler. Whereas Logs contains the events, with
+     * emitted from the ante. Whereas Logs contains the events, with
      * additional metadata, emitted only by processing the messages.
      *
      * Since: cosmos-sdk 0.42.11, 0.44.5, 0.45
@@ -166,7 +167,10 @@ export interface Result {
     /**
      * Data is any data returned from message or handler execution. It MUST be
      * length prefixed in order to separate data from multiple message executions.
+     * Deprecated. This field is still populated, but prefer msg_response instead
+     * because it also contains the Msg response typeURL.
      */
+    /** @deprecated */
     data: Uint8Array;
     /** Log contains the log information from message or handler execution. */
     log: string;
@@ -175,13 +179,22 @@ export interface Result {
      * or handler execution.
      */
     events: Event[];
+    /**
+     * msg_responses contains the Msg handler responses type packed in Anys.
+     *
+     * Since: cosmos-sdk 0.46
+     */
+    msgResponses: Any[];
 }
 /** Result is the union of ResponseFormat and ResponseCheckTx. */
 export interface ResultSDKType {
     /**
      * Data is any data returned from message or handler execution. It MUST be
      * length prefixed in order to separate data from multiple message executions.
+     * Deprecated. This field is still populated, but prefer msg_response instead
+     * because it also contains the Msg response typeURL.
      */
+    /** @deprecated */
     data: Uint8Array;
     /** Log contains the log information from message or handler execution. */
     log: string;
@@ -190,6 +203,12 @@ export interface ResultSDKType {
      * or handler execution.
      */
     events: EventSDKType[];
+    /**
+     * msg_responses contains the Msg handler responses type packed in Anys.
+     *
+     * Since: cosmos-sdk 0.46
+     */
+    msg_responses: AnySDKType[];
 }
 /**
  * SimulationResponse defines the response generated when a transaction is
@@ -211,6 +230,7 @@ export interface SimulationResponseSDKType {
  * MsgData defines the data returned in a Result object during message
  * execution.
  */
+/** @deprecated */
 export interface MsgData {
     msgType: string;
     data: Uint8Array;
@@ -219,6 +239,7 @@ export interface MsgData {
  * MsgData defines the data returned in a Result object during message
  * execution.
  */
+/** @deprecated */
 export interface MsgDataSDKType {
     msg_type: string;
     data: Uint8Array;
@@ -228,14 +249,30 @@ export interface MsgDataSDKType {
  * for each message.
  */
 export interface TxMsgData {
+    /** data field is deprecated and not populated. */
+    /** @deprecated */
     data: MsgData[];
+    /**
+     * msg_responses contains the Msg handler responses packed into Anys.
+     *
+     * Since: cosmos-sdk 0.46
+     */
+    msgResponses: Any[];
 }
 /**
  * TxMsgData defines a list of MsgData. A transaction will have a MsgData object
  * for each message.
  */
 export interface TxMsgDataSDKType {
+    /** data field is deprecated and not populated. */
+    /** @deprecated */
     data: MsgDataSDKType[];
+    /**
+     * msg_responses contains the Msg handler responses packed into Anys.
+     *
+     * Since: cosmos-sdk 0.46
+     */
+    msg_responses: AnySDKType[];
 }
 /** SearchTxsResult defines a structure for querying txs pageable */
 export interface SearchTxsResult {
@@ -266,6 +303,36 @@ export interface SearchTxsResultSDKType {
     limit: Long;
     /** List of txs in current page */
     txs: TxResponseSDKType[];
+}
+/** SearchBlocksResult defines a structure for querying blocks pageable */
+export interface SearchBlocksResult {
+    /** Count of all blocks */
+    totalCount: Long;
+    /** Count of blocks in current page */
+    count: Long;
+    /** Index of current page, start from 1 */
+    pageNumber: Long;
+    /** Count of total pages */
+    pageTotal: Long;
+    /** Max count blocks per page */
+    limit: Long;
+    /** List of blocks in current page */
+    blocks: Block[];
+}
+/** SearchBlocksResult defines a structure for querying blocks pageable */
+export interface SearchBlocksResultSDKType {
+    /** Count of all blocks */
+    total_count: Long;
+    /** Count of blocks in current page */
+    count: Long;
+    /** Index of current page, start from 1 */
+    page_number: Long;
+    /** Count of total pages */
+    page_total: Long;
+    /** Max count blocks per page */
+    limit: Long;
+    /** List of blocks in current page */
+    blocks: BlockSDKType[];
 }
 export declare const TxResponse: {
     encode(message: TxResponse, writer?: _m0.Writer): _m0.Writer;
@@ -336,4 +403,11 @@ export declare const SearchTxsResult: {
     fromJSON(object: any): SearchTxsResult;
     toJSON(message: SearchTxsResult): unknown;
     fromPartial(object: Partial<SearchTxsResult>): SearchTxsResult;
+};
+export declare const SearchBlocksResult: {
+    encode(message: SearchBlocksResult, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): SearchBlocksResult;
+    fromJSON(object: any): SearchBlocksResult;
+    toJSON(message: SearchBlocksResult): unknown;
+    fromPartial(object: Partial<SearchBlocksResult>): SearchBlocksResult;
 };

@@ -1,6 +1,7 @@
 /// <reference types="long" />
 import { Params, ParamsSDKType } from "./params";
-import { CodeMetadata, CodeMetadataSDKType, CodeInfo, CodeInfoSDKType, ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType } from "./contract";
+import { Role, RoleSDKType, SystemContractRole, SystemContractRoleSDKType } from "./role";
+import { ContractStorageType, ContractStorageTypeSDKType, CodeMetadataPB, CodeMetadataPBSDKType, ContractStoragePB, ContractStoragePBSDKType, CodeInfoPB, CodeInfoPBSDKType, ContractInfoPB, ContractInfoPBSDKType } from "./contract";
 import * as _m0 from "protobufjs/minimal";
 import { Long } from "../../../helpers";
 /** GenesisState defines the wasmx module's genesis state. */
@@ -8,6 +9,7 @@ export interface GenesisState {
     params?: Params;
     /** bootstrap address */
     bootstrapAccountAddress: string;
+    roles: Role[];
     systemContracts: SystemContract[];
     codes: Code[];
     contracts: Contract[];
@@ -24,6 +26,7 @@ export interface GenesisStateSDKType {
     params?: ParamsSDKType;
     /** bootstrap address */
     bootstrap_account_address: string;
+    roles: RoleSDKType[];
     system_contracts: SystemContractSDKType[];
     codes: CodeSDKType[];
     contracts: ContractSDKType[];
@@ -38,42 +41,62 @@ export interface GenesisStateSDKType {
 export interface SystemContract {
     address: string;
     label: string;
+    storageType: ContractStorageType;
     initMessage: Uint8Array;
     pinned: boolean;
     native: boolean;
-    metadata?: CodeMetadata;
+    /** some system contracts may be aot compiled with metering off */
+    meteringOff: boolean;
+    role?: SystemContractRole;
+    /**
+     * deps can be hex-formatted contract addresses (32 bytes)
+     * or versioned interface labels
+     */
+    deps: string[];
+    metadata?: CodeMetadataPB;
+    contractState: ContractStoragePB[];
 }
 export interface SystemContractSDKType {
     address: string;
     label: string;
+    storage_type: ContractStorageTypeSDKType;
     init_message: Uint8Array;
     pinned: boolean;
     native: boolean;
-    metadata?: CodeMetadataSDKType;
+    /** some system contracts may be aot compiled with metering off */
+    metering_off: boolean;
+    role?: SystemContractRoleSDKType;
+    /**
+     * deps can be hex-formatted contract addresses (32 bytes)
+     * or versioned interface labels
+     */
+    deps: string[];
+    metadata?: CodeMetadataPBSDKType;
+    contract_state: ContractStoragePBSDKType[];
 }
 /** Code - for importing and exporting code data */
 export interface Code {
     codeId: Long;
-    codeInfo?: CodeInfo;
+    codeInfo?: CodeInfoPB;
     codeBytes: Uint8Array;
 }
 /** Code - for importing and exporting code data */
 export interface CodeSDKType {
     code_id: Long;
-    code_info?: CodeInfoSDKType;
+    code_info?: CodeInfoPBSDKType;
     code_bytes: Uint8Array;
 }
 /** Contract struct encompasses ContractAddress, ContractInfo, and ContractState */
 export interface Contract {
     contractAddress: string;
-    contractInfo?: ContractInfo;
-    contractState: ContractStorage[];
+    contractInfo?: ContractInfoPB;
+    contractState: ContractStoragePB[];
 }
 /** Contract struct encompasses ContractAddress, ContractInfo, and ContractState */
 export interface ContractSDKType {
     contract_address: string;
-    contract_info?: ContractInfoSDKType;
-    contract_state: ContractStorageSDKType[];
+    contract_info?: ContractInfoPBSDKType;
+    contract_state: ContractStoragePBSDKType[];
 }
 /** Sequence key and value of an id generation counter */
 export interface Sequence {

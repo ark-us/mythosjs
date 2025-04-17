@@ -1,6 +1,6 @@
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgRegisterOAuthClient, MsgEditOAuthClient, MsgDeregisterOAuthClient } from "./tx";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/mythos.websrv.v1.MsgRegisterOAuthClient", MsgRegisterOAuthClient], ["/mythos.websrv.v1.MsgEditOAuthClient", MsgEditOAuthClient], ["/mythos.websrv.v1.MsgDeregisterOAuthClient", MsgDeregisterOAuthClient]];
+import { MsgRegisterOAuthClient, MsgEditOAuthClient, MsgDeregisterOAuthClient, MsgRegisterRoute, MsgDeregisterRoute } from "./tx";
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/mythos.websrv.v1.MsgRegisterOAuthClient", MsgRegisterOAuthClient], ["/mythos.websrv.v1.MsgEditOAuthClient", MsgEditOAuthClient], ["/mythos.websrv.v1.MsgDeregisterOAuthClient", MsgDeregisterOAuthClient], ["/mythos.websrv.v1.MsgRegisterRoute", MsgRegisterRoute], ["/mythos.websrv.v1.MsgDeregisterRoute", MsgDeregisterRoute]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -27,6 +27,20 @@ export const MessageComposer = {
         typeUrl: "/mythos.websrv.v1.MsgDeregisterOAuthClient",
         value: MsgDeregisterOAuthClient.encode(value).finish()
       };
+    },
+
+    registerRoute(value: MsgRegisterRoute) {
+      return {
+        typeUrl: "/mythos.websrv.v1.MsgRegisterRoute",
+        value: MsgRegisterRoute.encode(value).finish()
+      };
+    },
+
+    deregisterRoute(value: MsgDeregisterRoute) {
+      return {
+        typeUrl: "/mythos.websrv.v1.MsgDeregisterRoute",
+        value: MsgDeregisterRoute.encode(value).finish()
+      };
     }
 
   },
@@ -48,6 +62,20 @@ export const MessageComposer = {
     deregisterOAuthClient(value: MsgDeregisterOAuthClient) {
       return {
         typeUrl: "/mythos.websrv.v1.MsgDeregisterOAuthClient",
+        value
+      };
+    },
+
+    registerRoute(value: MsgRegisterRoute) {
+      return {
+        typeUrl: "/mythos.websrv.v1.MsgRegisterRoute",
+        value
+      };
+    },
+
+    deregisterRoute(value: MsgDeregisterRoute) {
+      return {
+        typeUrl: "/mythos.websrv.v1.MsgDeregisterRoute",
         value
       };
     }
@@ -73,6 +101,20 @@ export const MessageComposer = {
         typeUrl: "/mythos.websrv.v1.MsgDeregisterOAuthClient",
         value: MsgDeregisterOAuthClient.toJSON(value)
       };
+    },
+
+    registerRoute(value: MsgRegisterRoute) {
+      return {
+        typeUrl: "/mythos.websrv.v1.MsgRegisterRoute",
+        value: MsgRegisterRoute.toJSON(value)
+      };
+    },
+
+    deregisterRoute(value: MsgDeregisterRoute) {
+      return {
+        typeUrl: "/mythos.websrv.v1.MsgDeregisterRoute",
+        value: MsgDeregisterRoute.toJSON(value)
+      };
     }
 
   },
@@ -96,6 +138,20 @@ export const MessageComposer = {
         typeUrl: "/mythos.websrv.v1.MsgDeregisterOAuthClient",
         value: MsgDeregisterOAuthClient.fromJSON(value)
       };
+    },
+
+    registerRoute(value: any) {
+      return {
+        typeUrl: "/mythos.websrv.v1.MsgRegisterRoute",
+        value: MsgRegisterRoute.fromJSON(value)
+      };
+    },
+
+    deregisterRoute(value: any) {
+      return {
+        typeUrl: "/mythos.websrv.v1.MsgDeregisterRoute",
+        value: MsgDeregisterRoute.fromJSON(value)
+      };
     }
 
   },
@@ -118,6 +174,20 @@ export const MessageComposer = {
       return {
         typeUrl: "/mythos.websrv.v1.MsgDeregisterOAuthClient",
         value: MsgDeregisterOAuthClient.fromPartial(value)
+      };
+    },
+
+    registerRoute(value: MsgRegisterRoute) {
+      return {
+        typeUrl: "/mythos.websrv.v1.MsgRegisterRoute",
+        value: MsgRegisterRoute.fromPartial(value)
+      };
+    },
+
+    deregisterRoute(value: MsgDeregisterRoute) {
+      return {
+        typeUrl: "/mythos.websrv.v1.MsgDeregisterRoute",
+        value: MsgDeregisterRoute.fromPartial(value)
       };
     }
 

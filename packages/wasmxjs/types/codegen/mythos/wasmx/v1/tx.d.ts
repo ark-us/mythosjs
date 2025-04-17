@@ -1,5 +1,5 @@
 /// <reference types="long" />
-import { CodeMetadata, CodeMetadataSDKType } from "./contract";
+import { CodeMetadataPB, CodeMetadataPBSDKType } from "./contract";
 import { Coin, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
 import * as _m0 from "protobufjs/minimal";
 import { Long } from "../../../helpers";
@@ -18,7 +18,7 @@ export interface MsgStoreCode {
      * and/or versioned interface labels
      */
     deps: string[];
-    metadata?: CodeMetadata;
+    metadata?: CodeMetadataPB;
 }
 /** MsgStoreCode submit Wasm code to the system */
 export interface MsgStoreCodeSDKType {
@@ -35,7 +35,7 @@ export interface MsgStoreCodeSDKType {
      * and/or versioned interface labels
      */
     deps: string[];
-    metadata?: CodeMetadataSDKType;
+    metadata?: CodeMetadataPBSDKType;
 }
 /** MsgStoreCodeResponse returns store result data. */
 export interface MsgStoreCodeResponse {
@@ -66,7 +66,7 @@ export interface MsgDeployCode {
      * and/or versioned interface labels
      */
     deps: string[];
-    metadata?: CodeMetadata;
+    metadata?: CodeMetadataPB;
     /**
      * instantiation:
      * Msg json encoded message to be passed to the contract on instantiation
@@ -91,7 +91,7 @@ export interface MsgDeployCodeSDKType {
      * and/or versioned interface labels
      */
     deps: string[];
-    metadata?: CodeMetadataSDKType;
+    metadata?: CodeMetadataPBSDKType;
     /**
      * instantiation:
      * Msg json encoded message to be passed to the contract on instantiation
@@ -261,6 +261,44 @@ export interface MsgExecuteContractResponseSDKType {
     /** Data contains bytes to returned from the contract */
     data: Uint8Array;
 }
+/** MsgExecuteEth submits an Ethereum-like RLP-encoded transaction */
+export interface MsgExecuteEth {
+    /**
+     * data is RLP-encoded transaction data of the Ethereum transaction
+     * we use Any for its caching feature
+     * google.protobuf.Any data = 1;
+     */
+    data: Uint8Array;
+    /** from is a bech32 address decoded from the transaction signature */
+    sender: string;
+}
+/** MsgExecuteEth submits an Ethereum-like RLP-encoded transaction */
+export interface MsgExecuteEthSDKType {
+    /**
+     * data is RLP-encoded transaction data of the Ethereum transaction
+     * we use Any for its caching feature
+     * google.protobuf.Any data = 1;
+     */
+    data: Uint8Array;
+    /** from is a bech32 address decoded from the transaction signature */
+    sender: string;
+}
+/** MsgExecuteEthResponse returns execution result data. */
+export interface MsgExecuteEthResponse {
+    /** Data contains bytes to returned from the contract */
+    data: Uint8Array;
+}
+/** MsgExecuteEthResponse returns execution result data. */
+export interface MsgExecuteEthResponseSDKType {
+    /** Data contains bytes to returned from the contract */
+    data: Uint8Array;
+}
+/** ExtensionOptionEthereumTx is an extension option for ethereum transactions */
+export interface ExtensionOptionEthereumTx {
+}
+/** ExtensionOptionEthereumTx is an extension option for ethereum transactions */
+export interface ExtensionOptionEthereumTxSDKType {
+}
 /**
  * MsgExecuteWithOriginContract forwards a message data from a smart contract
  * to another smart contract
@@ -338,16 +376,18 @@ export interface MsgExecuteDelegateContractResponseSDKType {
     data: Uint8Array;
 }
 export interface MsgCompileContract {
-    /** Sender is the that actor that signed the messages */
-    sender: string;
+    /** authority is the address that controls the module. */
+    authority: string;
     /** Contract is the address of the smart contract */
     codeId: Long;
+    meteringOff: boolean;
 }
 export interface MsgCompileContractSDKType {
-    /** Sender is the that actor that signed the messages */
-    sender: string;
+    /** authority is the address that controls the module. */
+    authority: string;
     /** Contract is the address of the smart contract */
     codeId: Long;
+    metering_off: boolean;
 }
 export interface MsgCompileContractResponse {
 }
@@ -422,6 +462,27 @@ export declare const MsgExecuteContractResponse: {
     fromJSON(object: any): MsgExecuteContractResponse;
     toJSON(message: MsgExecuteContractResponse): unknown;
     fromPartial(object: Partial<MsgExecuteContractResponse>): MsgExecuteContractResponse;
+};
+export declare const MsgExecuteEth: {
+    encode(message: MsgExecuteEth, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgExecuteEth;
+    fromJSON(object: any): MsgExecuteEth;
+    toJSON(message: MsgExecuteEth): unknown;
+    fromPartial(object: Partial<MsgExecuteEth>): MsgExecuteEth;
+};
+export declare const MsgExecuteEthResponse: {
+    encode(message: MsgExecuteEthResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgExecuteEthResponse;
+    fromJSON(object: any): MsgExecuteEthResponse;
+    toJSON(message: MsgExecuteEthResponse): unknown;
+    fromPartial(object: Partial<MsgExecuteEthResponse>): MsgExecuteEthResponse;
+};
+export declare const ExtensionOptionEthereumTx: {
+    encode(_: ExtensionOptionEthereumTx, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExtensionOptionEthereumTx;
+    fromJSON(_: any): ExtensionOptionEthereumTx;
+    toJSON(_: ExtensionOptionEthereumTx): unknown;
+    fromPartial(_: Partial<ExtensionOptionEthereumTx>): ExtensionOptionEthereumTx;
 };
 export declare const MsgExecuteWithOriginContract: {
     encode(message: MsgExecuteWithOriginContract, writer?: _m0.Writer): _m0.Writer;

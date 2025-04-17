@@ -11,6 +11,7 @@ export interface ConsensusParams {
     evidence?: EvidenceParams;
     validator?: ValidatorParams;
     version?: VersionParams;
+    abci?: ABCIParams;
 }
 /**
  * ConsensusParams contains consensus critical parameters that determine the
@@ -21,6 +22,7 @@ export interface ConsensusParamsSDKType {
     evidence?: EvidenceParamsSDKType;
     validator?: ValidatorParamsSDKType;
     version?: VersionParamsSDKType;
+    abci?: ABCIParamsSDKType;
 }
 /** BlockParams contains limits on the block size. */
 export interface BlockParams {
@@ -34,13 +36,6 @@ export interface BlockParams {
      * Note: must be greater or equal to -1
      */
     maxGas: Long;
-    /**
-     * Minimum time increment between consecutive blocks (in milliseconds) If the
-     * block header timestamp is ahead of the system clock, decrease this value.
-     *
-     * Not exposed to the application.
-     */
-    timeIotaMs: Long;
 }
 /** BlockParams contains limits on the block size. */
 export interface BlockParamsSDKType {
@@ -54,13 +49,6 @@ export interface BlockParamsSDKType {
      * Note: must be greater or equal to -1
      */
     max_gas: Long;
-    /**
-     * Minimum time increment between consecutive blocks (in milliseconds) If the
-     * block header timestamp is ahead of the system clock, decrease this value.
-     *
-     * Not exposed to the application.
-     */
-    time_iota_ms: Long;
 }
 /** EvidenceParams determine how we handle evidence of malfeasance. */
 export interface EvidenceParams {
@@ -80,8 +68,8 @@ export interface EvidenceParams {
      */
     maxAgeDuration?: Duration;
     /**
-     * This sets the maximum size of total evidence in bytes that can be committed
-     * in a single block. and should fall comfortably under the max block bytes.
+     * This sets the maximum size of total evidence in bytes that can be committed in a single block.
+     * and should fall comfortably under the max block bytes.
      * Default is 1048576 or 1MB
      */
     maxBytes: Long;
@@ -104,8 +92,8 @@ export interface EvidenceParamsSDKType {
      */
     max_age_duration?: DurationSDKType;
     /**
-     * This sets the maximum size of total evidence in bytes that can be committed
-     * in a single block. and should fall comfortably under the max block bytes.
+     * This sets the maximum size of total evidence in bytes that can be committed in a single block.
+     * and should fall comfortably under the max block bytes.
      * Default is 1048576 or 1MB
      */
     max_bytes: Long;
@@ -126,11 +114,11 @@ export interface ValidatorParamsSDKType {
 }
 /** VersionParams contains the ABCI application version. */
 export interface VersionParams {
-    appVersion: Long;
+    app: Long;
 }
 /** VersionParams contains the ABCI application version. */
 export interface VersionParamsSDKType {
-    app_version: Long;
+    app: Long;
 }
 /**
  * HashedParams is a subset of ConsensusParams.
@@ -149,6 +137,36 @@ export interface HashedParams {
 export interface HashedParamsSDKType {
     block_max_bytes: Long;
     block_max_gas: Long;
+}
+/** ABCIParams configure functionality specific to the Application Blockchain Interface. */
+export interface ABCIParams {
+    /**
+     * vote_extensions_enable_height configures the first height during which
+     * vote extensions will be enabled. During this specified height, and for all
+     * subsequent heights, precommit messages that do not contain valid extension data
+     * will be considered invalid. Prior to this height, vote extensions will not
+     * be used or accepted by validators on the network.
+     *
+     * Once enabled, vote extensions will be created by the application in ExtendVote,
+     * passed to the application for validation in VerifyVoteExtension and given
+     * to the application to use when proposing a block during PrepareProposal.
+     */
+    voteExtensionsEnableHeight: Long;
+}
+/** ABCIParams configure functionality specific to the Application Blockchain Interface. */
+export interface ABCIParamsSDKType {
+    /**
+     * vote_extensions_enable_height configures the first height during which
+     * vote extensions will be enabled. During this specified height, and for all
+     * subsequent heights, precommit messages that do not contain valid extension data
+     * will be considered invalid. Prior to this height, vote extensions will not
+     * be used or accepted by validators on the network.
+     *
+     * Once enabled, vote extensions will be created by the application in ExtendVote,
+     * passed to the application for validation in VerifyVoteExtension and given
+     * to the application to use when proposing a block during PrepareProposal.
+     */
+    vote_extensions_enable_height: Long;
 }
 export declare const ConsensusParams: {
     encode(message: ConsensusParams, writer?: _m0.Writer): _m0.Writer;
@@ -191,4 +209,11 @@ export declare const HashedParams: {
     fromJSON(object: any): HashedParams;
     toJSON(message: HashedParams): unknown;
     fromPartial(object: Partial<HashedParams>): HashedParams;
+};
+export declare const ABCIParams: {
+    encode(message: ABCIParams, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ABCIParams;
+    fromJSON(object: any): ABCIParams;
+    toJSON(message: ABCIParams): unknown;
+    fromPartial(object: Partial<ABCIParams>): ABCIParams;
 };

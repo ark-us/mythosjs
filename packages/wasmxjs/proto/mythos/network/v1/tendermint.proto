@@ -1,0 +1,116 @@
+syntax = "proto3";
+package mythos.network.v1;
+
+option go_package = "github.com/loredanacirstea/wasmx/x/network/types";
+
+import "gogoproto/gogo.proto";
+import "google/protobuf/any.proto";
+import "cosmos_proto/cosmos.proto";
+import "tendermint/abci/types.proto";
+//----------------------------------------
+// Request types
+
+message RequestPing {}
+
+message RequestBroadcastTx {
+  bytes tx = 1;
+}
+
+//----------------------------------------
+// Response types
+
+message ResponsePing {}
+
+message ResponseBroadcastTx {
+  ResponseCheckTx check_tx  = 1;
+  ExecTxResult    tx_result = 2;
+}
+
+//----------------------------------------
+// Service Definition
+
+// BroadcastAPI
+//
+// Deprecated: This API will be superseded by a more comprehensive gRPC-based
+// broadcast API, and is scheduled for removal after v0.38.
+service BroadcastAPI {
+  rpc Ping(RequestPing) returns (ResponsePing);
+  rpc BroadcastTx(RequestBroadcastTx) returns (ResponseBroadcastTx);
+}
+
+// tendermint.abci.ResponseCheckTx
+message ResponseCheckTx {
+    uint32         code       = 1;
+    bytes          data       = 2;
+    string         log        = 3;  // nondeterministic
+    string         info       = 4;  // nondeterministic
+    int64          gas_wanted = 5 [json_name = "gas_wanted"];
+    int64          gas_used   = 6 [json_name = "gas_used"];
+    repeated Event events     = 7
+        [(gogoproto.nullable) = false, (gogoproto.jsontag) = "events,omitempty"];
+    string codespace = 8;
+
+    // These reserved fields were used until v0.37 by the priority mempool (now
+    // removed).
+    reserved 9 to 11;
+    reserved "sender", "priority", "mempool_error";
+}
+
+// ExecTxResult contains results of executing one individual transaction.
+//
+// * Its structure is equivalent to #ResponseDeliverTx which will be deprecated/deleted
+// tendermint.abci.ExecTxResult
+message ExecTxResult {
+    uint32         code       = 1;
+    bytes          data       = 2;
+    string         log        = 3;  // nondeterministic
+    string         info       = 4;  // nondeterministic
+    int64          gas_wanted = 5 [json_name = "gas_wanted"];
+    int64          gas_used   = 6 [json_name = "gas_used"];
+    repeated Event events     = 7
+        [(gogoproto.nullable) = false, (gogoproto.jsontag) = "events,omitempty"];  // nondeterministic
+    string codespace = 8;
+}
+
+// Event allows application developers to attach additional information to
+// ResponseFinalizeBlock and ResponseCheckTx.
+// Later, transactions may be queried using these events.
+message Event {
+    string                  type       = 1;
+    repeated EventAttribute attributes = 2 [
+      (gogoproto.nullable) = false,
+      (gogoproto.jsontag)  = "attributes,omitempty"
+    ];
+}
+
+// EventAttribute is a single key-value pair, associated with an event.
+message EventAttribute {
+    string key   = 1;
+    string value = 2;
+    bool   index = 3;  // nondeterministic
+}
+
+message RequestProcessProposalWithMetaInfo {
+	tendermint.abci.RequestProcessProposal request = 1;
+	bool optimistic_execution = 2;
+	map<string, string> metainfo = 3;
+}
+
+message TendermintValidator {
+  // bech32 operator address
+  string operator_address = 1;
+  // hex-format address derived from consensus public key
+  string                       hex_address           = 2;
+  google.protobuf.Any pub_key = 3 [(cosmos_proto.accepts_interface) = "cosmos.crypto.PubKey"];
+  int64                       voting_power      = 4;
+  int64                       proposer_priority = 5;
+}
+
+message TendermintValidators {
+  repeated TendermintValidator validators = 1 [(gogoproto.nullable) = false];
+}
+
+message ValidatorSet {
+  repeated TendermintValidator validators = 1 [(gogoproto.nullable) = false];
+  TendermintValidator proposer = 2 [(gogoproto.nullable) = false];
+}

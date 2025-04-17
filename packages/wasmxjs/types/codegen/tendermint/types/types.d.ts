@@ -2,27 +2,9 @@
 import { Proof, ProofSDKType } from "../crypto/proof";
 import { Consensus, ConsensusSDKType } from "../version/types";
 import { Timestamp, TimestampSDKType } from "../../google/protobuf/timestamp";
-import { ValidatorSet, ValidatorSetSDKType } from "./validator";
+import { BlockIDFlag, BlockIDFlagSDKType, ValidatorSet, ValidatorSetSDKType } from "./validator";
 import * as _m0 from "protobufjs/minimal";
 import { Long } from "../../helpers";
-/** BlockIdFlag indicates which BlcokID the signature is for */
-export declare enum BlockIDFlag {
-    BLOCK_ID_FLAG_UNKNOWN = 0,
-    BLOCK_ID_FLAG_ABSENT = 1,
-    BLOCK_ID_FLAG_COMMIT = 2,
-    BLOCK_ID_FLAG_NIL = 3,
-    UNRECOGNIZED = -1
-}
-/** BlockIdFlag indicates which BlcokID the signature is for */
-export declare enum BlockIDFlagSDKType {
-    BLOCK_ID_FLAG_UNKNOWN = 0,
-    BLOCK_ID_FLAG_ABSENT = 1,
-    BLOCK_ID_FLAG_COMMIT = 2,
-    BLOCK_ID_FLAG_NIL = 3,
-    UNRECOGNIZED = -1
-}
-export declare function blockIDFlagFromJSON(object: any): BlockIDFlag;
-export declare function blockIDFlagToJSON(object: BlockIDFlag): string;
 /** SignedMsgType is a type of signed message in the consensus. */
 export declare enum SignedMsgType {
     SIGNED_MSG_TYPE_UNKNOWN = 0,
@@ -75,7 +57,7 @@ export interface BlockIDSDKType {
     hash: Uint8Array;
     part_set_header?: PartSetHeaderSDKType;
 }
-/** Header defines the structure of a Tendermint block header. */
+/** Header defines the structure of a block header. */
 export interface Header {
     /** basic block info */
     version?: Consensus;
@@ -101,7 +83,7 @@ export interface Header {
     /** original proposer of the block */
     proposerAddress: Uint8Array;
 }
-/** Header defines the structure of a Tendermint block header. */
+/** Header defines the structure of a block header. */
 export interface HeaderSDKType {
     /** basic block info */
     version?: ConsensusSDKType;
@@ -146,47 +128,73 @@ export interface DataSDKType {
     txs: Uint8Array[];
 }
 /**
- * Vote represents a prevote, precommit, or commit vote from validators for
+ * Vote represents a prevote or precommit vote from validators for
  * consensus.
  */
 export interface Vote {
     type: SignedMsgType;
     height: Long;
     round: number;
+    /** zero if vote is nil. */
     blockId?: BlockID;
     timestamp?: Timestamp;
     validatorAddress: Uint8Array;
     validatorIndex: number;
+    /**
+     * Vote signature by the validator if they participated in consensus for the
+     * associated block.
+     */
     signature: Uint8Array;
+    /**
+     * Vote extension provided by the application. Only valid for precommit
+     * messages.
+     */
+    extension: Uint8Array;
+    /**
+     * Vote extension signature by the validator if they participated in
+     * consensus for the associated block.
+     * Only valid for precommit messages.
+     */
+    extensionSignature: Uint8Array;
 }
 /**
- * Vote represents a prevote, precommit, or commit vote from validators for
+ * Vote represents a prevote or precommit vote from validators for
  * consensus.
  */
 export interface VoteSDKType {
     type: SignedMsgTypeSDKType;
     height: Long;
     round: number;
+    /** zero if vote is nil. */
     block_id?: BlockIDSDKType;
     timestamp?: TimestampSDKType;
     validator_address: Uint8Array;
     validator_index: number;
+    /**
+     * Vote signature by the validator if they participated in consensus for the
+     * associated block.
+     */
     signature: Uint8Array;
+    /**
+     * Vote extension provided by the application. Only valid for precommit
+     * messages.
+     */
+    extension: Uint8Array;
+    /**
+     * Vote extension signature by the validator if they participated in
+     * consensus for the associated block.
+     * Only valid for precommit messages.
+     */
+    extension_signature: Uint8Array;
 }
-/**
- * Commit contains the evidence that a block was committed by a set of
- * validators.
- */
+/** Commit contains the evidence that a block was committed by a set of validators. */
 export interface Commit {
     height: Long;
     round: number;
     blockId?: BlockID;
     signatures: CommitSig[];
 }
-/**
- * Commit contains the evidence that a block was committed by a set of
- * validators.
- */
+/** Commit contains the evidence that a block was committed by a set of validators. */
 export interface CommitSDKType {
     height: Long;
     round: number;
@@ -206,6 +214,48 @@ export interface CommitSigSDKType {
     validator_address: Uint8Array;
     timestamp?: TimestampSDKType;
     signature: Uint8Array;
+}
+export interface ExtendedCommit {
+    height: Long;
+    round: number;
+    blockId?: BlockID;
+    extendedSignatures: ExtendedCommitSig[];
+}
+export interface ExtendedCommitSDKType {
+    height: Long;
+    round: number;
+    block_id?: BlockIDSDKType;
+    extended_signatures: ExtendedCommitSigSDKType[];
+}
+/**
+ * ExtendedCommitSig retains all the same fields as CommitSig but adds vote
+ * extension-related fields. We use two signatures to ensure backwards compatibility.
+ * That is the digest of the original signature is still the same in prior versions
+ */
+export interface ExtendedCommitSig {
+    blockIdFlag: BlockIDFlag;
+    validatorAddress: Uint8Array;
+    timestamp?: Timestamp;
+    signature: Uint8Array;
+    /** Vote extension data */
+    extension: Uint8Array;
+    /** Vote extension signature */
+    extensionSignature: Uint8Array;
+}
+/**
+ * ExtendedCommitSig retains all the same fields as CommitSig but adds vote
+ * extension-related fields. We use two signatures to ensure backwards compatibility.
+ * That is the digest of the original signature is still the same in prior versions
+ */
+export interface ExtendedCommitSigSDKType {
+    block_id_flag: BlockIDFlagSDKType;
+    validator_address: Uint8Array;
+    timestamp?: TimestampSDKType;
+    signature: Uint8Array;
+    /** Vote extension data */
+    extension: Uint8Array;
+    /** Vote extension signature */
+    extension_signature: Uint8Array;
 }
 export interface Proposal {
     type: SignedMsgType;
@@ -253,19 +303,13 @@ export interface BlockMetaSDKType {
     header?: HeaderSDKType;
     num_txs: Long;
 }
-/**
- * TxProof represents a Merkle proof of the presence of a transaction in the
- * Merkle tree.
- */
+/** TxProof represents a Merkle proof of the presence of a transaction in the Merkle tree. */
 export interface TxProof {
     rootHash: Uint8Array;
     data: Uint8Array;
     proof?: Proof;
 }
-/**
- * TxProof represents a Merkle proof of the presence of a transaction in the
- * Merkle tree.
- */
+/** TxProof represents a Merkle proof of the presence of a transaction in the Merkle tree. */
 export interface TxProofSDKType {
     root_hash: Uint8Array;
     data: Uint8Array;
@@ -326,6 +370,20 @@ export declare const CommitSig: {
     fromJSON(object: any): CommitSig;
     toJSON(message: CommitSig): unknown;
     fromPartial(object: Partial<CommitSig>): CommitSig;
+};
+export declare const ExtendedCommit: {
+    encode(message: ExtendedCommit, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExtendedCommit;
+    fromJSON(object: any): ExtendedCommit;
+    toJSON(message: ExtendedCommit): unknown;
+    fromPartial(object: Partial<ExtendedCommit>): ExtendedCommit;
+};
+export declare const ExtendedCommitSig: {
+    encode(message: ExtendedCommitSig, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): ExtendedCommitSig;
+    fromJSON(object: any): ExtendedCommitSig;
+    toJSON(message: ExtendedCommitSig): unknown;
+    fromPartial(object: Partial<ExtendedCommitSig>): ExtendedCommitSig;
 };
 export declare const Proposal: {
     encode(message: Proposal, writer?: _m0.Writer): _m0.Writer;

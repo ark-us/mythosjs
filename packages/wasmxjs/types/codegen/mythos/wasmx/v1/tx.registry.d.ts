@@ -1,5 +1,5 @@
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgStoreCode, MsgDeployCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
+import { MsgStoreCode, MsgDeployCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgCompileContract, MsgExecuteEth, MsgExecuteWithOriginContract, MsgExecuteDelegateContract } from "./tx";
 export declare const registry: ReadonlyArray<[string, GeneratedType]>;
 export declare const load: (protoRegistry: Registry) => void;
 export declare const MessageComposer: {
@@ -24,15 +24,19 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: Uint8Array;
         };
+        compileContract(value: MsgCompileContract): {
+            typeUrl: string;
+            value: Uint8Array;
+        };
+        executeEth(value: MsgExecuteEth): {
+            typeUrl: string;
+            value: Uint8Array;
+        };
         executeWithOriginContract(value: MsgExecuteWithOriginContract): {
             typeUrl: string;
             value: Uint8Array;
         };
         executeDelegateContract(value: MsgExecuteDelegateContract): {
-            typeUrl: string;
-            value: Uint8Array;
-        };
-        compileContract(value: MsgCompileContract): {
             typeUrl: string;
             value: Uint8Array;
         };
@@ -58,6 +62,14 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: MsgExecuteContract;
         };
+        compileContract(value: MsgCompileContract): {
+            typeUrl: string;
+            value: MsgCompileContract;
+        };
+        executeEth(value: MsgExecuteEth): {
+            typeUrl: string;
+            value: MsgExecuteEth;
+        };
         executeWithOriginContract(value: MsgExecuteWithOriginContract): {
             typeUrl: string;
             value: MsgExecuteWithOriginContract;
@@ -65,10 +77,6 @@ export declare const MessageComposer: {
         executeDelegateContract(value: MsgExecuteDelegateContract): {
             typeUrl: string;
             value: MsgExecuteDelegateContract;
-        };
-        compileContract(value: MsgCompileContract): {
-            typeUrl: string;
-            value: MsgCompileContract;
         };
     };
     toJSON: {
@@ -92,15 +100,19 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: unknown;
         };
+        compileContract(value: MsgCompileContract): {
+            typeUrl: string;
+            value: unknown;
+        };
+        executeEth(value: MsgExecuteEth): {
+            typeUrl: string;
+            value: unknown;
+        };
         executeWithOriginContract(value: MsgExecuteWithOriginContract): {
             typeUrl: string;
             value: unknown;
         };
         executeDelegateContract(value: MsgExecuteDelegateContract): {
-            typeUrl: string;
-            value: unknown;
-        };
-        compileContract(value: MsgCompileContract): {
             typeUrl: string;
             value: unknown;
         };
@@ -126,6 +138,14 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: MsgExecuteContract;
         };
+        compileContract(value: any): {
+            typeUrl: string;
+            value: MsgCompileContract;
+        };
+        executeEth(value: any): {
+            typeUrl: string;
+            value: MsgExecuteEth;
+        };
         executeWithOriginContract(value: any): {
             typeUrl: string;
             value: MsgExecuteWithOriginContract;
@@ -133,10 +153,6 @@ export declare const MessageComposer: {
         executeDelegateContract(value: any): {
             typeUrl: string;
             value: MsgExecuteDelegateContract;
-        };
-        compileContract(value: any): {
-            typeUrl: string;
-            value: MsgCompileContract;
         };
     };
     fromPartial: {
@@ -160,6 +176,14 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: MsgExecuteContract;
         };
+        compileContract(value: MsgCompileContract): {
+            typeUrl: string;
+            value: MsgCompileContract;
+        };
+        executeEth(value: MsgExecuteEth): {
+            typeUrl: string;
+            value: MsgExecuteEth;
+        };
         executeWithOriginContract(value: MsgExecuteWithOriginContract): {
             typeUrl: string;
             value: MsgExecuteWithOriginContract;
@@ -167,10 +191,6 @@ export declare const MessageComposer: {
         executeDelegateContract(value: MsgExecuteDelegateContract): {
             typeUrl: string;
             value: MsgExecuteDelegateContract;
-        };
-        compileContract(value: MsgCompileContract): {
-            typeUrl: string;
-            value: MsgCompileContract;
         };
     };
 };

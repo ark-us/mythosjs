@@ -1,12 +1,10 @@
 import * as _m0 from "protobufjs/minimal";
 import { isSet, Long } from "../../../helpers";
 export interface MsgRegisterOAuthClient {
-  /** bech32 address */
   owner: string;
   domain: string;
 }
 export interface MsgRegisterOAuthClientSDKType {
-  /** bech32 address */
   owner: string;
   domain: string;
 }
@@ -17,13 +15,11 @@ export interface MsgRegisterOAuthClientResponseSDKType {
   client_id: Long;
 }
 export interface MsgEditOAuthClient {
-  /** bech32 address */
   owner: string;
   clientId: Long;
   domain: string;
 }
 export interface MsgEditOAuthClientSDKType {
-  /** bech32 address */
   owner: string;
   client_id: Long;
   domain: string;
@@ -31,17 +27,87 @@ export interface MsgEditOAuthClientSDKType {
 export interface MsgEditOAuthClientResponse {}
 export interface MsgEditOAuthClientResponseSDKType {}
 export interface MsgDeregisterOAuthClient {
-  /** bech32 address */
   owner: string;
   clientId: Long;
 }
 export interface MsgDeregisterOAuthClientSDKType {
-  /** bech32 address */
   owner: string;
   client_id: Long;
 }
 export interface MsgDeregisterOAuthClientResponse {}
 export interface MsgDeregisterOAuthClientResponseSDKType {}
+/** Register a web server route */
+
+export interface MsgRegisterRoute {
+  /** authority is the address that controls the module. */
+  authority: string;
+  /** title of the proposal */
+
+  title: string;
+  /** description of the proposal */
+
+  description: string;
+  /** Route path */
+
+  path: string;
+  /** Contract address in bech32 format */
+
+  contractAddress: string;
+}
+/** Register a web server route */
+
+export interface MsgRegisterRouteSDKType {
+  /** authority is the address that controls the module. */
+  authority: string;
+  /** title of the proposal */
+
+  title: string;
+  /** description of the proposal */
+
+  description: string;
+  /** Route path */
+
+  path: string;
+  /** Contract address in bech32 format */
+
+  contract_address: string;
+}
+export interface MsgRegisterRouteResponse {}
+export interface MsgRegisterRouteResponseSDKType {}
+export interface MsgDeregisterRoute {
+  /** authority is the address that controls the module. */
+  authority: string;
+  /** title of the proposal */
+
+  title: string;
+  /** description of the proposal */
+
+  description: string;
+  /** Route path */
+
+  path: string;
+  /** Contract address in bech32 format */
+
+  contractAddress: string;
+}
+export interface MsgDeregisterRouteSDKType {
+  /** authority is the address that controls the module. */
+  authority: string;
+  /** title of the proposal */
+
+  title: string;
+  /** description of the proposal */
+
+  description: string;
+  /** Route path */
+
+  path: string;
+  /** Contract address in bech32 format */
+
+  contract_address: string;
+}
+export interface MsgDeregisterRouteResponse {}
+export interface MsgDeregisterRouteResponseSDKType {}
 
 function createBaseMsgRegisterOAuthClient(): MsgRegisterOAuthClient {
   return {
@@ -400,6 +466,302 @@ export const MsgDeregisterOAuthClientResponse = {
 
   fromPartial(_: Partial<MsgDeregisterOAuthClientResponse>): MsgDeregisterOAuthClientResponse {
     const message = createBaseMsgDeregisterOAuthClientResponse();
+    return message;
+  }
+
+};
+
+function createBaseMsgRegisterRoute(): MsgRegisterRoute {
+  return {
+    authority: "",
+    title: "",
+    description: "",
+    path: "",
+    contractAddress: ""
+  };
+}
+
+export const MsgRegisterRoute = {
+  encode(message: MsgRegisterRoute, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+
+    if (message.title !== "") {
+      writer.uint32(18).string(message.title);
+    }
+
+    if (message.description !== "") {
+      writer.uint32(26).string(message.description);
+    }
+
+    if (message.path !== "") {
+      writer.uint32(34).string(message.path);
+    }
+
+    if (message.contractAddress !== "") {
+      writer.uint32(42).string(message.contractAddress);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterRoute {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRegisterRoute();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+
+        case 2:
+          message.title = reader.string();
+          break;
+
+        case 3:
+          message.description = reader.string();
+          break;
+
+        case 4:
+          message.path = reader.string();
+          break;
+
+        case 5:
+          message.contractAddress = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgRegisterRoute {
+    return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      title: isSet(object.title) ? String(object.title) : "",
+      description: isSet(object.description) ? String(object.description) : "",
+      path: isSet(object.path) ? String(object.path) : "",
+      contractAddress: isSet(object.contractAddress) ? String(object.contractAddress) : ""
+    };
+  },
+
+  toJSON(message: MsgRegisterRoute): unknown {
+    const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
+    message.title !== undefined && (obj.title = message.title);
+    message.description !== undefined && (obj.description = message.description);
+    message.path !== undefined && (obj.path = message.path);
+    message.contractAddress !== undefined && (obj.contractAddress = message.contractAddress);
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgRegisterRoute>): MsgRegisterRoute {
+    const message = createBaseMsgRegisterRoute();
+    message.authority = object.authority ?? "";
+    message.title = object.title ?? "";
+    message.description = object.description ?? "";
+    message.path = object.path ?? "";
+    message.contractAddress = object.contractAddress ?? "";
+    return message;
+  }
+
+};
+
+function createBaseMsgRegisterRouteResponse(): MsgRegisterRouteResponse {
+  return {};
+}
+
+export const MsgRegisterRouteResponse = {
+  encode(_: MsgRegisterRouteResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterRouteResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgRegisterRouteResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgRegisterRouteResponse {
+    return {};
+  },
+
+  toJSON(_: MsgRegisterRouteResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: Partial<MsgRegisterRouteResponse>): MsgRegisterRouteResponse {
+    const message = createBaseMsgRegisterRouteResponse();
+    return message;
+  }
+
+};
+
+function createBaseMsgDeregisterRoute(): MsgDeregisterRoute {
+  return {
+    authority: "",
+    title: "",
+    description: "",
+    path: "",
+    contractAddress: ""
+  };
+}
+
+export const MsgDeregisterRoute = {
+  encode(message: MsgDeregisterRoute, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+
+    if (message.title !== "") {
+      writer.uint32(18).string(message.title);
+    }
+
+    if (message.description !== "") {
+      writer.uint32(26).string(message.description);
+    }
+
+    if (message.path !== "") {
+      writer.uint32(34).string(message.path);
+    }
+
+    if (message.contractAddress !== "") {
+      writer.uint32(42).string(message.contractAddress);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeregisterRoute {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDeregisterRoute();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+
+        case 2:
+          message.title = reader.string();
+          break;
+
+        case 3:
+          message.description = reader.string();
+          break;
+
+        case 4:
+          message.path = reader.string();
+          break;
+
+        case 5:
+          message.contractAddress = reader.string();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgDeregisterRoute {
+    return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      title: isSet(object.title) ? String(object.title) : "",
+      description: isSet(object.description) ? String(object.description) : "",
+      path: isSet(object.path) ? String(object.path) : "",
+      contractAddress: isSet(object.contractAddress) ? String(object.contractAddress) : ""
+    };
+  },
+
+  toJSON(message: MsgDeregisterRoute): unknown {
+    const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
+    message.title !== undefined && (obj.title = message.title);
+    message.description !== undefined && (obj.description = message.description);
+    message.path !== undefined && (obj.path = message.path);
+    message.contractAddress !== undefined && (obj.contractAddress = message.contractAddress);
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgDeregisterRoute>): MsgDeregisterRoute {
+    const message = createBaseMsgDeregisterRoute();
+    message.authority = object.authority ?? "";
+    message.title = object.title ?? "";
+    message.description = object.description ?? "";
+    message.path = object.path ?? "";
+    message.contractAddress = object.contractAddress ?? "";
+    return message;
+  }
+
+};
+
+function createBaseMsgDeregisterRouteResponse(): MsgDeregisterRouteResponse {
+  return {};
+}
+
+export const MsgDeregisterRouteResponse = {
+  encode(_: MsgDeregisterRouteResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeregisterRouteResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgDeregisterRouteResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(_: any): MsgDeregisterRouteResponse {
+    return {};
+  },
+
+  toJSON(_: MsgDeregisterRouteResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: Partial<MsgDeregisterRouteResponse>): MsgDeregisterRouteResponse {
+    const message = createBaseMsgDeregisterRouteResponse();
     return message;
   }
 

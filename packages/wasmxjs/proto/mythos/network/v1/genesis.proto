@@ -1,0 +1,9 @@
+syntax = "proto3";
+package mythos.network.v1;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/loredanacirstea/wasmx/x/network/types";
+
+// GenesisState defines the network module's genesis state.
+message GenesisState {}

@@ -1,7 +1,7 @@
 import { Rpc } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
 import { QueryClient, createProtobufRpcClient } from "@cosmjs/stargate";
-import { QueryContractInfoRequest, QueryContractInfoResponse, QueryContractsByCodeRequest, QueryContractsByCodeResponse, QueryAllContractStateRequest, QueryAllContractStateResponse, QueryRawContractStateRequest, QueryRawContractStateResponse, QuerySmartContractCallRequest, QuerySmartContractCallResponse, QueryCodeRequest, QueryCodeResponse, QueryCodeInfoRequest, QueryCodeInfoResponse, QueryCodesRequest, QueryCodesResponse, QueryParamsRequest, QueryParamsResponse, QueryContractsByCreatorRequest, QueryContractsByCreatorResponse } from "./query";
+import { QueryContractInfoRequest, QueryContractInfoResponse, QueryContractsByCodeRequest, QueryContractsByCodeResponse, QueryAllContractStateRequest, QueryAllContractStateResponse, QueryRawContractStateRequest, QueryRawContractStateResponse, QuerySmartContractCallRequest, QuerySmartContractCallResponse, QueryCallEthRequest, QueryCallEthResponse, QueryDebugContractCallRequest, QueryDebugContractCallResponse, QueryCodeRequest, QueryCodeResponse, QueryCodeInfoRequest, QueryCodeInfoResponse, QueryCodesRequest, QueryCodesResponse, QueryParamsRequest, QueryParamsResponse, QueryContractsByCreatorRequest, QueryContractsByCreatorResponse } from "./query";
 /** Query provides defines the gRPC querier service */
 
 export interface Query {
@@ -19,6 +19,12 @@ export interface Query {
   /** SmartContractCall get query result from the contract */
 
   smartContractCall(request: QuerySmartContractCallRequest): Promise<QuerySmartContractCallResponse>;
+  /** CallEth get query result from the contract */
+
+  callEth(request: QueryCallEthRequest): Promise<QueryCallEthResponse>;
+  /** DebugContractCall get query result from the contract */
+
+  debugContractCall(request: QueryDebugContractCallRequest): Promise<QueryDebugContractCallResponse>;
   /** Code gets the binary code and metadata for a singe wasm code */
 
   code(request: QueryCodeRequest): Promise<QueryCodeResponse>;
@@ -45,6 +51,8 @@ export class QueryClientImpl implements Query {
     this.allContractState = this.allContractState.bind(this);
     this.rawContractState = this.rawContractState.bind(this);
     this.smartContractCall = this.smartContractCall.bind(this);
+    this.callEth = this.callEth.bind(this);
+    this.debugContractCall = this.debugContractCall.bind(this);
     this.code = this.code.bind(this);
     this.codeInfo = this.codeInfo.bind(this);
     this.codes = this.codes.bind(this);
@@ -80,6 +88,18 @@ export class QueryClientImpl implements Query {
     const data = QuerySmartContractCallRequest.encode(request).finish();
     const promise = this.rpc.request("mythos.wasmx.v1.Query", "SmartContractCall", data);
     return promise.then(data => QuerySmartContractCallResponse.decode(new _m0.Reader(data)));
+  }
+
+  callEth(request: QueryCallEthRequest): Promise<QueryCallEthResponse> {
+    const data = QueryCallEthRequest.encode(request).finish();
+    const promise = this.rpc.request("mythos.wasmx.v1.Query", "CallEth", data);
+    return promise.then(data => QueryCallEthResponse.decode(new _m0.Reader(data)));
+  }
+
+  debugContractCall(request: QueryDebugContractCallRequest): Promise<QueryDebugContractCallResponse> {
+    const data = QueryDebugContractCallRequest.encode(request).finish();
+    const promise = this.rpc.request("mythos.wasmx.v1.Query", "DebugContractCall", data);
+    return promise.then(data => QueryDebugContractCallResponse.decode(new _m0.Reader(data)));
   }
 
   code(request: QueryCodeRequest): Promise<QueryCodeResponse> {
@@ -137,6 +157,14 @@ export const createRpcQueryExtension = (base: QueryClient) => {
 
     smartContractCall(request: QuerySmartContractCallRequest): Promise<QuerySmartContractCallResponse> {
       return queryService.smartContractCall(request);
+    },
+
+    callEth(request: QueryCallEthRequest): Promise<QueryCallEthResponse> {
+      return queryService.callEth(request);
+    },
+
+    debugContractCall(request: QueryDebugContractCallRequest): Promise<QueryDebugContractCallResponse> {
+      return queryService.debugContractCall(request);
     },
 
     code(request: QueryCodeRequest): Promise<QueryCodeResponse> {

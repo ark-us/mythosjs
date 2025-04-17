@@ -8,7 +8,7 @@ import "cosmos/base/query/v1beta1/pagination.proto";
 import "mythos/wasmx/v1/params.proto";
 import "mythos/wasmx/v1/contract.proto";
 
-option go_package = "mythos/v1/x/wasmx/types";
+option go_package = "github.com/loredanacirstea/wasmx/x/wasmx/types";
 option (gogoproto.goproto_getters_all) = false;
 option (gogoproto.equal_all) = false;
 
@@ -40,6 +40,18 @@ service Query {
       returns (QuerySmartContractCallResponse) {
     option (google.api.http).get =
         "/wasmx/v1/contract/{address}/call/{query_data}";
+  }
+  // CallEth get query result from the contract
+  rpc CallEth(QueryCallEthRequest)
+      returns (QueryCallEthResponse) {
+    option (google.api.http).get =
+        "/wasmx/v1/contract/{address}/call/{query_data}";
+  }
+  // DebugContractCall get query result from the contract
+  rpc DebugContractCall(QueryDebugContractCallRequest)
+      returns (QueryDebugContractCallResponse) {
+    option (google.api.http).get =
+        "/wasmx/v1/contract/{address}/debug/{query_data}";
   }
   // Code gets the binary code and metadata for a singe wasm code
   rpc Code(QueryCodeRequest) returns (QueryCodeResponse) {
@@ -79,7 +91,7 @@ message QueryContractInfoResponse {
 
   // address is the address of the contract
   string address = 1;
-  ContractInfo contract_info = 2 [
+  ContractInfoPB contract_info = 2 [
     (gogoproto.embed) = true,
     (gogoproto.nullable) = false,
     (gogoproto.jsontag) = ""
@@ -116,7 +128,7 @@ message QueryAllContractStateRequest {
 // QueryAllContractStateResponse is the response type for the
 // Query/AllContractState RPC method
 message QueryAllContractStateResponse {
-  repeated ContractStorage items = 1 [ (gogoproto.nullable) = false ];
+  repeated ContractStoragePB items = 1 [ (gogoproto.nullable) = false ];
   // pagination defines the pagination in the response.
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }
@@ -161,6 +173,60 @@ message QuerySmartContractCallResponse {
   bytes data = 1 [ (gogoproto.casttype) = "RawContractMessage" ];
 }
 
+// QueryCallEthRequest is the request type for the
+// Query/CallEth RPC method
+message QueryCallEthRequest {
+  // Sender is the that actor that signed the messages
+  string sender = 1;
+  // Address is the address of the smart contract
+  string address = 2;
+  bytes query_data = 3 [ (gogoproto.casttype) = "RawContractMessage" ];
+  // Funds coins that are transferred to the contract on execution
+  repeated cosmos.base.v1beta1.Coin funds = 4 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
+  // Array of either hex-encoded contract addresses or contract labels
+  // on which the execution of this message depends on
+  repeated string dependencies = 5;
+}
+
+// QueryCallEthResponse is the response type for the
+// Query/CallEth RPC method
+message QueryCallEthResponse {
+  // Data contains the json data returned from the smart contract
+  bytes data = 1 [ (gogoproto.casttype) = "RawContractMessage" ];
+  uint64 gas_used = 2;
+}
+
+// QueryDebugContractCallRequest is the request type for the
+// Query/DebugContractCall RPC method
+message QueryDebugContractCallRequest {
+  // Sender is the that actor that signed the messages
+  string sender = 1;
+  // Address is the address of the smart contract
+  string address = 2;
+  bytes query_data = 3 [ (gogoproto.casttype) = "RawContractMessage" ];
+  // Funds coins that are transferred to the contract on execution
+  repeated cosmos.base.v1beta1.Coin funds = 4 [
+    (gogoproto.nullable) = false,
+    (gogoproto.castrepeated) = "github.com/cosmos/cosmos-sdk/types.Coins"
+  ];
+  // Array of either hex-encoded contract addresses or contract labels
+  // on which the execution of this message depends on
+  repeated string dependencies = 5;
+}
+
+// QueryDebugContractCallResponse is the response type for the
+// Query/DebugContractCall RPC method
+message QueryDebugContractCallResponse {
+  // Data contains the json data returned from the smart contract
+  bytes data = 1 [ (gogoproto.casttype) = "RawContractMessage" ];
+  // wasm memory at the time of execution end
+  bytes memory_snapshot = 2;
+  string error_message = 3;
+}
+
 // QueryCodeRequest is the request type for the Query/Code RPC method
 message QueryCodeRequest {
   uint64 code_id = 1; // grpc-gateway_out does not support Go style CodID
@@ -169,7 +235,7 @@ message QueryCodeRequest {
 // QueryCodeResponse is the response type for the Query/Code RPC method
 message QueryCodeResponse {
   option (gogoproto.equal) = true;
-  CodeInfo code_info = 1
+  CodeInfoPB code_info = 1
       [ (gogoproto.embed) = true, (gogoproto.jsontag) = "" ];
   bytes data = 2 [ (gogoproto.jsontag) = "data" ];
 }
@@ -182,7 +248,7 @@ message QueryCodeInfoRequest {
 // QueryCodeInfoResponse is the response type for the Query/Code RPC method
 message QueryCodeInfoResponse {
   option (gogoproto.equal) = true;
-  CodeInfo code_info = 1
+  CodeInfoPB code_info = 1
       [ (gogoproto.embed) = true, (gogoproto.jsontag) = "" ];
 }
 
@@ -194,7 +260,7 @@ message QueryCodesRequest {
 
 // QueryCodesResponse is the response type for the Query/Codes RPC method
 message QueryCodesResponse {
-  repeated CodeInfo code_infos = 1 [ (gogoproto.nullable) = false ];
+  repeated CodeInfoPB code_infos = 1 [ (gogoproto.nullable) = false ];
   // pagination defines the pagination in the response.
   cosmos.base.query.v1beta1.PageResponse pagination = 2;
 }

@@ -1,7 +1,7 @@
 import { AminoMsg } from "@cosmjs/amino";
 import { fromUtf8, toUtf8 } from "@cosmjs/encoding";
 import { Long } from "../../../helpers";
-import { MsgStoreCode, MsgDeployCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
+import { MsgStoreCode, MsgDeployCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgCompileContract, MsgExecuteEth, MsgExecuteWithOriginContract, MsgExecuteDelegateContract } from "./tx";
 export interface AminoMsgStoreCode extends AminoMsg {
   type: "/mythos.wasmx.v1.MsgStoreCode";
   value: {
@@ -14,7 +14,7 @@ export interface AminoMsgStoreCode extends AminoMsg {
       icon: string;
       author: string;
       site: string;
-      abi: string;
+      abi: Uint8Array;
       json_schema: string;
       origin: {
         chain_id: string;
@@ -35,7 +35,7 @@ export interface AminoMsgDeployCode extends AminoMsg {
       icon: string;
       author: string;
       site: string;
-      abi: string;
+      abi: Uint8Array;
       json_schema: string;
       origin: {
         chain_id: string;
@@ -91,6 +91,21 @@ export interface AminoMsgExecuteContract extends AminoMsg {
     dependencies: string[];
   };
 }
+export interface AminoMsgCompileContract extends AminoMsg {
+  type: "/mythos.wasmx.v1.MsgCompileContract";
+  value: {
+    authority: string;
+    codeId: string;
+    metering_off: boolean;
+  };
+}
+export interface AminoMsgExecuteEth extends AminoMsg {
+  type: "/mythos.wasmx.v1.MsgExecuteEth";
+  value: {
+    data: Uint8Array;
+    sender: string;
+  };
+}
 export interface AminoMsgExecuteWithOriginContract extends AminoMsg {
   type: "/mythos.wasmx.v1.MsgExecuteWithOriginContract";
   value: {
@@ -117,13 +132,6 @@ export interface AminoMsgExecuteDelegateContract extends AminoMsg {
       denom: string;
       amount: string;
     }[];
-  };
-}
-export interface AminoMsgCompileContract extends AminoMsg {
-  type: "/mythos.wasmx.v1.MsgCompileContract";
-  value: {
-    sender: string;
-    codeId: string;
   };
 }
 export const AminoConverter = {
@@ -376,6 +384,52 @@ export const AminoConverter = {
       };
     }
   },
+  "/mythos.wasmx.v1.MsgCompileContract": {
+    aminoType: "/mythos.wasmx.v1.MsgCompileContract",
+    toAmino: ({
+      authority,
+      codeId,
+      meteringOff
+    }: MsgCompileContract): AminoMsgCompileContract["value"] => {
+      return {
+        authority,
+        codeId: codeId.toString(),
+        metering_off: meteringOff
+      };
+    },
+    fromAmino: ({
+      authority,
+      codeId,
+      metering_off
+    }: AminoMsgCompileContract["value"]): MsgCompileContract => {
+      return {
+        authority,
+        codeId: Long.fromString(codeId),
+        meteringOff: metering_off
+      };
+    }
+  },
+  "/mythos.wasmx.v1.MsgExecuteEth": {
+    aminoType: "/mythos.wasmx.v1.MsgExecuteEth",
+    toAmino: ({
+      data,
+      sender
+    }: MsgExecuteEth): AminoMsgExecuteEth["value"] => {
+      return {
+        data,
+        sender
+      };
+    },
+    fromAmino: ({
+      data,
+      sender
+    }: AminoMsgExecuteEth["value"]): MsgExecuteEth => {
+      return {
+        data,
+        sender
+      };
+    }
+  },
   "/mythos.wasmx.v1.MsgExecuteWithOriginContract": {
     aminoType: "/mythos.wasmx.v1.MsgExecuteWithOriginContract",
     toAmino: ({
@@ -459,27 +513,6 @@ export const AminoConverter = {
           denom: el0.denom,
           amount: el0.amount
         }))
-      };
-    }
-  },
-  "/mythos.wasmx.v1.MsgCompileContract": {
-    aminoType: "/mythos.wasmx.v1.MsgCompileContract",
-    toAmino: ({
-      sender,
-      codeId
-    }: MsgCompileContract): AminoMsgCompileContract["value"] => {
-      return {
-        sender,
-        codeId: codeId.toString()
-      };
-    },
-    fromAmino: ({
-      sender,
-      codeId
-    }: AminoMsgCompileContract["value"]): MsgCompileContract => {
-      return {
-        sender,
-        codeId: Long.fromString(codeId)
       };
     }
   }

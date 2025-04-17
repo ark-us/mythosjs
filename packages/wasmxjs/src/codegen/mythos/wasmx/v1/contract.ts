@@ -1,8 +1,84 @@
 import * as _m0 from "protobufjs/minimal";
 import { isSet, bytesFromBase64, base64FromBytes, Long } from "../../../helpers";
+export enum ContractStorageType {
+  /** CoreConsensus - transaction execution effects; this must be the DEFAULT storage */
+  CoreConsensus = 0,
+
+  /** MetaConsensus - blocks, transactions - meta chain data */
+  MetaConsensus = 1,
+
+  /** SingleConsensus - node-specific storage that must NOT be used in deterministic operations */
+  SingleConsensus = 2,
+  Memory = 3,
+  Transient = 4,
+  UNRECOGNIZED = -1,
+}
+export enum ContractStorageTypeSDKType {
+  /** CoreConsensus - transaction execution effects; this must be the DEFAULT storage */
+  CoreConsensus = 0,
+
+  /** MetaConsensus - blocks, transactions - meta chain data */
+  MetaConsensus = 1,
+
+  /** SingleConsensus - node-specific storage that must NOT be used in deterministic operations */
+  SingleConsensus = 2,
+  Memory = 3,
+  Transient = 4,
+  UNRECOGNIZED = -1,
+}
+export function contractStorageTypeFromJSON(object: any): ContractStorageType {
+  switch (object) {
+    case 0:
+    case "CoreConsensus":
+      return ContractStorageType.CoreConsensus;
+
+    case 1:
+    case "MetaConsensus":
+      return ContractStorageType.MetaConsensus;
+
+    case 2:
+    case "SingleConsensus":
+      return ContractStorageType.SingleConsensus;
+
+    case 3:
+    case "Memory":
+      return ContractStorageType.Memory;
+
+    case 4:
+    case "Transient":
+      return ContractStorageType.Transient;
+
+    case -1:
+    case "UNRECOGNIZED":
+    default:
+      return ContractStorageType.UNRECOGNIZED;
+  }
+}
+export function contractStorageTypeToJSON(object: ContractStorageType): string {
+  switch (object) {
+    case ContractStorageType.CoreConsensus:
+      return "CoreConsensus";
+
+    case ContractStorageType.MetaConsensus:
+      return "MetaConsensus";
+
+    case ContractStorageType.SingleConsensus:
+      return "SingleConsensus";
+
+    case ContractStorageType.Memory:
+      return "Memory";
+
+    case ContractStorageType.Transient:
+      return "Transient";
+
+    case ContractStorageType.UNRECOGNIZED:
+    default:
+      return "UNRECOGNIZED";
+  }
+}
 /** ContractStorage */
 
-export interface ContractStorage {
+export interface ContractStoragePB {
   /** hex-encode key */
   key: Uint8Array;
   /** raw value */
@@ -11,7 +87,7 @@ export interface ContractStorage {
 }
 /** ContractStorage */
 
-export interface ContractStorageSDKType {
+export interface ContractStoragePBSDKType {
   /** hex-encode key */
   key: Uint8Array;
   /** raw value */
@@ -20,7 +96,7 @@ export interface ContractStorageSDKType {
 }
 /** Metadata for each codeId */
 
-export interface CodeMetadata {
+export interface CodeMetadataPB {
   name: string;
   /** category paths e.g. "/dapps/history" */
 
@@ -30,13 +106,13 @@ export interface CodeMetadata {
 
   author: string;
   site: string;
-  abi: string;
+  abi: Uint8Array;
   jsonSchema: string;
-  origin?: CodeOrigin;
+  origin?: CodeOriginPB;
 }
 /** Metadata for each codeId */
 
-export interface CodeMetadataSDKType {
+export interface CodeMetadataPBSDKType {
   name: string;
   /** category paths e.g. "/dapps/history" */
 
@@ -46,13 +122,13 @@ export interface CodeMetadataSDKType {
 
   author: string;
   site: string;
-  abi: string;
+  abi: Uint8Array;
   json_schema: string;
-  origin?: CodeOriginSDKType;
+  origin?: CodeOriginPBSDKType;
 }
 /** CodeInfo is data for the uploaded contract WASM code */
 
-export interface CodeInfo {
+export interface CodeInfoPB {
   /**
    * CodeHash is the unique identifier created by hashing the
    * wasm or interpreted code
@@ -70,7 +146,10 @@ export interface CodeInfo {
   /** Pinned contract */
 
   pinned: boolean;
-  metadata?: CodeMetadata;
+  /** default is on, but some system contracts may have metering off */
+
+  meteringOff: boolean;
+  metadata?: CodeMetadataPB;
   /** for code that has a different runtime, like EVM */
 
   interpretedBytecodeDeployment: Uint8Array;
@@ -79,7 +158,7 @@ export interface CodeInfo {
 }
 /** CodeInfo is data for the uploaded contract WASM code */
 
-export interface CodeInfoSDKType {
+export interface CodeInfoPBSDKType {
   /**
    * CodeHash is the unique identifier created by hashing the
    * wasm or interpreted code
@@ -97,21 +176,24 @@ export interface CodeInfoSDKType {
   /** Pinned contract */
 
   pinned: boolean;
-  metadata?: CodeMetadataSDKType;
+  /** default is on, but some system contracts may have metering off */
+
+  metering_off: boolean;
+  metadata?: CodeMetadataPBSDKType;
   /** for code that has a different runtime, like EVM */
 
   interpreted_bytecode_deployment: Uint8Array;
   interpreted_bytecode_runtime: Uint8Array;
   runtime_hash: Uint8Array;
 }
-export interface CodeOrigin {
+export interface CodeOriginPB {
   /** unique chain ID */
   chainId: string;
   /** hex-encoded address */
 
   address: string;
 }
-export interface CodeOriginSDKType {
+export interface CodeOriginPBSDKType {
   /** unique chain ID */
   chain_id: string;
   /** hex-encoded address */
@@ -120,7 +202,7 @@ export interface CodeOriginSDKType {
 }
 /** ContractInfo stores a WASM contract instance */
 
-export interface ContractInfo {
+export interface ContractInfoPB {
   /** CodeID is the reference to the stored Wasm code */
   codeId: Long;
   /** Creator address who initially instantiated the contract */
@@ -129,6 +211,9 @@ export interface ContractInfo {
   /** Label is optional metadata to be stored with a contract instance. */
 
   label: string;
+  /** Each contract can set its storage type */
+
+  storageType: ContractStorageType;
   /** Initialization message */
 
   initMessage: Uint8Array;
@@ -139,7 +224,7 @@ export interface ContractInfo {
 }
 /** ContractInfo stores a WASM contract instance */
 
-export interface ContractInfoSDKType {
+export interface ContractInfoPBSDKType {
   /** CodeID is the reference to the stored Wasm code */
   code_id: Long;
   /** Creator address who initially instantiated the contract */
@@ -148,6 +233,9 @@ export interface ContractInfoSDKType {
   /** Label is optional metadata to be stored with a contract instance. */
 
   label: string;
+  /** Each contract can set its storage type */
+
+  storage_type: ContractStorageTypeSDKType;
   /** Initialization message */
 
   init_message: Uint8Array;
@@ -187,15 +275,15 @@ export interface AbsoluteTxPositionSDKType {
   tx_index: Long;
 }
 
-function createBaseContractStorage(): ContractStorage {
+function createBaseContractStoragePB(): ContractStoragePB {
   return {
     key: new Uint8Array(),
     value: new Uint8Array()
   };
 }
 
-export const ContractStorage = {
-  encode(message: ContractStorage, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const ContractStoragePB = {
+  encode(message: ContractStoragePB, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.key.length !== 0) {
       writer.uint32(10).bytes(message.key);
     }
@@ -207,10 +295,10 @@ export const ContractStorage = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ContractStorage {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ContractStoragePB {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseContractStorage();
+    const message = createBaseContractStoragePB();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -233,22 +321,22 @@ export const ContractStorage = {
     return message;
   },
 
-  fromJSON(object: any): ContractStorage {
+  fromJSON(object: any): ContractStoragePB {
     return {
       key: isSet(object.key) ? bytesFromBase64(object.key) : new Uint8Array(),
       value: isSet(object.value) ? bytesFromBase64(object.value) : new Uint8Array()
     };
   },
 
-  toJSON(message: ContractStorage): unknown {
+  toJSON(message: ContractStoragePB): unknown {
     const obj: any = {};
     message.key !== undefined && (obj.key = base64FromBytes(message.key !== undefined ? message.key : new Uint8Array()));
     message.value !== undefined && (obj.value = base64FromBytes(message.value !== undefined ? message.value : new Uint8Array()));
     return obj;
   },
 
-  fromPartial(object: Partial<ContractStorage>): ContractStorage {
-    const message = createBaseContractStorage();
+  fromPartial(object: Partial<ContractStoragePB>): ContractStoragePB {
+    const message = createBaseContractStoragePB();
     message.key = object.key ?? new Uint8Array();
     message.value = object.value ?? new Uint8Array();
     return message;
@@ -256,7 +344,7 @@ export const ContractStorage = {
 
 };
 
-function createBaseCodeMetadata(): CodeMetadata {
+function createBaseCodeMetadataPB(): CodeMetadataPB {
   return {
     name: undefined,
     categ: [],
@@ -269,8 +357,8 @@ function createBaseCodeMetadata(): CodeMetadata {
   };
 }
 
-export const CodeMetadata = {
-  encode(message: CodeMetadata, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const CodeMetadataPB = {
+  encode(message: CodeMetadataPB, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.name !== undefined) {
       writer.uint32(10).string(message.name);
     }
@@ -292,7 +380,7 @@ export const CodeMetadata = {
     }
 
     if (message.abi !== undefined) {
-      writer.uint32(50).string(message.abi);
+      writer.uint32(50).bytes(message.abi);
     }
 
     if (message.jsonSchema !== undefined) {
@@ -300,16 +388,16 @@ export const CodeMetadata = {
     }
 
     if (message.origin !== undefined) {
-      CodeOrigin.encode(message.origin, writer.uint32(66).fork()).ldelim();
+      CodeOriginPB.encode(message.origin, writer.uint32(66).fork()).ldelim();
     }
 
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): CodeMetadata {
+  decode(input: _m0.Reader | Uint8Array, length?: number): CodeMetadataPB {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCodeMetadata();
+    const message = createBaseCodeMetadataPB();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -336,7 +424,7 @@ export const CodeMetadata = {
           break;
 
         case 6:
-          message.abi = reader.string();
+          message.abi = reader.bytes();
           break;
 
         case 7:
@@ -344,7 +432,7 @@ export const CodeMetadata = {
           break;
 
         case 8:
-          message.origin = CodeOrigin.decode(reader, reader.uint32());
+          message.origin = CodeOriginPB.decode(reader, reader.uint32());
           break;
 
         default:
@@ -356,20 +444,20 @@ export const CodeMetadata = {
     return message;
   },
 
-  fromJSON(object: any): CodeMetadata {
+  fromJSON(object: any): CodeMetadataPB {
     return {
       name: isSet(object.name) ? String(object.name) : undefined,
       categ: Array.isArray(object?.categ) ? object.categ.map((e: any) => String(e)) : [],
       icon: isSet(object.icon) ? String(object.icon) : undefined,
       author: isSet(object.author) ? String(object.author) : undefined,
       site: isSet(object.site) ? String(object.site) : undefined,
-      abi: isSet(object.abi) ? String(object.abi) : undefined,
+      abi: isSet(object.abi) ? bytesFromBase64(object.abi) : undefined,
       jsonSchema: isSet(object.jsonSchema) ? String(object.jsonSchema) : undefined,
-      origin: isSet(object.origin) ? CodeOrigin.fromJSON(object.origin) : undefined
+      origin: isSet(object.origin) ? CodeOriginPB.fromJSON(object.origin) : undefined
     };
   },
 
-  toJSON(message: CodeMetadata): unknown {
+  toJSON(message: CodeMetadataPB): unknown {
     const obj: any = {};
     message.name !== undefined && (obj.name = message.name);
 
@@ -382,14 +470,14 @@ export const CodeMetadata = {
     message.icon !== undefined && (obj.icon = message.icon);
     message.author !== undefined && (obj.author = message.author);
     message.site !== undefined && (obj.site = message.site);
-    message.abi !== undefined && (obj.abi = message.abi);
+    message.abi !== undefined && (obj.abi = message.abi !== undefined ? base64FromBytes(message.abi) : undefined);
     message.jsonSchema !== undefined && (obj.jsonSchema = message.jsonSchema);
-    message.origin !== undefined && (obj.origin = message.origin ? CodeOrigin.toJSON(message.origin) : undefined);
+    message.origin !== undefined && (obj.origin = message.origin ? CodeOriginPB.toJSON(message.origin) : undefined);
     return obj;
   },
 
-  fromPartial(object: Partial<CodeMetadata>): CodeMetadata {
-    const message = createBaseCodeMetadata();
+  fromPartial(object: Partial<CodeMetadataPB>): CodeMetadataPB {
+    const message = createBaseCodeMetadataPB();
     message.name = object.name ?? undefined;
     message.categ = object.categ?.map(e => e) || [];
     message.icon = object.icon ?? undefined;
@@ -397,18 +485,19 @@ export const CodeMetadata = {
     message.site = object.site ?? undefined;
     message.abi = object.abi ?? undefined;
     message.jsonSchema = object.jsonSchema ?? undefined;
-    message.origin = object.origin !== undefined && object.origin !== null ? CodeOrigin.fromPartial(object.origin) : undefined;
+    message.origin = object.origin !== undefined && object.origin !== null ? CodeOriginPB.fromPartial(object.origin) : undefined;
     return message;
   }
 
 };
 
-function createBaseCodeInfo(): CodeInfo {
+function createBaseCodeInfoPB(): CodeInfoPB {
   return {
     codeHash: new Uint8Array(),
     creator: "",
     deps: [],
     pinned: false,
+    meteringOff: false,
     metadata: undefined,
     interpretedBytecodeDeployment: new Uint8Array(),
     interpretedBytecodeRuntime: new Uint8Array(),
@@ -416,8 +505,8 @@ function createBaseCodeInfo(): CodeInfo {
   };
 }
 
-export const CodeInfo = {
-  encode(message: CodeInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const CodeInfoPB = {
+  encode(message: CodeInfoPB, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.codeHash.length !== 0) {
       writer.uint32(10).bytes(message.codeHash);
     }
@@ -434,29 +523,33 @@ export const CodeInfo = {
       writer.uint32(32).bool(message.pinned);
     }
 
+    if (message.meteringOff === true) {
+      writer.uint32(40).bool(message.meteringOff);
+    }
+
     if (message.metadata !== undefined) {
-      CodeMetadata.encode(message.metadata, writer.uint32(42).fork()).ldelim();
+      CodeMetadataPB.encode(message.metadata, writer.uint32(50).fork()).ldelim();
     }
 
     if (message.interpretedBytecodeDeployment.length !== 0) {
-      writer.uint32(50).bytes(message.interpretedBytecodeDeployment);
+      writer.uint32(58).bytes(message.interpretedBytecodeDeployment);
     }
 
     if (message.interpretedBytecodeRuntime.length !== 0) {
-      writer.uint32(58).bytes(message.interpretedBytecodeRuntime);
+      writer.uint32(66).bytes(message.interpretedBytecodeRuntime);
     }
 
     if (message.runtimeHash.length !== 0) {
-      writer.uint32(66).bytes(message.runtimeHash);
+      writer.uint32(74).bytes(message.runtimeHash);
     }
 
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): CodeInfo {
+  decode(input: _m0.Reader | Uint8Array, length?: number): CodeInfoPB {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCodeInfo();
+    const message = createBaseCodeInfoPB();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -479,18 +572,22 @@ export const CodeInfo = {
           break;
 
         case 5:
-          message.metadata = CodeMetadata.decode(reader, reader.uint32());
+          message.meteringOff = reader.bool();
           break;
 
         case 6:
-          message.interpretedBytecodeDeployment = reader.bytes();
+          message.metadata = CodeMetadataPB.decode(reader, reader.uint32());
           break;
 
         case 7:
-          message.interpretedBytecodeRuntime = reader.bytes();
+          message.interpretedBytecodeDeployment = reader.bytes();
           break;
 
         case 8:
+          message.interpretedBytecodeRuntime = reader.bytes();
+          break;
+
+        case 9:
           message.runtimeHash = reader.bytes();
           break;
 
@@ -503,20 +600,21 @@ export const CodeInfo = {
     return message;
   },
 
-  fromJSON(object: any): CodeInfo {
+  fromJSON(object: any): CodeInfoPB {
     return {
       codeHash: isSet(object.codeHash) ? bytesFromBase64(object.codeHash) : new Uint8Array(),
       creator: isSet(object.creator) ? String(object.creator) : "",
       deps: Array.isArray(object?.deps) ? object.deps.map((e: any) => String(e)) : [],
       pinned: isSet(object.pinned) ? Boolean(object.pinned) : false,
-      metadata: isSet(object.metadata) ? CodeMetadata.fromJSON(object.metadata) : undefined,
+      meteringOff: isSet(object.meteringOff) ? Boolean(object.meteringOff) : false,
+      metadata: isSet(object.metadata) ? CodeMetadataPB.fromJSON(object.metadata) : undefined,
       interpretedBytecodeDeployment: isSet(object.interpretedBytecodeDeployment) ? bytesFromBase64(object.interpretedBytecodeDeployment) : new Uint8Array(),
       interpretedBytecodeRuntime: isSet(object.interpretedBytecodeRuntime) ? bytesFromBase64(object.interpretedBytecodeRuntime) : new Uint8Array(),
       runtimeHash: isSet(object.runtimeHash) ? bytesFromBase64(object.runtimeHash) : new Uint8Array()
     };
   },
 
-  toJSON(message: CodeInfo): unknown {
+  toJSON(message: CodeInfoPB): unknown {
     const obj: any = {};
     message.codeHash !== undefined && (obj.codeHash = base64FromBytes(message.codeHash !== undefined ? message.codeHash : new Uint8Array()));
     message.creator !== undefined && (obj.creator = message.creator);
@@ -528,20 +626,22 @@ export const CodeInfo = {
     }
 
     message.pinned !== undefined && (obj.pinned = message.pinned);
-    message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadata.toJSON(message.metadata) : undefined);
+    message.meteringOff !== undefined && (obj.meteringOff = message.meteringOff);
+    message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadataPB.toJSON(message.metadata) : undefined);
     message.interpretedBytecodeDeployment !== undefined && (obj.interpretedBytecodeDeployment = base64FromBytes(message.interpretedBytecodeDeployment !== undefined ? message.interpretedBytecodeDeployment : new Uint8Array()));
     message.interpretedBytecodeRuntime !== undefined && (obj.interpretedBytecodeRuntime = base64FromBytes(message.interpretedBytecodeRuntime !== undefined ? message.interpretedBytecodeRuntime : new Uint8Array()));
     message.runtimeHash !== undefined && (obj.runtimeHash = base64FromBytes(message.runtimeHash !== undefined ? message.runtimeHash : new Uint8Array()));
     return obj;
   },
 
-  fromPartial(object: Partial<CodeInfo>): CodeInfo {
-    const message = createBaseCodeInfo();
+  fromPartial(object: Partial<CodeInfoPB>): CodeInfoPB {
+    const message = createBaseCodeInfoPB();
     message.codeHash = object.codeHash ?? new Uint8Array();
     message.creator = object.creator ?? "";
     message.deps = object.deps?.map(e => e) || [];
     message.pinned = object.pinned ?? false;
-    message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadata.fromPartial(object.metadata) : undefined;
+    message.meteringOff = object.meteringOff ?? false;
+    message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadataPB.fromPartial(object.metadata) : undefined;
     message.interpretedBytecodeDeployment = object.interpretedBytecodeDeployment ?? new Uint8Array();
     message.interpretedBytecodeRuntime = object.interpretedBytecodeRuntime ?? new Uint8Array();
     message.runtimeHash = object.runtimeHash ?? new Uint8Array();
@@ -550,15 +650,15 @@ export const CodeInfo = {
 
 };
 
-function createBaseCodeOrigin(): CodeOrigin {
+function createBaseCodeOriginPB(): CodeOriginPB {
   return {
     chainId: "",
     address: ""
   };
 }
 
-export const CodeOrigin = {
-  encode(message: CodeOrigin, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const CodeOriginPB = {
+  encode(message: CodeOriginPB, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (message.chainId !== "") {
       writer.uint32(10).string(message.chainId);
     }
@@ -570,10 +670,10 @@ export const CodeOrigin = {
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): CodeOrigin {
+  decode(input: _m0.Reader | Uint8Array, length?: number): CodeOriginPB {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseCodeOrigin();
+    const message = createBaseCodeOriginPB();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -596,22 +696,22 @@ export const CodeOrigin = {
     return message;
   },
 
-  fromJSON(object: any): CodeOrigin {
+  fromJSON(object: any): CodeOriginPB {
     return {
       chainId: isSet(object.chainId) ? String(object.chainId) : "",
       address: isSet(object.address) ? String(object.address) : ""
     };
   },
 
-  toJSON(message: CodeOrigin): unknown {
+  toJSON(message: CodeOriginPB): unknown {
     const obj: any = {};
     message.chainId !== undefined && (obj.chainId = message.chainId);
     message.address !== undefined && (obj.address = message.address);
     return obj;
   },
 
-  fromPartial(object: Partial<CodeOrigin>): CodeOrigin {
-    const message = createBaseCodeOrigin();
+  fromPartial(object: Partial<CodeOriginPB>): CodeOriginPB {
+    const message = createBaseCodeOriginPB();
     message.chainId = object.chainId ?? "";
     message.address = object.address ?? "";
     return message;
@@ -619,19 +719,20 @@ export const CodeOrigin = {
 
 };
 
-function createBaseContractInfo(): ContractInfo {
+function createBaseContractInfoPB(): ContractInfoPB {
   return {
     codeId: Long.UZERO,
     creator: "",
     label: "",
+    storageType: 0,
     initMessage: new Uint8Array(),
     provenance: "",
     ibcPortId: ""
   };
 }
 
-export const ContractInfo = {
-  encode(message: ContractInfo, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+export const ContractInfoPB = {
+  encode(message: ContractInfoPB, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
     if (!message.codeId.isZero()) {
       writer.uint32(8).uint64(message.codeId);
     }
@@ -644,25 +745,29 @@ export const ContractInfo = {
       writer.uint32(26).string(message.label);
     }
 
+    if (message.storageType !== 0) {
+      writer.uint32(32).int32(message.storageType);
+    }
+
     if (message.initMessage.length !== 0) {
-      writer.uint32(34).bytes(message.initMessage);
+      writer.uint32(42).bytes(message.initMessage);
     }
 
     if (message.provenance !== "") {
-      writer.uint32(42).string(message.provenance);
+      writer.uint32(50).string(message.provenance);
     }
 
     if (message.ibcPortId !== "") {
-      writer.uint32(50).string(message.ibcPortId);
+      writer.uint32(58).string(message.ibcPortId);
     }
 
     return writer;
   },
 
-  decode(input: _m0.Reader | Uint8Array, length?: number): ContractInfo {
+  decode(input: _m0.Reader | Uint8Array, length?: number): ContractInfoPB {
     const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = createBaseContractInfo();
+    const message = createBaseContractInfoPB();
 
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -681,14 +786,18 @@ export const ContractInfo = {
           break;
 
         case 4:
-          message.initMessage = reader.bytes();
+          message.storageType = (reader.int32() as any);
           break;
 
         case 5:
-          message.provenance = reader.string();
+          message.initMessage = reader.bytes();
           break;
 
         case 6:
+          message.provenance = reader.string();
+          break;
+
+        case 7:
           message.ibcPortId = reader.string();
           break;
 
@@ -701,33 +810,36 @@ export const ContractInfo = {
     return message;
   },
 
-  fromJSON(object: any): ContractInfo {
+  fromJSON(object: any): ContractInfoPB {
     return {
       codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO,
       creator: isSet(object.creator) ? String(object.creator) : "",
       label: isSet(object.label) ? String(object.label) : "",
+      storageType: isSet(object.storageType) ? contractStorageTypeFromJSON(object.storageType) : 0,
       initMessage: isSet(object.initMessage) ? bytesFromBase64(object.initMessage) : new Uint8Array(),
       provenance: isSet(object.provenance) ? String(object.provenance) : "",
       ibcPortId: isSet(object.ibcPortId) ? String(object.ibcPortId) : ""
     };
   },
 
-  toJSON(message: ContractInfo): unknown {
+  toJSON(message: ContractInfoPB): unknown {
     const obj: any = {};
     message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
     message.creator !== undefined && (obj.creator = message.creator);
     message.label !== undefined && (obj.label = message.label);
+    message.storageType !== undefined && (obj.storageType = contractStorageTypeToJSON(message.storageType));
     message.initMessage !== undefined && (obj.initMessage = base64FromBytes(message.initMessage !== undefined ? message.initMessage : new Uint8Array()));
     message.provenance !== undefined && (obj.provenance = message.provenance);
     message.ibcPortId !== undefined && (obj.ibcPortId = message.ibcPortId);
     return obj;
   },
 
-  fromPartial(object: Partial<ContractInfo>): ContractInfo {
-    const message = createBaseContractInfo();
+  fromPartial(object: Partial<ContractInfoPB>): ContractInfoPB {
+    const message = createBaseContractInfoPB();
     message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
     message.creator = object.creator ?? "";
     message.label = object.label ?? "";
+    message.storageType = object.storageType ?? 0;
     message.initMessage = object.initMessage ?? new Uint8Array();
     message.provenance = object.provenance ?? "";
     message.ibcPortId = object.ibcPortId ?? "";

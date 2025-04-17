@@ -2,6 +2,30 @@
 import { PublicKey, PublicKeySDKType } from "../crypto/keys";
 import * as _m0 from "protobufjs/minimal";
 import { Long } from "../../helpers";
+/** BlockIdFlag indicates which BlockID the signature is for */
+export declare enum BlockIDFlag {
+    /** BLOCK_ID_FLAG_UNKNOWN - indicates an error condition */
+    BLOCK_ID_FLAG_UNKNOWN = 0,
+    /** BLOCK_ID_FLAG_ABSENT - the vote was not received */
+    BLOCK_ID_FLAG_ABSENT = 1,
+    BLOCK_ID_FLAG_COMMIT = 2,
+    /** BLOCK_ID_FLAG_NIL - voted for nil */
+    BLOCK_ID_FLAG_NIL = 3,
+    UNRECOGNIZED = -1
+}
+/** BlockIdFlag indicates which BlockID the signature is for */
+export declare enum BlockIDFlagSDKType {
+    /** BLOCK_ID_FLAG_UNKNOWN - indicates an error condition */
+    BLOCK_ID_FLAG_UNKNOWN = 0,
+    /** BLOCK_ID_FLAG_ABSENT - the vote was not received */
+    BLOCK_ID_FLAG_ABSENT = 1,
+    BLOCK_ID_FLAG_COMMIT = 2,
+    /** BLOCK_ID_FLAG_NIL - voted for nil */
+    BLOCK_ID_FLAG_NIL = 3,
+    UNRECOGNIZED = -1
+}
+export declare function blockIDFlagFromJSON(object: any): BlockIDFlag;
+export declare function blockIDFlagToJSON(object: BlockIDFlag): string;
 export interface ValidatorSet {
     validators: Validator[];
     proposer?: Validator;

@@ -1,5 +1,5 @@
 import { Rpc } from "../../../helpers";
-import { MsgStoreCode, MsgStoreCodeResponse, MsgDeployCode, MsgDeployCodeResponse, MsgInstantiateContract, MsgInstantiateContractResponse, MsgInstantiateContract2, MsgInstantiateContract2Response, MsgExecuteContract, MsgExecuteContractResponse, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgExecuteDelegateContractResponse, MsgCompileContract, MsgCompileContractResponse } from "./tx";
+import { MsgStoreCode, MsgStoreCodeResponse, MsgDeployCode, MsgDeployCodeResponse, MsgInstantiateContract, MsgInstantiateContractResponse, MsgInstantiateContract2, MsgInstantiateContract2Response, MsgExecuteContract, MsgExecuteContractResponse, MsgCompileContract, MsgCompileContractResponse, MsgExecuteEth, MsgExecuteEthResponse, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgExecuteDelegateContractResponse } from "./tx";
 /** Msg defines the wasm Msg service. */
 export interface Msg {
     /** StoreCode to submit Wasm code to the system */
@@ -18,12 +18,17 @@ export interface Msg {
     instantiateContract2(request: MsgInstantiateContract2): Promise<MsgInstantiateContract2Response>;
     /** Execute submits the given message data to a smart contract */
     executeContract(request: MsgExecuteContract): Promise<MsgExecuteContractResponse>;
-    /** ExecuteWithOrigin submits the given message data to a smart contract */
+    /** CompileContract submits a smart contract to be precompiled */
+    compileContract(request: MsgCompileContract): Promise<MsgCompileContractResponse>;
+    /** ExecuteEth to submit Wasm code to the system */
+    executeEth(request: MsgExecuteEth): Promise<MsgExecuteEthResponse>;
+    /**
+     * TODO Remove
+     * ExecuteWithOrigin submits the given message data to a smart contract
+     */
     executeWithOriginContract(request: MsgExecuteWithOriginContract): Promise<MsgExecuteContractResponse>;
     /** ExecuteDelegate submits the given message data to a smart contract */
     executeDelegateContract(request: MsgExecuteDelegateContract): Promise<MsgExecuteDelegateContractResponse>;
-    /** CompileContract submits a smart contract to be precompiled */
-    compileContract(request: MsgCompileContract): Promise<MsgCompileContractResponse>;
 }
 export declare class MsgClientImpl implements Msg {
     private readonly rpc;
@@ -33,7 +38,8 @@ export declare class MsgClientImpl implements Msg {
     instantiateContract(request: MsgInstantiateContract): Promise<MsgInstantiateContractResponse>;
     instantiateContract2(request: MsgInstantiateContract2): Promise<MsgInstantiateContract2Response>;
     executeContract(request: MsgExecuteContract): Promise<MsgExecuteContractResponse>;
+    compileContract(request: MsgCompileContract): Promise<MsgCompileContractResponse>;
+    executeEth(request: MsgExecuteEth): Promise<MsgExecuteEthResponse>;
     executeWithOriginContract(request: MsgExecuteWithOriginContract): Promise<MsgExecuteContractResponse>;
     executeDelegateContract(request: MsgExecuteDelegateContract): Promise<MsgExecuteDelegateContractResponse>;
-    compileContract(request: MsgCompileContract): Promise<MsgCompileContractResponse>;
 }

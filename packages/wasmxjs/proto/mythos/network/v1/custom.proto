@@ -1,0 +1,19 @@
+syntax = "proto3";
+package mythos.network.v1;
+
+import "gogoproto/gogo.proto";
+import "cosmos_proto/cosmos.proto";
+import "amino/amino.proto";
+
+option go_package = "github.com/loredanacirstea/wasmx/x/network/types";
+option (gogoproto.goproto_getters_all) = false;
+
+message MsgExecuteAtomicTxRequest {
+    option (amino.name) = "network/MsgExecuteAtomicTxRequest";
+
+    option (gogoproto.equal)           = false;
+    option (gogoproto.goproto_getters) = true;
+    // protobuf encoded transactions
+    repeated bytes txs = 1;
+    bytes sender = 2;
+}

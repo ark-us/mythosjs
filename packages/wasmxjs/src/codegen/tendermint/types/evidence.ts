@@ -11,10 +11,7 @@ export interface EvidenceSDKType {
   duplicate_vote_evidence?: DuplicateVoteEvidenceSDKType;
   light_client_attack_evidence?: LightClientAttackEvidenceSDKType;
 }
-/**
- * DuplicateVoteEvidence contains evidence of a validator signed two conflicting
- * votes.
- */
+/** DuplicateVoteEvidence contains evidence of a validator signed two conflicting votes. */
 
 export interface DuplicateVoteEvidence {
   voteA?: Vote;
@@ -23,10 +20,7 @@ export interface DuplicateVoteEvidence {
   validatorPower: Long;
   timestamp?: Timestamp;
 }
-/**
- * DuplicateVoteEvidence contains evidence of a validator signed two conflicting
- * votes.
- */
+/** DuplicateVoteEvidence contains evidence of a validator signed two conflicting votes. */
 
 export interface DuplicateVoteEvidenceSDKType {
   vote_a?: VoteSDKType;
@@ -35,10 +29,7 @@ export interface DuplicateVoteEvidenceSDKType {
   validator_power: Long;
   timestamp?: TimestampSDKType;
 }
-/**
- * LightClientAttackEvidence contains evidence of a set of validators attempting
- * to mislead a light client.
- */
+/** LightClientAttackEvidence contains evidence of a set of validators attempting to mislead a light client. */
 
 export interface LightClientAttackEvidence {
   conflictingBlock?: LightBlock;
@@ -47,10 +38,7 @@ export interface LightClientAttackEvidence {
   totalVotingPower: Long;
   timestamp?: Timestamp;
 }
-/**
- * LightClientAttackEvidence contains evidence of a set of validators attempting
- * to mislead a light client.
- */
+/** LightClientAttackEvidence contains evidence of a set of validators attempting to mislead a light client. */
 
 export interface LightClientAttackEvidenceSDKType {
   conflicting_block?: LightBlockSDKType;

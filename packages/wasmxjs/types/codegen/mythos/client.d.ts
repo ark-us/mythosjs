@@ -37,6 +37,40 @@ export declare const mythosAminoConverters: {
             client_id: string;
         }) => import("./websrv/v1/tx").MsgDeregisterOAuthClient;
     };
+    "/mythos.websrv.v1.MsgRegisterRoute": {
+        aminoType: string;
+        toAmino: ({ authority, title, description, path, contractAddress }: import("./websrv/v1/tx").MsgRegisterRoute) => {
+            authority: string;
+            title: string;
+            description: string;
+            path: string;
+            contract_address: string;
+        };
+        fromAmino: ({ authority, title, description, path, contract_address }: {
+            authority: string;
+            title: string;
+            description: string;
+            path: string;
+            contract_address: string;
+        }) => import("./websrv/v1/tx").MsgRegisterRoute;
+    };
+    "/mythos.websrv.v1.MsgDeregisterRoute": {
+        aminoType: string;
+        toAmino: ({ authority, title, description, path, contractAddress }: import("./websrv/v1/tx").MsgDeregisterRoute) => {
+            authority: string;
+            title: string;
+            description: string;
+            path: string;
+            contract_address: string;
+        };
+        fromAmino: ({ authority, title, description, path, contract_address }: {
+            authority: string;
+            title: string;
+            description: string;
+            path: string;
+            contract_address: string;
+        }) => import("./websrv/v1/tx").MsgDeregisterRoute;
+    };
     "/mythos.wasmx.v1.MsgStoreCode": {
         aminoType: string;
         toAmino: ({ sender, byteCode, deps, metadata }: import(".").MsgStoreCode) => {
@@ -49,7 +83,7 @@ export declare const mythosAminoConverters: {
                 icon: string;
                 author: string;
                 site: string;
-                abi: string;
+                abi: Uint8Array;
                 json_schema: string;
                 origin: {
                     chain_id: string;
@@ -67,7 +101,7 @@ export declare const mythosAminoConverters: {
                 icon: string;
                 author: string;
                 site: string;
-                abi: string;
+                abi: Uint8Array;
                 json_schema: string;
                 origin: {
                     chain_id: string;
@@ -88,7 +122,7 @@ export declare const mythosAminoConverters: {
                 icon: string;
                 author: string;
                 site: string;
-                abi: string;
+                abi: Uint8Array;
                 json_schema: string;
                 origin: {
                     chain_id: string;
@@ -112,7 +146,7 @@ export declare const mythosAminoConverters: {
                 icon: string;
                 author: string;
                 site: string;
-                abi: string;
+                abi: Uint8Array;
                 json_schema: string;
                 origin: {
                     chain_id: string;
@@ -200,6 +234,30 @@ export declare const mythosAminoConverters: {
             dependencies: string[];
         }) => import(".").MsgExecuteContract;
     };
+    "/mythos.wasmx.v1.MsgCompileContract": {
+        aminoType: string;
+        toAmino: ({ authority, codeId, meteringOff }: import(".").MsgCompileContract) => {
+            authority: string;
+            codeId: string;
+            metering_off: boolean;
+        };
+        fromAmino: ({ authority, codeId, metering_off }: {
+            authority: string;
+            codeId: string;
+            metering_off: boolean;
+        }) => import(".").MsgCompileContract;
+    };
+    "/mythos.wasmx.v1.MsgExecuteEth": {
+        aminoType: string;
+        toAmino: ({ data, sender }: import(".").MsgExecuteEth) => {
+            data: Uint8Array;
+            sender: string;
+        };
+        fromAmino: ({ data, sender }: {
+            data: Uint8Array;
+            sender: string;
+        }) => import(".").MsgExecuteEth;
+    };
     "/mythos.wasmx.v1.MsgExecuteWithOriginContract": {
         aminoType: string;
         toAmino: ({ origin, sender, contract, msg, funds }: import(".").MsgExecuteWithOriginContract) => {
@@ -250,16 +308,154 @@ export declare const mythosAminoConverters: {
             }[];
         }) => import(".").MsgExecuteDelegateContract;
     };
-    "/mythos.wasmx.v1.MsgCompileContract": {
+    "/mythos.network.v1.MsgGrpcSendRequest": {
         aminoType: string;
-        toAmino: ({ sender, codeId }: import(".").MsgCompileContract) => {
+        toAmino: ({ sender, contract, ipAddress, data, encoding }: import("./network/v1/tx").MsgGrpcSendRequest) => {
             sender: string;
-            codeId: string;
+            contract: string;
+            ip_address: string;
+            data: Uint8Array;
+            encoding: string;
         };
-        fromAmino: ({ sender, codeId }: {
+        fromAmino: ({ sender, contract, ip_address, data, encoding }: {
             sender: string;
-            codeId: string;
-        }) => import(".").MsgCompileContract;
+            contract: string;
+            ip_address: string;
+            data: Uint8Array;
+            encoding: string;
+        }) => import("./network/v1/tx").MsgGrpcSendRequest;
+    };
+    "/mythos.network.v1.MsgStartTimeoutRequest": {
+        aminoType: string;
+        toAmino: ({ sender, contract, delay, args, id }: import("./network/v1/tx").MsgStartTimeoutRequest) => {
+            sender: string;
+            contract: string;
+            delay: string;
+            args: Uint8Array;
+            id: string;
+        };
+        fromAmino: ({ sender, contract, delay, args, id }: {
+            sender: string;
+            contract: string;
+            delay: string;
+            args: Uint8Array;
+            id: string;
+        }) => import("./network/v1/tx").MsgStartTimeoutRequest;
+    };
+    "/mythos.network.v1.MsgCancelTimeoutRequest": {
+        aminoType: string;
+        toAmino: ({ sender, id }: import("./network/v1/tx").MsgCancelTimeoutRequest) => {
+            sender: string;
+            id: string;
+        };
+        fromAmino: ({ sender, id }: {
+            sender: string;
+            id: string;
+        }) => import("./network/v1/tx").MsgCancelTimeoutRequest;
+    };
+    "/mythos.network.v1.MsgStartBackgroundProcessRequest": {
+        aminoType: string;
+        toAmino: ({ sender, contract, args }: import("./network/v1/tx").MsgStartBackgroundProcessRequest) => {
+            sender: string;
+            contract: string;
+            args: Uint8Array;
+        };
+        fromAmino: ({ sender, contract, args }: {
+            sender: string;
+            contract: string;
+            args: Uint8Array;
+        }) => import("./network/v1/tx").MsgStartBackgroundProcessRequest;
+    };
+    "/mythos.network.v1.MsgMultiChainWrap": {
+        aminoType: string;
+        toAmino: ({ multiChainId, sender, data }: import("./network/v1/tx").MsgMultiChainWrap) => {
+            multi_chain_id: string;
+            sender: string;
+            data: {
+                type_url: string;
+                value: Uint8Array;
+            };
+        };
+        fromAmino: ({ multi_chain_id, sender, data }: {
+            multi_chain_id: string;
+            sender: string;
+            data: {
+                type_url: string;
+                value: Uint8Array;
+            };
+        }) => import("./network/v1/tx").MsgMultiChainWrap;
+    };
+    "/mythos.network.v1.MsgGrpcReceiveRequest": {
+        aminoType: string;
+        toAmino: ({ sender, contract, data, encoding }: import("./network/v1/tx").MsgGrpcReceiveRequest) => {
+            sender: string;
+            contract: string;
+            data: Uint8Array;
+            encoding: string;
+        };
+        fromAmino: ({ sender, contract, data, encoding }: {
+            sender: string;
+            contract: string;
+            data: Uint8Array;
+            encoding: string;
+        }) => import("./network/v1/tx").MsgGrpcReceiveRequest;
+    };
+    "/mythos.network.v1.MsgP2PReceiveMessageRequest": {
+        aminoType: string;
+        toAmino: ({ sender, contract, data }: import("./network/v1/tx").MsgP2PReceiveMessageRequest) => {
+            sender: string;
+            contract: string;
+            data: Uint8Array;
+        };
+        fromAmino: ({ sender, contract, data }: {
+            sender: string;
+            contract: string;
+            data: Uint8Array;
+        }) => import("./network/v1/tx").MsgP2PReceiveMessageRequest;
+    };
+    "/mythos.network.v1.MsgExecuteAtomicTxRequest": {
+        aminoType: string;
+        toAmino: ({ txs, sender }: import("./network/v1/custom").MsgExecuteAtomicTxRequest) => {
+            txs: Uint8Array[];
+            sender: Uint8Array;
+        };
+        fromAmino: ({ txs, sender }: {
+            txs: Uint8Array[];
+            sender: Uint8Array;
+        }) => import("./network/v1/custom").MsgExecuteAtomicTxRequest;
+    };
+    "/mythos.network.v1.MsgExecuteCrossChainCallRequest": {
+        aminoType: string;
+        toAmino: ({ sender, from, to, msg, funds, dependencies, fromChainId, toChainId, isQuery, timeoutMs }: import("./network/v1/tx").MsgExecuteCrossChainCallRequest) => {
+            sender: string;
+            from: string;
+            to: string;
+            msg: Uint8Array;
+            funds: {
+                denom: string;
+                amount: string;
+            }[];
+            dependencies: string[];
+            from_chain_id: string;
+            to_chain_id: string;
+            is_query: boolean;
+            timeout_ms: string;
+        };
+        fromAmino: ({ sender, from, to, msg, funds, dependencies, from_chain_id, to_chain_id, is_query, timeout_ms }: {
+            sender: string;
+            from: string;
+            to: string;
+            msg: Uint8Array;
+            funds: {
+                denom: string;
+                amount: string;
+            }[];
+            dependencies: string[];
+            from_chain_id: string;
+            to_chain_id: string;
+            is_query: boolean;
+            timeout_ms: string;
+        }) => import("./network/v1/tx").MsgExecuteCrossChainCallRequest;
     };
 };
 export declare const mythosProtoRegistry: ReadonlyArray<[string, GeneratedType]>;

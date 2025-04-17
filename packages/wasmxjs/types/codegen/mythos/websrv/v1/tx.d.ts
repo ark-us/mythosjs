@@ -2,12 +2,10 @@
 import * as _m0 from "protobufjs/minimal";
 import { Long } from "../../../helpers";
 export interface MsgRegisterOAuthClient {
-    /** bech32 address */
     owner: string;
     domain: string;
 }
 export interface MsgRegisterOAuthClientSDKType {
-    /** bech32 address */
     owner: string;
     domain: string;
 }
@@ -18,13 +16,11 @@ export interface MsgRegisterOAuthClientResponseSDKType {
     client_id: Long;
 }
 export interface MsgEditOAuthClient {
-    /** bech32 address */
     owner: string;
     clientId: Long;
     domain: string;
 }
 export interface MsgEditOAuthClientSDKType {
-    /** bech32 address */
     owner: string;
     client_id: Long;
     domain: string;
@@ -34,18 +30,74 @@ export interface MsgEditOAuthClientResponse {
 export interface MsgEditOAuthClientResponseSDKType {
 }
 export interface MsgDeregisterOAuthClient {
-    /** bech32 address */
     owner: string;
     clientId: Long;
 }
 export interface MsgDeregisterOAuthClientSDKType {
-    /** bech32 address */
     owner: string;
     client_id: Long;
 }
 export interface MsgDeregisterOAuthClientResponse {
 }
 export interface MsgDeregisterOAuthClientResponseSDKType {
+}
+/** Register a web server route */
+export interface MsgRegisterRoute {
+    /** authority is the address that controls the module. */
+    authority: string;
+    /** title of the proposal */
+    title: string;
+    /** description of the proposal */
+    description: string;
+    /** Route path */
+    path: string;
+    /** Contract address in bech32 format */
+    contractAddress: string;
+}
+/** Register a web server route */
+export interface MsgRegisterRouteSDKType {
+    /** authority is the address that controls the module. */
+    authority: string;
+    /** title of the proposal */
+    title: string;
+    /** description of the proposal */
+    description: string;
+    /** Route path */
+    path: string;
+    /** Contract address in bech32 format */
+    contract_address: string;
+}
+export interface MsgRegisterRouteResponse {
+}
+export interface MsgRegisterRouteResponseSDKType {
+}
+export interface MsgDeregisterRoute {
+    /** authority is the address that controls the module. */
+    authority: string;
+    /** title of the proposal */
+    title: string;
+    /** description of the proposal */
+    description: string;
+    /** Route path */
+    path: string;
+    /** Contract address in bech32 format */
+    contractAddress: string;
+}
+export interface MsgDeregisterRouteSDKType {
+    /** authority is the address that controls the module. */
+    authority: string;
+    /** title of the proposal */
+    title: string;
+    /** description of the proposal */
+    description: string;
+    /** Route path */
+    path: string;
+    /** Contract address in bech32 format */
+    contract_address: string;
+}
+export interface MsgDeregisterRouteResponse {
+}
+export interface MsgDeregisterRouteResponseSDKType {
 }
 export declare const MsgRegisterOAuthClient: {
     encode(message: MsgRegisterOAuthClient, writer?: _m0.Writer): _m0.Writer;
@@ -88,4 +140,32 @@ export declare const MsgDeregisterOAuthClientResponse: {
     fromJSON(_: any): MsgDeregisterOAuthClientResponse;
     toJSON(_: MsgDeregisterOAuthClientResponse): unknown;
     fromPartial(_: Partial<MsgDeregisterOAuthClientResponse>): MsgDeregisterOAuthClientResponse;
+};
+export declare const MsgRegisterRoute: {
+    encode(message: MsgRegisterRoute, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterRoute;
+    fromJSON(object: any): MsgRegisterRoute;
+    toJSON(message: MsgRegisterRoute): unknown;
+    fromPartial(object: Partial<MsgRegisterRoute>): MsgRegisterRoute;
+};
+export declare const MsgRegisterRouteResponse: {
+    encode(_: MsgRegisterRouteResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgRegisterRouteResponse;
+    fromJSON(_: any): MsgRegisterRouteResponse;
+    toJSON(_: MsgRegisterRouteResponse): unknown;
+    fromPartial(_: Partial<MsgRegisterRouteResponse>): MsgRegisterRouteResponse;
+};
+export declare const MsgDeregisterRoute: {
+    encode(message: MsgDeregisterRoute, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeregisterRoute;
+    fromJSON(object: any): MsgDeregisterRoute;
+    toJSON(message: MsgDeregisterRoute): unknown;
+    fromPartial(object: Partial<MsgDeregisterRoute>): MsgDeregisterRoute;
+};
+export declare const MsgDeregisterRouteResponse: {
+    encode(_: MsgDeregisterRouteResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgDeregisterRouteResponse;
+    fromJSON(_: any): MsgDeregisterRouteResponse;
+    toJSON(_: MsgDeregisterRouteResponse): unknown;
+    fromPartial(_: Partial<MsgDeregisterRouteResponse>): MsgDeregisterRouteResponse;
 };

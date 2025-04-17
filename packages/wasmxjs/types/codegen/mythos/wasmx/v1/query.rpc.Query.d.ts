@@ -1,6 +1,6 @@
 import { Rpc } from "../../../helpers";
 import { QueryClient } from "@cosmjs/stargate";
-import { QueryContractInfoRequest, QueryContractInfoResponse, QueryContractsByCodeRequest, QueryContractsByCodeResponse, QueryAllContractStateRequest, QueryAllContractStateResponse, QueryRawContractStateRequest, QueryRawContractStateResponse, QuerySmartContractCallRequest, QuerySmartContractCallResponse, QueryCodeRequest, QueryCodeResponse, QueryCodeInfoRequest, QueryCodeInfoResponse, QueryCodesRequest, QueryCodesResponse, QueryParamsRequest, QueryParamsResponse, QueryContractsByCreatorRequest, QueryContractsByCreatorResponse } from "./query";
+import { QueryContractInfoRequest, QueryContractInfoResponse, QueryContractsByCodeRequest, QueryContractsByCodeResponse, QueryAllContractStateRequest, QueryAllContractStateResponse, QueryRawContractStateRequest, QueryRawContractStateResponse, QuerySmartContractCallRequest, QuerySmartContractCallResponse, QueryCallEthRequest, QueryCallEthResponse, QueryDebugContractCallRequest, QueryDebugContractCallResponse, QueryCodeRequest, QueryCodeResponse, QueryCodeInfoRequest, QueryCodeInfoResponse, QueryCodesRequest, QueryCodesResponse, QueryParamsRequest, QueryParamsResponse, QueryContractsByCreatorRequest, QueryContractsByCreatorResponse } from "./query";
 /** Query provides defines the gRPC querier service */
 export interface Query {
     /** ContractInfo gets the contract meta data */
@@ -13,6 +13,10 @@ export interface Query {
     rawContractState(request: QueryRawContractStateRequest): Promise<QueryRawContractStateResponse>;
     /** SmartContractCall get query result from the contract */
     smartContractCall(request: QuerySmartContractCallRequest): Promise<QuerySmartContractCallResponse>;
+    /** CallEth get query result from the contract */
+    callEth(request: QueryCallEthRequest): Promise<QueryCallEthResponse>;
+    /** DebugContractCall get query result from the contract */
+    debugContractCall(request: QueryDebugContractCallRequest): Promise<QueryDebugContractCallResponse>;
     /** Code gets the binary code and metadata for a singe wasm code */
     code(request: QueryCodeRequest): Promise<QueryCodeResponse>;
     /** CodeInfo gets the metadata for a singe wasm code */
@@ -32,6 +36,8 @@ export declare class QueryClientImpl implements Query {
     allContractState(request: QueryAllContractStateRequest): Promise<QueryAllContractStateResponse>;
     rawContractState(request: QueryRawContractStateRequest): Promise<QueryRawContractStateResponse>;
     smartContractCall(request: QuerySmartContractCallRequest): Promise<QuerySmartContractCallResponse>;
+    callEth(request: QueryCallEthRequest): Promise<QueryCallEthResponse>;
+    debugContractCall(request: QueryDebugContractCallRequest): Promise<QueryDebugContractCallResponse>;
     code(request: QueryCodeRequest): Promise<QueryCodeResponse>;
     codeInfo(request: QueryCodeInfoRequest): Promise<QueryCodeInfoResponse>;
     codes(request?: QueryCodesRequest): Promise<QueryCodesResponse>;
@@ -44,6 +50,8 @@ export declare const createRpcQueryExtension: (base: QueryClient) => {
     allContractState(request: QueryAllContractStateRequest): Promise<QueryAllContractStateResponse>;
     rawContractState(request: QueryRawContractStateRequest): Promise<QueryRawContractStateResponse>;
     smartContractCall(request: QuerySmartContractCallRequest): Promise<QuerySmartContractCallResponse>;
+    callEth(request: QueryCallEthRequest): Promise<QueryCallEthResponse>;
+    debugContractCall(request: QueryDebugContractCallRequest): Promise<QueryDebugContractCallResponse>;
     code(request: QueryCodeRequest): Promise<QueryCodeResponse>;
     codeInfo(request: QueryCodeInfoRequest): Promise<QueryCodeInfoResponse>;
     codes(request?: QueryCodesRequest): Promise<QueryCodesResponse>;

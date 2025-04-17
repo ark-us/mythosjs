@@ -4,8 +4,9 @@ package mythos.wasmx.v1;
 import "gogoproto/gogo.proto";
 import "mythos/wasmx/v1/params.proto";
 import "mythos/wasmx/v1/contract.proto";
+import "mythos/wasmx/v1/role.proto";
 
-option go_package = "mythos/v1/x/wasmx/types";
+option go_package = "github.com/loredanacirstea/wasmx/x/wasmx/types";
 
 // GenesisState defines the wasmx module's genesis state.
 message GenesisState {
@@ -13,45 +14,53 @@ message GenesisState {
 
   // bootstrap address
   string bootstrap_account_address = 2;
-  repeated SystemContract system_contracts = 3 [(gogoproto.nullable) = false];
+  repeated Role roles = 3 [(gogoproto.nullable) = false];
+  repeated SystemContract system_contracts = 4 [(gogoproto.nullable) = false];
 
-  repeated Code codes = 4
+  repeated Code codes = 5
       [ (gogoproto.nullable) = false, (gogoproto.jsontag) = "codes,omitempty" ];
-  repeated Contract contracts = 5 [
+  repeated Contract contracts = 6 [
     (gogoproto.nullable) = false,
     (gogoproto.jsontag) = "contracts,omitempty"
   ];
-  repeated Sequence sequences = 6 [
+  repeated Sequence sequences = 7 [
     (gogoproto.nullable) = false,
     (gogoproto.jsontag) = "sequences,omitempty"
   ];
   // not recommended
   // initiate pinned/AOT compiled contracts from a provided folder
   // instead of compiling the contracts from wasm
-  string compiled_folder_path = 7;
+  string compiled_folder_path = 8;
 }
 
 message SystemContract {
   string address = 1;
   string label = 2;
-  bytes init_message = 3 [ (gogoproto.casttype) = "RawContractMessage" ];
-  bool pinned = 4;
-  bool native = 5;
-  CodeMetadata metadata = 6 [(gogoproto.nullable) = false];
+  ContractStorageType storage_type = 3;
+  bytes init_message = 4 [ (gogoproto.casttype) = "RawContractMessage" ];
+  bool pinned = 5;
+  bool native = 6;
+  bool metering_off = 7; // some system contracts may be aot compiled with metering off
+  SystemContractRole role = 8;
+  // deps can be hex-formatted contract addresses (32 bytes)
+  // or versioned interface labels
+  repeated string deps = 9;
+  CodeMetadataPB metadata = 10 [(gogoproto.nullable) = false];
+  repeated ContractStoragePB contract_state = 11 [ (gogoproto.nullable) = false ];
 }
 
 // Code - for importing and exporting code data
 message Code {
   uint64 code_id = 1;
-  CodeInfo code_info = 2 [ (gogoproto.nullable) = false ];
+  CodeInfoPB code_info = 2 [ (gogoproto.nullable) = false ];
   bytes code_bytes = 3;
 }
 
 // Contract struct encompasses ContractAddress, ContractInfo, and ContractState
 message Contract {
   string contract_address = 1;
-  ContractInfo contract_info = 2 [ (gogoproto.nullable) = false ];
-  repeated ContractStorage contract_state = 3 [ (gogoproto.nullable) = false ];
+  ContractInfoPB contract_info = 2 [ (gogoproto.nullable) = false ];
+  repeated ContractStoragePB contract_state = 3 [ (gogoproto.nullable) = false ];
 }
 
 // Sequence key and value of an id generation counter

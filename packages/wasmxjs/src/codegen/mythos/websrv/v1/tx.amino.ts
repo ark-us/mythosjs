@@ -1,6 +1,6 @@
 import { AminoMsg } from "@cosmjs/amino";
 import { Long } from "../../../helpers";
-import { MsgRegisterOAuthClient, MsgEditOAuthClient, MsgDeregisterOAuthClient } from "./tx";
+import { MsgRegisterOAuthClient, MsgEditOAuthClient, MsgDeregisterOAuthClient, MsgRegisterRoute, MsgDeregisterRoute } from "./tx";
 export interface AminoMsgRegisterOAuthClient extends AminoMsg {
   type: "/mythos.websrv.v1.MsgRegisterOAuthClient";
   value: {
@@ -21,6 +21,26 @@ export interface AminoMsgDeregisterOAuthClient extends AminoMsg {
   value: {
     owner: string;
     client_id: string;
+  };
+}
+export interface AminoMsgRegisterRoute extends AminoMsg {
+  type: "/mythos.websrv.v1.MsgRegisterRoute";
+  value: {
+    authority: string;
+    title: string;
+    description: string;
+    path: string;
+    contract_address: string;
+  };
+}
+export interface AminoMsgDeregisterRoute extends AminoMsg {
+  type: "/mythos.websrv.v1.MsgDeregisterRoute";
+  value: {
+    authority: string;
+    title: string;
+    description: string;
+    path: string;
+    contract_address: string;
   };
 }
 export const AminoConverter = {
@@ -88,6 +108,72 @@ export const AminoConverter = {
       return {
         owner,
         clientId: Long.fromString(client_id)
+      };
+    }
+  },
+  "/mythos.websrv.v1.MsgRegisterRoute": {
+    aminoType: "/mythos.websrv.v1.MsgRegisterRoute",
+    toAmino: ({
+      authority,
+      title,
+      description,
+      path,
+      contractAddress
+    }: MsgRegisterRoute): AminoMsgRegisterRoute["value"] => {
+      return {
+        authority,
+        title,
+        description,
+        path,
+        contract_address: contractAddress
+      };
+    },
+    fromAmino: ({
+      authority,
+      title,
+      description,
+      path,
+      contract_address
+    }: AminoMsgRegisterRoute["value"]): MsgRegisterRoute => {
+      return {
+        authority,
+        title,
+        description,
+        path,
+        contractAddress: contract_address
+      };
+    }
+  },
+  "/mythos.websrv.v1.MsgDeregisterRoute": {
+    aminoType: "/mythos.websrv.v1.MsgDeregisterRoute",
+    toAmino: ({
+      authority,
+      title,
+      description,
+      path,
+      contractAddress
+    }: MsgDeregisterRoute): AminoMsgDeregisterRoute["value"] => {
+      return {
+        authority,
+        title,
+        description,
+        path,
+        contract_address: contractAddress
+      };
+    },
+    fromAmino: ({
+      authority,
+      title,
+      description,
+      path,
+      contract_address
+    }: AminoMsgDeregisterRoute["value"]): MsgDeregisterRoute => {
+      return {
+        authority,
+        title,
+        description,
+        path,
+        contractAddress: contract_address
       };
     }
   }

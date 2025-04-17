@@ -1,0 +1,26 @@
+syntax = "proto3";
+package mythos.cosmosmod.v1;
+
+import "gogoproto/gogo.proto";
+import "cosmos/staking/v1beta1/genesis.proto";
+import "cosmos/bank/v1beta1/genesis.proto";
+import "cosmos/gov/v1/genesis.proto";
+import "cosmos/auth/v1beta1/genesis.proto";
+import "cosmos/slashing/v1beta1/genesis.proto";
+import "mythos/cosmosmod/v1/bank_genesis.proto";
+import "mythos/cosmosmod/v1/staking_genesis.proto";
+import "mythos/cosmosmod/v1/gov_genesis.proto";
+import "mythos/cosmosmod/v1/auth_genesis.proto";
+import "mythos/cosmosmod/v1/distribution_genesis.proto";
+
+option go_package = "github.com/loredanacirstea/wasmx/x/cosmosmod/types";
+
+// GenesisState defines the cosmosmod module's genesis state.
+message GenesisState {
+    StakingGenesisState staking = 1 [(gogoproto.nullable) = false];
+    BankGenesisState bank = 2 [(gogoproto.nullable) = false];
+    GovGenesisState gov = 3 [(gogoproto.nullable) = false];
+    AuthGenesisState auth = 4 [(gogoproto.nullable) = false];
+    cosmos.slashing.v1beta1.GenesisState slashing = 5 [(gogoproto.nullable) = false];
+    DistributionGenesisState distribution = 6 [(gogoproto.nullable) = false];
+}

@@ -1,5 +1,6 @@
 import { Params, ParamsSDKType } from "./params";
-import { CodeMetadata, CodeMetadataSDKType, CodeInfo, CodeInfoSDKType, ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType } from "./contract";
+import { Role, RoleSDKType, SystemContractRole, SystemContractRoleSDKType } from "./role";
+import { ContractStorageType, ContractStorageTypeSDKType, CodeMetadataPB, CodeMetadataPBSDKType, ContractStoragePB, ContractStoragePBSDKType, CodeInfoPB, CodeInfoPBSDKType, ContractInfoPB, ContractInfoPBSDKType, contractStorageTypeFromJSON, contractStorageTypeToJSON } from "./contract";
 import * as _m0 from "protobufjs/minimal";
 import { isSet, bytesFromBase64, base64FromBytes, Long } from "../../../helpers";
 /** GenesisState defines the wasmx module's genesis state. */
@@ -9,6 +10,7 @@ export interface GenesisState {
   /** bootstrap address */
 
   bootstrapAccountAddress: string;
+  roles: Role[];
   systemContracts: SystemContract[];
   codes: Code[];
   contracts: Contract[];
@@ -28,6 +30,7 @@ export interface GenesisStateSDKType {
   /** bootstrap address */
 
   bootstrap_account_address: string;
+  roles: RoleSDKType[];
   system_contracts: SystemContractSDKType[];
   codes: CodeSDKType[];
   contracts: ContractSDKType[];
@@ -43,46 +46,70 @@ export interface GenesisStateSDKType {
 export interface SystemContract {
   address: string;
   label: string;
+  storageType: ContractStorageType;
   initMessage: Uint8Array;
   pinned: boolean;
   native: boolean;
-  metadata?: CodeMetadata;
+  /** some system contracts may be aot compiled with metering off */
+
+  meteringOff: boolean;
+  role?: SystemContractRole;
+  /**
+   * deps can be hex-formatted contract addresses (32 bytes)
+   * or versioned interface labels
+   */
+
+  deps: string[];
+  metadata?: CodeMetadataPB;
+  contractState: ContractStoragePB[];
 }
 export interface SystemContractSDKType {
   address: string;
   label: string;
+  storage_type: ContractStorageTypeSDKType;
   init_message: Uint8Array;
   pinned: boolean;
   native: boolean;
-  metadata?: CodeMetadataSDKType;
+  /** some system contracts may be aot compiled with metering off */
+
+  metering_off: boolean;
+  role?: SystemContractRoleSDKType;
+  /**
+   * deps can be hex-formatted contract addresses (32 bytes)
+   * or versioned interface labels
+   */
+
+  deps: string[];
+  metadata?: CodeMetadataPBSDKType;
+  contract_state: ContractStoragePBSDKType[];
 }
 /** Code - for importing and exporting code data */
 
 export interface Code {
   codeId: Long;
-  codeInfo?: CodeInfo;
+  codeInfo?: CodeInfoPB;
   codeBytes: Uint8Array;
 }
 /** Code - for importing and exporting code data */
 
 export interface CodeSDKType {
   code_id: Long;
-  code_info?: CodeInfoSDKType;
+  code_info?: CodeInfoPBSDKType;
   code_bytes: Uint8Array;
 }
 /** Contract struct encompasses ContractAddress, ContractInfo, and ContractState */
 
 export interface Contract {
   contractAddress: string;
-  contractInfo?: ContractInfo;
-  contractState: ContractStorage[];
+  contractInfo?: ContractInfoPB;
+  contractState: ContractStoragePB[];
 }
 /** Contract struct encompasses ContractAddress, ContractInfo, and ContractState */
 
 export interface ContractSDKType {
   contract_address: string;
-  contract_info?: ContractInfoSDKType;
-  contract_state: ContractStorageSDKType[];
+  contract_info?: ContractInfoPBSDKType;
+  contract_state: ContractStoragePBSDKType[];
 }
 /** Sequence key and value of an id generation counter */
 
@@ -101,6 +128,7 @@ function createBaseGenesisState(): GenesisState {
   return {
     params: undefined,
     bootstrapAccountAddress: "",
+    roles: [],
     systemContracts: [],
     codes: [],
     contracts: [],
@@ -119,24 +147,28 @@ export const GenesisState = {
       writer.uint32(18).string(message.bootstrapAccountAddress);
     }
 
+    for (const v of message.roles) {
+      Role.encode(v!, writer.uint32(26).fork()).ldelim();
+    }
+
     for (const v of message.systemContracts) {
-      SystemContract.encode(v!, writer.uint32(26).fork()).ldelim();
+      SystemContract.encode(v!, writer.uint32(34).fork()).ldelim();
     }
 
     for (const v of message.codes) {
-      Code.encode(v!, writer.uint32(34).fork()).ldelim();
+      Code.encode(v!, writer.uint32(42).fork()).ldelim();
     }
 
     for (const v of message.contracts) {
-      Contract.encode(v!, writer.uint32(42).fork()).ldelim();
+      Contract.encode(v!, writer.uint32(50).fork()).ldelim();
     }
 
     for (const v of message.sequences) {
-      Sequence.encode(v!, writer.uint32(50).fork()).ldelim();
+      Sequence.encode(v!, writer.uint32(58).fork()).ldelim();
     }
 
     if (message.compiledFolderPath !== "") {
-      writer.uint32(58).string(message.compiledFolderPath);
+      writer.uint32(66).string(message.compiledFolderPath);
     }
 
     return writer;
@@ -160,22 +192,26 @@ export const GenesisState = {
           break;
 
         case 3:
-          message.systemContracts.push(SystemContract.decode(reader, reader.uint32()));
+          message.roles.push(Role.decode(reader, reader.uint32()));
           break;
 
         case 4:
-          message.codes.push(Code.decode(reader, reader.uint32()));
+          message.systemContracts.push(SystemContract.decode(reader, reader.uint32()));
           break;
 
         case 5:
-          message.contracts.push(Contract.decode(reader, reader.uint32()));
+          message.codes.push(Code.decode(reader, reader.uint32()));
           break;
 
         case 6:
-          message.sequences.push(Sequence.decode(reader, reader.uint32()));
+          message.contracts.push(Contract.decode(reader, reader.uint32()));
           break;
 
         case 7:
+          message.sequences.push(Sequence.decode(reader, reader.uint32()));
+          break;
+
+        case 8:
           message.compiledFolderPath = reader.string();
           break;
 
@@ -192,6 +228,7 @@ export const GenesisState = {
     return {
       params: isSet(object.params) ? Params.fromJSON(object.params) : undefined,
       bootstrapAccountAddress: isSet(object.bootstrapAccountAddress) ? String(object.bootstrapAccountAddress) : "",
+      roles: Array.isArray(object?.roles) ? object.roles.map((e: any) => Role.fromJSON(e)) : [],
       systemContracts: Array.isArray(object?.systemContracts) ? object.systemContracts.map((e: any) => SystemContract.fromJSON(e)) : [],
       codes: Array.isArray(object?.codes) ? object.codes.map((e: any) => Code.fromJSON(e)) : [],
       contracts: Array.isArray(object?.contracts) ? object.contracts.map((e: any) => Contract.fromJSON(e)) : [],
@@ -204,6 +241,12 @@ export const GenesisState = {
     const obj: any = {};
     message.params !== undefined && (obj.params = message.params ? Params.toJSON(message.params) : undefined);
     message.bootstrapAccountAddress !== undefined && (obj.bootstrapAccountAddress = message.bootstrapAccountAddress);
+
+    if (message.roles) {
+      obj.roles = message.roles.map(e => e ? Role.toJSON(e) : undefined);
+    } else {
+      obj.roles = [];
+    }
 
     if (message.systemContracts) {
       obj.systemContracts = message.systemContracts.map(e => e ? SystemContract.toJSON(e) : undefined);
@@ -237,6 +280,7 @@ export const GenesisState = {
     const message = createBaseGenesisState();
     message.params = object.params !== undefined && object.params !== null ? Params.fromPartial(object.params) : undefined;
     message.bootstrapAccountAddress = object.bootstrapAccountAddress ?? "";
+    message.roles = object.roles?.map(e => Role.fromPartial(e)) || [];
     message.systemContracts = object.systemContracts?.map(e => SystemContract.fromPartial(e)) || [];
     message.codes = object.codes?.map(e => Code.fromPartial(e)) || [];
     message.contracts = object.contracts?.map(e => Contract.fromPartial(e)) || [];
@@ -251,10 +295,15 @@ function createBaseSystemContract(): SystemContract {
   return {
     address: "",
     label: "",
+    storageType: 0,
     initMessage: new Uint8Array(),
     pinned: false,
     native: false,
-    metadata: undefined
+    meteringOff: false,
+    role: undefined,
+    deps: [],
+    metadata: undefined,
+    contractState: []
   };
 }
 
@@ -268,20 +317,40 @@ export const SystemContract = {
       writer.uint32(18).string(message.label);
     }
 
+    if (message.storageType !== 0) {
+      writer.uint32(24).int32(message.storageType);
+    }
+
     if (message.initMessage.length !== 0) {
-      writer.uint32(26).bytes(message.initMessage);
+      writer.uint32(34).bytes(message.initMessage);
     }
 
     if (message.pinned === true) {
-      writer.uint32(32).bool(message.pinned);
+      writer.uint32(40).bool(message.pinned);
     }
 
     if (message.native === true) {
-      writer.uint32(40).bool(message.native);
+      writer.uint32(48).bool(message.native);
+    }
+
+    if (message.meteringOff === true) {
+      writer.uint32(56).bool(message.meteringOff);
+    }
+
+    if (message.role !== undefined) {
+      SystemContractRole.encode(message.role, writer.uint32(66).fork()).ldelim();
+    }
+
+    for (const v of message.deps) {
+      writer.uint32(74).string(v!);
     }
 
     if (message.metadata !== undefined) {
-      CodeMetadata.encode(message.metadata, writer.uint32(50).fork()).ldelim();
+      CodeMetadataPB.encode(message.metadata, writer.uint32(82).fork()).ldelim();
+    }
+
+    for (const v of message.contractState) {
+      ContractStoragePB.encode(v!, writer.uint32(90).fork()).ldelim();
     }
 
     return writer;
@@ -305,19 +374,39 @@ export const SystemContract = {
           break;
 
         case 3:
-          message.initMessage = reader.bytes();
+          message.storageType = (reader.int32() as any);
           break;
 
         case 4:
-          message.pinned = reader.bool();
+          message.initMessage = reader.bytes();
           break;
 
         case 5:
-          message.native = reader.bool();
+          message.pinned = reader.bool();
           break;
 
         case 6:
-          message.metadata = CodeMetadata.decode(reader, reader.uint32());
+          message.native = reader.bool();
+          break;
+
+        case 7:
+          message.meteringOff = reader.bool();
+          break;
+
+        case 8:
+          message.role = SystemContractRole.decode(reader, reader.uint32());
+          break;
+
+        case 9:
+          message.deps.push(reader.string());
+          break;
+
+        case 10:
+          message.metadata = CodeMetadataPB.decode(reader, reader.uint32());
+          break;
+
+        case 11:
+          message.contractState.push(ContractStoragePB.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -333,10 +422,15 @@ export const SystemContract = {
     return {
       address: isSet(object.address) ? String(object.address) : "",
       label: isSet(object.label) ? String(object.label) : "",
+      storageType: isSet(object.storageType) ? contractStorageTypeFromJSON(object.storageType) : 0,
       initMessage: isSet(object.initMessage) ? bytesFromBase64(object.initMessage) : new Uint8Array(),
       pinned: isSet(object.pinned) ? Boolean(object.pinned) : false,
       native: isSet(object.native) ? Boolean(object.native) : false,
-      metadata: isSet(object.metadata) ? CodeMetadata.fromJSON(object.metadata) : undefined
+      meteringOff: isSet(object.meteringOff) ? Boolean(object.meteringOff) : false,
+      role: isSet(object.role) ? SystemContractRole.fromJSON(object.role) : undefined,
+      deps: Array.isArray(object?.deps) ? object.deps.map((e: any) => String(e)) : [],
+      metadata: isSet(object.metadata) ? CodeMetadataPB.fromJSON(object.metadata) : undefined,
+      contractState: Array.isArray(object?.contractState) ? object.contractState.map((e: any) => ContractStoragePB.fromJSON(e)) : []
     };
   },
 
@@ -344,10 +438,27 @@ export const SystemContract = {
     const obj: any = {};
     message.address !== undefined && (obj.address = message.address);
     message.label !== undefined && (obj.label = message.label);
+    message.storageType !== undefined && (obj.storageType = contractStorageTypeToJSON(message.storageType));
     message.initMessage !== undefined && (obj.initMessage = base64FromBytes(message.initMessage !== undefined ? message.initMessage : new Uint8Array()));
     message.pinned !== undefined && (obj.pinned = message.pinned);
     message.native !== undefined && (obj.native = message.native);
-    message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadata.toJSON(message.metadata) : undefined);
+    message.meteringOff !== undefined && (obj.meteringOff = message.meteringOff);
+    message.role !== undefined && (obj.role = message.role ? SystemContractRole.toJSON(message.role) : undefined);
+
+    if (message.deps) {
+      obj.deps = message.deps.map(e => e);
+    } else {
+      obj.deps = [];
+    }
+
+    message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadataPB.toJSON(message.metadata) : undefined);
+
+    if (message.contractState) {
+      obj.contractState = message.contractState.map(e => e ? ContractStoragePB.toJSON(e) : undefined);
+    } else {
+      obj.contractState = [];
+    }
+
     return obj;
   },
 
@@ -355,10 +466,15 @@ export const SystemContract = {
     const message = createBaseSystemContract();
     message.address = object.address ?? "";
     message.label = object.label ?? "";
+    message.storageType = object.storageType ?? 0;
     message.initMessage = object.initMessage ?? new Uint8Array();
     message.pinned = object.pinned ?? false;
     message.native = object.native ?? false;
-    message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadata.fromPartial(object.metadata) : undefined;
+    message.meteringOff = object.meteringOff ?? false;
+    message.role = object.role !== undefined && object.role !== null ? SystemContractRole.fromPartial(object.role) : undefined;
+    message.deps = object.deps?.map(e => e) || [];
+    message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadataPB.fromPartial(object.metadata) : undefined;
+    message.contractState = object.contractState?.map(e => ContractStoragePB.fromPartial(e)) || [];
     return message;
   }
 
@@ -379,7 +495,7 @@ export const Code = {
     }
 
     if (message.codeInfo !== undefined) {
-      CodeInfo.encode(message.codeInfo, writer.uint32(18).fork()).ldelim();
+      CodeInfoPB.encode(message.codeInfo, writer.uint32(18).fork()).ldelim();
     }
 
     if (message.codeBytes.length !== 0) {
@@ -403,7 +519,7 @@ export const Code = {
           break;
 
         case 2:
-          message.codeInfo = CodeInfo.decode(reader, reader.uint32());
+          message.codeInfo = CodeInfoPB.decode(reader, reader.uint32());
           break;
 
         case 3:
@@ -422,7 +538,7 @@ export const Code = {
   fromJSON(object: any): Code {
     return {
       codeId: isSet(object.codeId) ? Long.fromValue(object.codeId) : Long.UZERO,
-      codeInfo: isSet(object.codeInfo) ? CodeInfo.fromJSON(object.codeInfo) : undefined,
+      codeInfo: isSet(object.codeInfo) ? CodeInfoPB.fromJSON(object.codeInfo) : undefined,
       codeBytes: isSet(object.codeBytes) ? bytesFromBase64(object.codeBytes) : new Uint8Array()
     };
   },
@@ -430,7 +546,7 @@ export const Code = {
   toJSON(message: Code): unknown {
     const obj: any = {};
     message.codeId !== undefined && (obj.codeId = (message.codeId || Long.UZERO).toString());
-    message.codeInfo !== undefined && (obj.codeInfo = message.codeInfo ? CodeInfo.toJSON(message.codeInfo) : undefined);
+    message.codeInfo !== undefined && (obj.codeInfo = message.codeInfo ? CodeInfoPB.toJSON(message.codeInfo) : undefined);
     message.codeBytes !== undefined && (obj.codeBytes = base64FromBytes(message.codeBytes !== undefined ? message.codeBytes : new Uint8Array()));
     return obj;
   },
@@ -438,7 +554,7 @@ export const Code = {
   fromPartial(object: Partial<Code>): Code {
     const message = createBaseCode();
     message.codeId = object.codeId !== undefined && object.codeId !== null ? Long.fromValue(object.codeId) : Long.UZERO;
-    message.codeInfo = object.codeInfo !== undefined && object.codeInfo !== null ? CodeInfo.fromPartial(object.codeInfo) : undefined;
+    message.codeInfo = object.codeInfo !== undefined && object.codeInfo !== null ? CodeInfoPB.fromPartial(object.codeInfo) : undefined;
     message.codeBytes = object.codeBytes ?? new Uint8Array();
     return message;
   }
@@ -460,11 +576,11 @@ export const Contract = {
     }
 
     if (message.contractInfo !== undefined) {
-      ContractInfo.encode(message.contractInfo, writer.uint32(18).fork()).ldelim();
+      ContractInfoPB.encode(message.contractInfo, writer.uint32(18).fork()).ldelim();
     }
 
     for (const v of message.contractState) {
-      ContractStorage.encode(v!, writer.uint32(26).fork()).ldelim();
+      ContractStoragePB.encode(v!, writer.uint32(26).fork()).ldelim();
     }
 
     return writer;
@@ -484,11 +600,11 @@ export const Contract = {
           break;
 
         case 2:
-          message.contractInfo = ContractInfo.decode(reader, reader.uint32());
+          message.contractInfo = ContractInfoPB.decode(reader, reader.uint32());
           break;
 
         case 3:
-          message.contractState.push(ContractStorage.decode(reader, reader.uint32()));
+          message.contractState.push(ContractStoragePB.decode(reader, reader.uint32()));
           break;
 
         default:
@@ -503,18 +619,18 @@ export const Contract = {
   fromJSON(object: any): Contract {
     return {
       contractAddress: isSet(object.contractAddress) ? String(object.contractAddress) : "",
-      contractInfo: isSet(object.contractInfo) ? ContractInfo.fromJSON(object.contractInfo) : undefined,
-      contractState: Array.isArray(object?.contractState) ? object.contractState.map((e: any) => ContractStorage.fromJSON(e)) : []
+      contractInfo: isSet(object.contractInfo) ? ContractInfoPB.fromJSON(object.contractInfo) : undefined,
+      contractState: Array.isArray(object?.contractState) ? object.contractState.map((e: any) => ContractStoragePB.fromJSON(e)) : []
     };
   },
 
   toJSON(message: Contract): unknown {
     const obj: any = {};
     message.contractAddress !== undefined && (obj.contractAddress = message.contractAddress);
-    message.contractInfo !== undefined && (obj.contractInfo = message.contractInfo ? ContractInfo.toJSON(message.contractInfo) : undefined);
+    message.contractInfo !== undefined && (obj.contractInfo = message.contractInfo ? ContractInfoPB.toJSON(message.contractInfo) : undefined);
 
     if (message.contractState) {
-      obj.contractState = message.contractState.map(e => e ? ContractStorage.toJSON(e) : undefined);
+      obj.contractState = message.contractState.map(e => e ? ContractStoragePB.toJSON(e) : undefined);
     } else {
       obj.contractState = [];
     }
@@ -525,8 +641,8 @@ export const Contract = {
   fromPartial(object: Partial<Contract>): Contract {
     const message = createBaseContract();
     message.contractAddress = object.contractAddress ?? "";
-    message.contractInfo = object.contractInfo !== undefined && object.contractInfo !== null ? ContractInfo.fromPartial(object.contractInfo) : undefined;
-    message.contractState = object.contractState?.map(e => ContractStorage.fromPartial(e)) || [];
+    message.contractInfo = object.contractInfo !== undefined && object.contractInfo !== null ? ContractInfoPB.fromPartial(object.contractInfo) : undefined;
+    message.contractState = object.contractState?.map(e => ContractStoragePB.fromPartial(e)) || [];
     return message;
   }
 

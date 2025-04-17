@@ -1,5 +1,5 @@
 import { AminoMsg } from "@cosmjs/amino";
-import { MsgStoreCode, MsgDeployCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgExecuteWithOriginContract, MsgExecuteDelegateContract, MsgCompileContract } from "./tx";
+import { MsgStoreCode, MsgDeployCode, MsgInstantiateContract, MsgInstantiateContract2, MsgExecuteContract, MsgCompileContract, MsgExecuteEth, MsgExecuteWithOriginContract, MsgExecuteDelegateContract } from "./tx";
 export interface AminoMsgStoreCode extends AminoMsg {
     type: "/mythos.wasmx.v1.MsgStoreCode";
     value: {
@@ -12,7 +12,7 @@ export interface AminoMsgStoreCode extends AminoMsg {
             icon: string;
             author: string;
             site: string;
-            abi: string;
+            abi: Uint8Array;
             json_schema: string;
             origin: {
                 chain_id: string;
@@ -33,7 +33,7 @@ export interface AminoMsgDeployCode extends AminoMsg {
             icon: string;
             author: string;
             site: string;
-            abi: string;
+            abi: Uint8Array;
             json_schema: string;
             origin: {
                 chain_id: string;
@@ -89,6 +89,21 @@ export interface AminoMsgExecuteContract extends AminoMsg {
         dependencies: string[];
     };
 }
+export interface AminoMsgCompileContract extends AminoMsg {
+    type: "/mythos.wasmx.v1.MsgCompileContract";
+    value: {
+        authority: string;
+        codeId: string;
+        metering_off: boolean;
+    };
+}
+export interface AminoMsgExecuteEth extends AminoMsg {
+    type: "/mythos.wasmx.v1.MsgExecuteEth";
+    value: {
+        data: Uint8Array;
+        sender: string;
+    };
+}
 export interface AminoMsgExecuteWithOriginContract extends AminoMsg {
     type: "/mythos.wasmx.v1.MsgExecuteWithOriginContract";
     value: {
@@ -117,13 +132,6 @@ export interface AminoMsgExecuteDelegateContract extends AminoMsg {
         }[];
     };
 }
-export interface AminoMsgCompileContract extends AminoMsg {
-    type: "/mythos.wasmx.v1.MsgCompileContract";
-    value: {
-        sender: string;
-        codeId: string;
-    };
-}
 export declare const AminoConverter: {
     "/mythos.wasmx.v1.MsgStoreCode": {
         aminoType: string;
@@ -150,6 +158,16 @@ export declare const AminoConverter: {
         toAmino: ({ sender, contract, msg, funds, dependencies }: MsgExecuteContract) => AminoMsgExecuteContract["value"];
         fromAmino: ({ sender, contract, msg, funds, dependencies }: AminoMsgExecuteContract["value"]) => MsgExecuteContract;
     };
+    "/mythos.wasmx.v1.MsgCompileContract": {
+        aminoType: string;
+        toAmino: ({ authority, codeId, meteringOff }: MsgCompileContract) => AminoMsgCompileContract["value"];
+        fromAmino: ({ authority, codeId, metering_off }: AminoMsgCompileContract["value"]) => MsgCompileContract;
+    };
+    "/mythos.wasmx.v1.MsgExecuteEth": {
+        aminoType: string;
+        toAmino: ({ data, sender }: MsgExecuteEth) => AminoMsgExecuteEth["value"];
+        fromAmino: ({ data, sender }: AminoMsgExecuteEth["value"]) => MsgExecuteEth;
+    };
     "/mythos.wasmx.v1.MsgExecuteWithOriginContract": {
         aminoType: string;
         toAmino: ({ origin, sender, contract, msg, funds }: MsgExecuteWithOriginContract) => AminoMsgExecuteWithOriginContract["value"];
@@ -159,10 +177,5 @@ export declare const AminoConverter: {
         aminoType: string;
         toAmino: ({ origin, sender, caller, codeContract, storageContract, msg, funds }: MsgExecuteDelegateContract) => AminoMsgExecuteDelegateContract["value"];
         fromAmino: ({ origin, sender, caller, code_contract, storage_contract, msg, funds }: AminoMsgExecuteDelegateContract["value"]) => MsgExecuteDelegateContract;
-    };
-    "/mythos.wasmx.v1.MsgCompileContract": {
-        aminoType: string;
-        toAmino: ({ sender, codeId }: MsgCompileContract) => AminoMsgCompileContract["value"];
-        fromAmino: ({ sender, codeId }: AminoMsgCompileContract["value"]) => MsgCompileContract;
     };
 };

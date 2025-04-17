@@ -1,7 +1,7 @@
 /// <reference types="long" />
 import { PageRequest, PageRequestSDKType, PageResponse, PageResponseSDKType } from "../../../cosmos/base/query/v1beta1/pagination";
 import { Coin, CoinSDKType } from "../../../cosmos/base/v1beta1/coin";
-import { ContractInfo, ContractInfoSDKType, ContractStorage, ContractStorageSDKType, CodeInfo, CodeInfoSDKType } from "./contract";
+import { ContractInfoPB, ContractInfoPBSDKType, ContractStoragePB, ContractStoragePBSDKType, CodeInfoPB, CodeInfoPBSDKType } from "./contract";
 import { Params, ParamsSDKType } from "./params";
 import * as _m0 from "protobufjs/minimal";
 import { Long } from "../../../helpers";
@@ -28,7 +28,7 @@ export interface QueryContractInfoRequestSDKType {
 export interface QueryContractInfoResponse {
     /** address is the address of the contract */
     address: string;
-    contractInfo?: ContractInfo;
+    contractInfo?: ContractInfoPB;
 }
 /**
  * QueryContractInfoResponse is the response type for the Query/ContractInfo RPC
@@ -37,7 +37,7 @@ export interface QueryContractInfoResponse {
 export interface QueryContractInfoResponseSDKType {
     /** address is the address of the contract */
     address: string;
-    contract_info?: ContractInfoSDKType;
+    contract_info?: ContractInfoPBSDKType;
 }
 /**
  * QueryContractsByCodeRequest is the request type for the Query/ContractsByCode
@@ -108,7 +108,7 @@ export interface QueryAllContractStateRequestSDKType {
  * Query/AllContractState RPC method
  */
 export interface QueryAllContractStateResponse {
-    items: ContractStorage[];
+    items: ContractStoragePB[];
     /** pagination defines the pagination in the response. */
     pagination?: PageResponse;
 }
@@ -117,7 +117,7 @@ export interface QueryAllContractStateResponse {
  * Query/AllContractState RPC method
  */
 export interface QueryAllContractStateResponseSDKType {
-    items: ContractStorageSDKType[];
+    items: ContractStoragePBSDKType[];
     /** pagination defines the pagination in the response. */
     pagination?: PageResponseSDKType;
 }
@@ -207,6 +207,118 @@ export interface QuerySmartContractCallResponseSDKType {
     /** Data contains the json data returned from the smart contract */
     data: Uint8Array;
 }
+/**
+ * QueryCallEthRequest is the request type for the
+ * Query/CallEth RPC method
+ */
+export interface QueryCallEthRequest {
+    /** Sender is the that actor that signed the messages */
+    sender: string;
+    /** Address is the address of the smart contract */
+    address: string;
+    queryData: Uint8Array;
+    /** Funds coins that are transferred to the contract on execution */
+    funds: Coin[];
+    /**
+     * Array of either hex-encoded contract addresses or contract labels
+     * on which the execution of this message depends on
+     */
+    dependencies: string[];
+}
+/**
+ * QueryCallEthRequest is the request type for the
+ * Query/CallEth RPC method
+ */
+export interface QueryCallEthRequestSDKType {
+    /** Sender is the that actor that signed the messages */
+    sender: string;
+    /** Address is the address of the smart contract */
+    address: string;
+    query_data: Uint8Array;
+    /** Funds coins that are transferred to the contract on execution */
+    funds: CoinSDKType[];
+    /**
+     * Array of either hex-encoded contract addresses or contract labels
+     * on which the execution of this message depends on
+     */
+    dependencies: string[];
+}
+/**
+ * QueryCallEthResponse is the response type for the
+ * Query/CallEth RPC method
+ */
+export interface QueryCallEthResponse {
+    /** Data contains the json data returned from the smart contract */
+    data: Uint8Array;
+    gasUsed: Long;
+}
+/**
+ * QueryCallEthResponse is the response type for the
+ * Query/CallEth RPC method
+ */
+export interface QueryCallEthResponseSDKType {
+    /** Data contains the json data returned from the smart contract */
+    data: Uint8Array;
+    gas_used: Long;
+}
+/**
+ * QueryDebugContractCallRequest is the request type for the
+ * Query/DebugContractCall RPC method
+ */
+export interface QueryDebugContractCallRequest {
+    /** Sender is the that actor that signed the messages */
+    sender: string;
+    /** Address is the address of the smart contract */
+    address: string;
+    queryData: Uint8Array;
+    /** Funds coins that are transferred to the contract on execution */
+    funds: Coin[];
+    /**
+     * Array of either hex-encoded contract addresses or contract labels
+     * on which the execution of this message depends on
+     */
+    dependencies: string[];
+}
+/**
+ * QueryDebugContractCallRequest is the request type for the
+ * Query/DebugContractCall RPC method
+ */
+export interface QueryDebugContractCallRequestSDKType {
+    /** Sender is the that actor that signed the messages */
+    sender: string;
+    /** Address is the address of the smart contract */
+    address: string;
+    query_data: Uint8Array;
+    /** Funds coins that are transferred to the contract on execution */
+    funds: CoinSDKType[];
+    /**
+     * Array of either hex-encoded contract addresses or contract labels
+     * on which the execution of this message depends on
+     */
+    dependencies: string[];
+}
+/**
+ * QueryDebugContractCallResponse is the response type for the
+ * Query/DebugContractCall RPC method
+ */
+export interface QueryDebugContractCallResponse {
+    /** Data contains the json data returned from the smart contract */
+    data: Uint8Array;
+    /** wasm memory at the time of execution end */
+    memorySnapshot: Uint8Array;
+    errorMessage: string;
+}
+/**
+ * QueryDebugContractCallResponse is the response type for the
+ * Query/DebugContractCall RPC method
+ */
+export interface QueryDebugContractCallResponseSDKType {
+    /** Data contains the json data returned from the smart contract */
+    data: Uint8Array;
+    /** wasm memory at the time of execution end */
+    memory_snapshot: Uint8Array;
+    error_message: string;
+}
 /** QueryCodeRequest is the request type for the Query/Code RPC method */
 export interface QueryCodeRequest {
     /** grpc-gateway_out does not support Go style CodID */
@@ -219,12 +331,12 @@ export interface QueryCodeRequestSDKType {
 }
 /** QueryCodeResponse is the response type for the Query/Code RPC method */
 export interface QueryCodeResponse {
-    codeInfo?: CodeInfo;
+    codeInfo?: CodeInfoPB;
     data: Uint8Array;
 }
 /** QueryCodeResponse is the response type for the Query/Code RPC method */
 export interface QueryCodeResponseSDKType {
-    code_info?: CodeInfoSDKType;
+    code_info?: CodeInfoPBSDKType;
     data: Uint8Array;
 }
 /** QueryCodeInfoRequest is the request type for the Query/CodeInfo RPC method */
@@ -239,11 +351,11 @@ export interface QueryCodeInfoRequestSDKType {
 }
 /** QueryCodeInfoResponse is the response type for the Query/Code RPC method */
 export interface QueryCodeInfoResponse {
-    codeInfo?: CodeInfo;
+    codeInfo?: CodeInfoPB;
 }
 /** QueryCodeInfoResponse is the response type for the Query/Code RPC method */
 export interface QueryCodeInfoResponseSDKType {
-    code_info?: CodeInfoSDKType;
+    code_info?: CodeInfoPBSDKType;
 }
 /** QueryCodesRequest is the request type for the Query/Codes RPC method */
 export interface QueryCodesRequest {
@@ -257,13 +369,13 @@ export interface QueryCodesRequestSDKType {
 }
 /** QueryCodesResponse is the response type for the Query/Codes RPC method */
 export interface QueryCodesResponse {
-    codeInfos: CodeInfo[];
+    codeInfos: CodeInfoPB[];
     /** pagination defines the pagination in the response. */
     pagination?: PageResponse;
 }
 /** QueryCodesResponse is the response type for the Query/Codes RPC method */
 export interface QueryCodesResponseSDKType {
-    code_infos: CodeInfoSDKType[];
+    code_infos: CodeInfoPBSDKType[];
     /** pagination defines the pagination in the response. */
     pagination?: PageResponseSDKType;
 }
@@ -392,6 +504,34 @@ export declare const QuerySmartContractCallResponse: {
     fromJSON(object: any): QuerySmartContractCallResponse;
     toJSON(message: QuerySmartContractCallResponse): unknown;
     fromPartial(object: Partial<QuerySmartContractCallResponse>): QuerySmartContractCallResponse;
+};
+export declare const QueryCallEthRequest: {
+    encode(message: QueryCallEthRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryCallEthRequest;
+    fromJSON(object: any): QueryCallEthRequest;
+    toJSON(message: QueryCallEthRequest): unknown;
+    fromPartial(object: Partial<QueryCallEthRequest>): QueryCallEthRequest;
+};
+export declare const QueryCallEthResponse: {
+    encode(message: QueryCallEthResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryCallEthResponse;
+    fromJSON(object: any): QueryCallEthResponse;
+    toJSON(message: QueryCallEthResponse): unknown;
+    fromPartial(object: Partial<QueryCallEthResponse>): QueryCallEthResponse;
+};
+export declare const QueryDebugContractCallRequest: {
+    encode(message: QueryDebugContractCallRequest, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryDebugContractCallRequest;
+    fromJSON(object: any): QueryDebugContractCallRequest;
+    toJSON(message: QueryDebugContractCallRequest): unknown;
+    fromPartial(object: Partial<QueryDebugContractCallRequest>): QueryDebugContractCallRequest;
+};
+export declare const QueryDebugContractCallResponse: {
+    encode(message: QueryDebugContractCallResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): QueryDebugContractCallResponse;
+    fromJSON(object: any): QueryDebugContractCallResponse;
+    toJSON(message: QueryDebugContractCallResponse): unknown;
+    fromPartial(object: Partial<QueryDebugContractCallResponse>): QueryDebugContractCallResponse;
 };
 export declare const QueryCodeRequest: {
     encode(message: QueryCodeRequest, writer?: _m0.Writer): _m0.Writer;
