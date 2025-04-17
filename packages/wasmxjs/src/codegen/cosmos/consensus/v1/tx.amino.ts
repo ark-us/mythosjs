@@ -43,7 +43,10 @@ export const AminoConverter = {
         },
         evidence: {
           max_age_num_blocks: evidence.maxAgeNumBlocks.toString(),
-          max_age_duration: (evidence.maxAgeDuration * 1_000_000_000).toString(),
+          max_age_duration: {
+            seconds: evidence.maxAgeDuration.seconds.toString(),
+            nanos: evidence.maxAgeDuration.nanos,
+          },
           max_bytes: evidence.maxBytes.toString()
         },
         validator: {
@@ -70,8 +73,8 @@ export const AminoConverter = {
         evidence: {
           maxAgeNumBlocks: Long.fromString(evidence.max_age_num_blocks),
           maxAgeDuration: {
-            seconds: Long.fromNumber(Math.floor(parseInt(evidence.max_age_duration) / 1_000_000_000)),
-            nanos: parseInt(evidence.max_age_duration) % 1_000_000_000
+            seconds: Long.fromNumber(Math.floor(parseInt(evidence.max_age_duration.seconds) / 1_000_000_000)),
+            nanos: evidence.max_age_duration.nanos % 1_000_000_000
           },
           maxBytes: Long.fromString(evidence.max_bytes)
         },

@@ -52,7 +52,10 @@ export const AminoConverter = {
         params: {
           signed_blocks_window: params.signedBlocksWindow.toString(),
           min_signed_per_window: params.minSignedPerWindow,
-          downtime_jail_duration: (params.downtimeJailDuration * 1_000_000_000).toString(),
+          downtime_jail_duration: {
+            seconds: params.downtimeJailDuration.seconds.toString(),
+            nanos: params.downtimeJailDuration.nanos,
+          },
           slash_fraction_double_sign: params.slashFractionDoubleSign,
           slash_fraction_downtime: params.slashFractionDowntime
         }
@@ -68,8 +71,8 @@ export const AminoConverter = {
           signedBlocksWindow: Long.fromString(params.signed_blocks_window),
           minSignedPerWindow: params.min_signed_per_window,
           downtimeJailDuration: {
-            seconds: Long.fromNumber(Math.floor(parseInt(params.downtime_jail_duration) / 1_000_000_000)),
-            nanos: parseInt(params.downtime_jail_duration) % 1_000_000_000
+            seconds: Long.fromNumber(Math.floor(parseInt(params.downtime_jail_duration.seconds))),
+            nanos: params.downtime_jail_duration.nanos
           },
           slashFractionDoubleSign: params.slash_fraction_double_sign,
           slashFractionDowntime: params.slash_fraction_downtime

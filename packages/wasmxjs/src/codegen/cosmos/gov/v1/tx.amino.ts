@@ -297,15 +297,24 @@ export const AminoConverter = {
             denom: el0.denom,
             amount: el0.amount
           })),
-          max_deposit_period: (params.maxDepositPeriod * 1_000_000_000).toString(),
-          voting_period: (params.votingPeriod * 1_000_000_000).toString(),
+          max_deposit_period: {
+            seconds: params.maxDepositPeriod.seconds.toString(),
+            nanos: params.maxDepositPeriod.nanos,
+          },
+          voting_period: {
+            seconds: params.votingPeriod.seconds.toString(),
+            nanos: params.votingPeriod.nanos,
+          },
           quorum: params.quorum,
           threshold: params.threshold,
           veto_threshold: params.vetoThreshold,
           min_initial_deposit_ratio: params.minInitialDepositRatio,
           proposal_cancel_ratio: params.proposalCancelRatio,
           proposal_cancel_dest: params.proposalCancelDest,
-          expedited_voting_period: (params.expeditedVotingPeriod * 1_000_000_000).toString(),
+          expedited_voting_period: {
+            seconds: params.expeditedVotingPeriod.seconds.toString(),
+            nanos: params.expeditedVotingPeriod.nanos,
+          },
           expedited_threshold: params.expeditedThreshold,
           expedited_min_deposit: params.expeditedMinDeposit.map(el0 => ({
             denom: el0.denom,
@@ -330,12 +339,12 @@ export const AminoConverter = {
             amount: el1.amount
           })),
           maxDepositPeriod: {
-            seconds: Long.fromNumber(Math.floor(parseInt(params.max_deposit_period) / 1_000_000_000)),
-            nanos: parseInt(params.max_deposit_period) % 1_000_000_000
+            seconds: Long.fromNumber(Math.floor(parseInt(params.max_deposit_period.seconds))),
+            nanos: params.max_deposit_period.nanos,
           },
           votingPeriod: {
-            seconds: Long.fromNumber(Math.floor(parseInt(params.voting_period) / 1_000_000_000)),
-            nanos: parseInt(params.voting_period) % 1_000_000_000
+            seconds: Long.fromNumber(Math.floor(parseInt(params.voting_period.seconds))),
+            nanos: params.voting_period.nanos
           },
           quorum: params.quorum,
           threshold: params.threshold,
@@ -344,8 +353,8 @@ export const AminoConverter = {
           proposalCancelRatio: params.proposal_cancel_ratio,
           proposalCancelDest: params.proposal_cancel_dest,
           expeditedVotingPeriod: {
-            seconds: Long.fromNumber(Math.floor(parseInt(params.expedited_voting_period) / 1_000_000_000)),
-            nanos: parseInt(params.expedited_voting_period) % 1_000_000_000
+            seconds: Long.fromNumber(Math.floor(parseInt(params.expedited_voting_period.seconds))),
+            nanos: params.expedited_voting_period.nanos
           },
           expeditedThreshold: params.expedited_threshold,
           expeditedMinDeposit: params.expedited_min_deposit.map(el1 => ({

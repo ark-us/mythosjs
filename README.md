@@ -13,6 +13,7 @@ yarn codegen
 
 * `src/codegen/index.ts` should contain `export * from "./mythos/index";`
 * `src/codegen/mythos/index.ts` should export `src/codegen/mythos` contents
+* either fix Duration and Time or fix amino conversions after `yarn build:ts`
 
 ```bash
 yarn build:ts
