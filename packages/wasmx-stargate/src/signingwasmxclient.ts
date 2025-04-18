@@ -43,7 +43,7 @@ import {
   MsgInstantiateContract,
   MsgStoreCode,
   MsgDeployCode,
-  CodeMetadata,
+  CodeMetadataPB,
 } from "@ark-us/wasmxjs";
 import Long from 'long';
 import pako from "pako";
@@ -287,7 +287,7 @@ export class SigningWasmXClient extends WasmXClient {
         sender: senderAddress,
         byteCode: compressed,
         deps: deps,
-        metadata: CodeMetadata.fromPartial(metadata),
+        metadata: CodeMetadataPB.fromPartial(metadata),
       }),
     };
 
@@ -333,7 +333,7 @@ export class SigningWasmXClient extends WasmXClient {
       value: MsgDeployCode.fromPartial({
         sender: senderAddress,
         byteCode: code,
-        metadata: CodeMetadata.fromPartial(metadata),
+        metadata: CodeMetadataPB.fromPartial(metadata),
         deps: deps,
         label: label,
         msg: toUtf8(JSON.stringify(msg)),
@@ -353,11 +353,10 @@ export class SigningWasmXClient extends WasmXClient {
     const codeIdAttr = storeCodeEvent.attributes.find((attr: any) => attr.key === "code_id");
     if (!codeIdAttr) throw new Error("No code_id attribute found in store_code event: " + JSON.stringify(result));
 
-    // const contractAddress = logs.findAttribute(parsedLogs, "instantiate", "contract_address");
     const instantiateEvent = result.events.find((ev: any) => ev.type === "instantiate")
     if (!instantiateEvent) throw new Error("No instantiate event found in receipt: " + JSON.stringify(result));
-    const contractAddress = instantiateEvent.attributes.find((attr: any) => attr.key === "contract_address");
-    if (!contractAddress) throw new Error("No contract_address attribute found in instantiate event: " + JSON.stringify(result));
+    const contractAddress = instantiateEvent.attributes.find((attr: any) => attr.key === "contract_address_created");
+    if (!contractAddress) throw new Error("No contract_address_created attribute found in instantiate event: " + JSON.stringify(result));
 
     return {
       checksum: toHex(sha256(code)),
@@ -397,11 +396,10 @@ export class SigningWasmXClient extends WasmXClient {
     }
     const parsedLogs = logs.parseRawLog(result.rawLog || "[]");
 
-    // const contractAddressAttr = logs.findAttribute(parsedLogs, "instantiate", "contract_address");
     const instantiateEvent = result.events.find((ev: any) => ev.type === "instantiate")
     if (!instantiateEvent) throw new Error("No instantiate event found in receipt: " + JSON.stringify(result));
-    const contractAddressAttr = instantiateEvent.attributes.find((attr: any) => attr.key === "contract_address");
-    if (!contractAddressAttr) throw new Error("No contract_address attribute found in instantiate event: " + JSON.stringify(result));
+    const contractAddressAttr = instantiateEvent.attributes.find((attr: any) => attr.key === "contract_address_created");
+    if (!contractAddressAttr) throw new Error("No contract_address_created attribute found in instantiate event: " + JSON.stringify(result));
 
     return {
       contractAddress: contractAddressAttr.value,

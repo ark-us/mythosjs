@@ -3,7 +3,6 @@ import { fromUtf8, toHex } from "@cosmjs/encoding";
 import { Uint53 } from "@cosmjs/math";
 import {
   Account,
-  accountFromAny,
   AuthExtension,
   BankExtension,
   Block,
@@ -36,8 +35,9 @@ import {
   QueryCodesResponse,
   QueryContractsByCodeResponse,
 } from "@ark-us/wasmxjs/types/codegen/mythos/wasmx/v1/query";
-import { CodeInfo } from "@ark-us/wasmxjs/types/codegen/mythos/wasmx/v1/contract";
+import { CodeInfoPB } from "@ark-us/wasmxjs/types/codegen/mythos/wasmx/v1/contract";
 import { JsonObject, setupWasmExtension, WasmExtension } from "./modules";
+import { accountFromAnyWasmx } from "./modules/wasmx/utils";
 
 export interface Code {
   readonly id: number;
@@ -82,7 +82,7 @@ export class WasmXClient {
     | (QueryClient & AuthExtension & BankExtension & TxExtension & WasmExtension)
     | undefined;
   private readonly codesCache = new Map<number, CodeDetails>();
-  private readonly codeInfosCache = new Map<number, CodeInfo>();
+  private readonly codeInfosCache = new Map<number, CodeInfoPB>();
   private chainId: string = "";
 
   /**
@@ -162,7 +162,7 @@ export class WasmXClient {
   public async getAccount(searchAddress: string): Promise<Account | null> {
     try {
       const account = await this.forceGetQueryClient().auth.account(searchAddress);
-      return account ? accountFromAny(account) : null;
+      return account ? accountFromAnyWasmx(account) : null;
     } catch (error: any) {
       if (/rpc error: code = NotFound/i.test(error.toString())) {
         return null;
@@ -339,7 +339,7 @@ export class WasmXClient {
       startAtKey = pagination?.nextKey;
     } while (startAtKey?.length !== 0);
 
-    return allCodes.map((entry: CodeInfo): Code => {
+    return allCodes.map((entry: CodeInfoPB): Code => {
       // assert(entry.creator && entry.codeId && entry.codeHash, "entry incomplete");
       assert(entry.creator && entry.codeHash, "entry incomplete");
       return {
@@ -370,7 +370,7 @@ export class WasmXClient {
     return codeDetails;
   }
 
-  public async getCodeInfo(codeId: number): Promise<CodeInfo> {
+  public async getCodeInfo(codeId: number): Promise<CodeInfoPB> {
     const cached = this.codeInfosCache.get(codeId);
     if (cached) return cached;
 

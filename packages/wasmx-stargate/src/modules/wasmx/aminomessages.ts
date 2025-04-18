@@ -2,7 +2,7 @@
 import { fromBase64, fromUtf8, toBase64, toUtf8 } from "@cosmjs/encoding";
 import { AminoConverters, Coin } from "@cosmjs/stargate";
 import {
-  CodeMetadata,
+  CodeMetadataPB,
   MsgExecuteContract,
   MsgInstantiateContract,
   MsgStoreCode,
@@ -21,7 +21,7 @@ export interface AminoMsgStoreCode {
     /** Base64 encoded Wasm */
     readonly byte_code: string;
     readonly deps: string[];
-    readonly metadata: CodeMetadata;
+    readonly metadata: CodeMetadataPB;
   };
 }
 
@@ -36,7 +36,7 @@ export interface AminoMsgDeployCode {
     /** Base64 encoded Wasm */
     readonly byte_code: string;
     readonly deps: string[];
-    readonly metadata: CodeMetadata;
+    readonly metadata: CodeMetadataPB;
     /** Instantiate message as JavaScript object */
     readonly msg: any;
     readonly funds: readonly Coin[];
@@ -86,14 +86,14 @@ export function createWasmAminoConverters(): AminoConverters {
       toAmino: ({ sender, byteCode, metadata, deps }: MsgStoreCode): AminoMsgStoreCode["value"] => ({
         sender: sender,
         byte_code: toBase64(byteCode),
-        metadata: metadata || CodeMetadata.fromPartial({}),
+        metadata: metadata || CodeMetadataPB.fromPartial({}),
         deps: deps,
       }),
       fromAmino: ({ sender, byte_code, deps, metadata }: AminoMsgStoreCode["value"]): MsgStoreCode => ({
         sender: sender,
         byteCode: fromBase64(byte_code),
         deps: deps,
-        metadata: metadata || CodeMetadata.fromPartial({}),
+        metadata: metadata || CodeMetadataPB.fromPartial({}),
       }),
     },
     "/mythos.wasmx.v1.MsgDeployCode": {
@@ -101,7 +101,7 @@ export function createWasmAminoConverters(): AminoConverters {
       toAmino: ({ sender, byteCode, metadata, deps, msg, funds, label }: MsgDeployCode): AminoMsgDeployCode["value"] => ({
         sender: sender,
         byte_code: toBase64(byteCode),
-        metadata: metadata || CodeMetadata.fromPartial({}),
+        metadata: metadata || CodeMetadataPB.fromPartial({}),
         deps: deps,
         msg: JSON.parse(fromUtf8(msg)),
         funds: funds,
@@ -114,7 +114,7 @@ export function createWasmAminoConverters(): AminoConverters {
         label: label,
         msg: toUtf8(JSON.stringify(msg)),
         funds: [...funds],
-        metadata: metadata || CodeMetadata.fromPartial({}),
+        metadata: metadata || CodeMetadataPB.fromPartial({}),
       }),
     },
     "/mythos.wasmx.v1.MsgInstantiateContract": {

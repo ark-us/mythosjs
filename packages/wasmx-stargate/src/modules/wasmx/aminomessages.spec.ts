@@ -34,7 +34,7 @@ describe("AminoTypes", () => {
         value: {
           sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
           byte_code: "WUVMTE9XIFNVQk1BUklORQ==",
-          metadata: {name: "", categ: [], icon: "", author: "", site: "", abi: "", jsonSchema: ""},
+          metadata: {name: "", categ: [], icon: "", author: "", site: "", abi: new Uint8Array(0), jsonSchema: ""},
           deps: [],
         },
       };
@@ -59,7 +59,7 @@ describe("AminoTypes", () => {
         value: {
           sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
           byte_code: "WUVMTE9XIFNVQk1BUklORQ==",
-          metadata: {name: "", categ: [], icon: "", author: "", site: "", abi: "", jsonSchema: ""},
+          metadata: {name: "", categ: [], icon: "", author: "", site: "", abi: new Uint8Array(0), jsonSchema: ""},
           deps: [],
           msg: {"data":"0x"},
           funds: coins(0, "ucosm"),
@@ -158,7 +158,7 @@ describe("AminoTypes", () => {
         value: {
           sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
           byte_code: "WUVMTE9XIFNVQk1BUklORQ==",
-          metadata: {name: "", categ: [], icon: "", author: "", site: "", abi: "", jsonSchema: ""},
+          metadata: {name: "", categ: [], icon: "", author: "", site: "", abi: new Uint8Array(0), jsonSchema: ""},
           deps: [],
         },
       };
