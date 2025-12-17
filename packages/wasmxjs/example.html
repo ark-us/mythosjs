@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WasmxJS CDN Example</title>
+</head>
+<body>
+    <h1>WasmxJS CDN Example</h1>
+    <p>Open the browser console to see the WasmxJS library loaded.</p>
+
+    <!-- Load from unpkg CDN after publishing -->
+    <!-- Option 1: Using unpkg (after npm publish) -->
+    <script src="https://unpkg.com/@ark-us/wasmxjs@0.0.12/dist/wasmxjs.umd.min.js"></script>
+
+    <!-- Option 2: Using jsDelivr (after npm publish) -->
+    <!-- <script src="https://cdn.jsdelivr.net/npm/@ark-us/wasmxjs@0.0.12/dist/wasmxjs.umd.min.js"></script> -->
+
+    <!-- For local testing before publishing, use a local file server: -->
+    <!-- <script src="dist/wasmxjs.umd.min.js"></script> -->
+
+    <script>
+        // WasmxJS is now available as a global variable
+        console.log('WasmxJS loaded:', WasmxJS);
+
+        // Example: Access protobuf types
+        // console.log('Available modules:', Object.keys(WasmxJS));
+    </script>
+</body>
+</html>
