@@ -58,4 +58,51 @@ export default [
       terser(),
     ],
   },
+  // ES Module build (for modern browsers and bundlers)
+  {
+    input: 'src/index.ts',
+    output: {
+      file: 'dist/wasmxjs.esm.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      nodePolyfills(),
+      json(),
+      resolve({
+        browser: true,
+        preferBuiltins: false,
+      }),
+      commonjs(),
+      typescript({
+        tsconfig: './tsconfig.json',
+        declaration: false,
+        declarationMap: false,
+      }),
+    ],
+  },
+  // ES Module build (minified)
+  {
+    input: 'src/index.ts',
+    output: {
+      file: 'dist/wasmxjs.esm.min.js',
+      format: 'es',
+      sourcemap: true,
+    },
+    plugins: [
+      nodePolyfills(),
+      json(),
+      resolve({
+        browser: true,
+        preferBuiltins: false,
+      }),
+      commonjs(),
+      typescript({
+        tsconfig: './tsconfig.json',
+        declaration: false,
+        declarationMap: false,
+      }),
+      terser(),
+    ],
+  },
 ];

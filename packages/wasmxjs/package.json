@@ -1,6 +1,6 @@
 {
   "name": "@ark-us/wasmxjs",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "Typescript Protobuf Messages for Mythos",
   "author": "Loredana Cirstea <loredana.cirstea@gmail.com>",
   "homepage": "https://github.com/ark-us/wasmxjs#readme",
@@ -27,6 +27,7 @@
     "build:module": "cross-env MODULE=true babel src --out-dir module --delete-dir-on-start  --extensions \".tsx,.ts,.js\"",
     "build:ts": "tsc --project ./tsconfig.json",
     "build:browser": "rollup -c rollup.config.js",
+    "build:browser:esm": "NODE_OPTIONS='--max-old-space-size=8192' rollup -c rollup.config.esm.js",
     "build": "npm run build:module && npm run build:main",
     "buidl": "npm run build && npm run build:ts && npm run build:browser",
     "codegen": "cross-env NODE_ENV=development babel-node scripts/codegen.js",
