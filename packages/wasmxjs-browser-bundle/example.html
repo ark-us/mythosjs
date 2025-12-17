@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>WasmxJS Browser Bundle Example</title>
+</head>
+<body>
+    <h1>WasmxJS Browser Bundle Test</h1>
+    <div id="output"></div>
+
+    <!-- Load the bundle -->
+    <script src="./dist/wasmxjs-bundle.umd.js"></script>
+
+    <script type="module">
+        import * as secp from 'https://cdn.jsdelivr.net/npm/@noble/secp256k1@2.1.0/+esm';
+        import { sha256 } from 'https://cdn.jsdelivr.net/npm/@noble/hashes@1.3.3/sha256/+esm';
+        import { ripemd160 } from 'https://cdn.jsdelivr.net/npm/@noble/hashes@1.3.3/ripemd160/+esm';
+        import { bech32 } from 'https://cdn.jsdelivr.net/npm/bech32@2.0.0/+esm';
+
+        const output = document.getElementById('output');
+
+        // WasmxJS is available as a global from the UMD bundle
+        console.log('WasmxJS loaded:', window.WasmxJS);
+        console.log('Available modules:', Object.keys(window.WasmxJS));
+
+        output.innerHTML = `
+            <h2>✓ WasmxJS Loaded Successfully!</h2>
+            <p>Available modules: ${Object.keys(window.WasmxJS).length}</p>
+            <pre>${JSON.stringify(Object.keys(window.WasmxJS).slice(0, 10), null, 2)}</pre>
+        `;
+
+        // Your crypto functions work as before
+        function generateKeyPair() {
+            const privateKey = secp.utils.randomPrivateKey();
+            const publicKey = secp.getPublicKey(privateKey, true);
+            return {
+                privateKey: Array.from(privateKey).map(b => b.toString(16).padStart(2, '0')).join(''),
+                publicKey: Array.from(publicKey).map(b => b.toString(16).padStart(2, '0')).join('')
+            };
+        }
+
+        function deriveAddress(publicKeyHex) {
+            const pubKeyBytes = new Uint8Array(publicKeyHex.match(/.{1,2}/g).map(byte => parseInt(byte, 16)));
+            const sha256Hash = sha256(pubKeyBytes);
+            const ripemd160Hash = ripemd160(sha256Hash);
+            const words = bech32.toWords(ripemd160Hash);
+            const address = bech32.encode('wasmx', words);
+            return address;
+        }
+
+        // Test key generation
+        const keyPair = generateKeyPair();
+        const address = deriveAddress(keyPair.publicKey);
+
+        console.log('Generated address:', address);
+        output.innerHTML += `
+            <h3>Test Key Generation:</h3>
+            <p>Address: <code>${address}</code></p>
+        `;
+    </script>
+</body>
+</html>
