@@ -28,3 +28,6 @@ export {
 // Re-exported because this is part of the WasmXClient/SigningWasmXClient APIs
 export { Attribute, DeliverTxResponse, Event, IndexedTx } from "@cosmjs/stargate";
 export { HttpEndpoint } from "@cosmjs/tendermint-rpc";
+
+// Re-export Tendermint/Comet clients
+export { Comet38Client, Tendermint34Client } from "@cosmjs/tendermint-rpc";

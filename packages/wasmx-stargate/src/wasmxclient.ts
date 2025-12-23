@@ -11,12 +11,7 @@ import {
   DeliverTxResponse,
   fromTendermintEvent,
   IndexedTx,
-  isSearchByHeightQuery,
-  isSearchBySentFromOrToQuery,
-  isSearchByTagsQuery,
   QueryClient,
-  SearchTxFilter,
-  SearchTxQuery,
   SequenceResponse,
   setupAuthExtension,
   setupBankExtension,
@@ -210,44 +205,6 @@ export class WasmXClient {
     return results[0] ?? null;
   }
 
-  public async searchTx(query: SearchTxQuery, filter: SearchTxFilter = {}): Promise<readonly IndexedTx[]> {
-    const minHeight = filter.minHeight || 0;
-    const maxHeight = filter.maxHeight || Number.MAX_SAFE_INTEGER;
-
-    if (maxHeight < minHeight) return []; // optional optimization
-
-    function withFilters(originalQuery: string): string {
-      return `${originalQuery} AND tx.height>=${minHeight} AND tx.height<=${maxHeight}`;
-    }
-
-    let txs: readonly IndexedTx[];
-
-    if (isSearchByHeightQuery(query)) {
-      txs =
-        query.height >= minHeight && query.height <= maxHeight
-          ? await this.txsQuery(`tx.height=${query.height}`)
-          : [];
-    } else if (isSearchBySentFromOrToQuery(query)) {
-      const sentQuery = withFilters(`message.module='bank' AND transfer.sender='${query.sentFromOrTo}'`);
-      const receivedQuery = withFilters(
-        `message.module='bank' AND transfer.recipient='${query.sentFromOrTo}'`,
-      );
-      const [sent, received] = await Promise.all(
-        [sentQuery, receivedQuery].map((rawQuery) => this.txsQuery(rawQuery)),
-      );
-      const sentHashes = sent.map((t) => t.hash);
-      txs = [...sent, ...received.filter((t) => !sentHashes.includes(t.hash))];
-    } else if (isSearchByTagsQuery(query)) {
-      const rawQuery = withFilters(query.tags.map((t) => `${t.key}='${t.value}'`).join(" AND "));
-      txs = await this.txsQuery(rawQuery);
-    } else {
-      throw new Error("Unknown query type");
-    }
-
-    const filtered = txs.filter((tx) => tx.height >= minHeight && tx.height <= maxHeight);
-    return filtered;
-  }
-
   public disconnect(): void {
     if (this.tmClient) this.tmClient.disconnect();
   }
@@ -295,6 +252,7 @@ export class WasmXClient {
             events: result.events,
             gasUsed: result.gasUsed,
             gasWanted: result.gasWanted,
+            msgResponses: result.msgResponses,
             txIndex: 0,
           }
         : pollForTx(txId);
@@ -487,6 +445,7 @@ export class WasmXClient {
         tx: tx.tx,
         gasUsed: tx.result.gasUsed,
         gasWanted: tx.result.gasWanted,
+        msgResponses: tx.result.msgResponses || [],
         txIndex: tx.result.index,
       };
     });

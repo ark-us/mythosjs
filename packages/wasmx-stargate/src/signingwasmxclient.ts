@@ -312,8 +312,8 @@ export class SigningWasmXClient extends WasmXClient {
       height: result.height,
       transactionHash: result.transactionHash,
       events: result.events,
-      gasWanted: result.gasWanted,
-      gasUsed: result.gasUsed,
+      gasWanted: Number(result.gasWanted),
+      gasUsed: Number(result.gasUsed),
     };
   }
 
@@ -366,8 +366,8 @@ export class SigningWasmXClient extends WasmXClient {
       height: result.height,
       transactionHash: result.transactionHash,
       events: result.events,
-      gasWanted: result.gasWanted,
-      gasUsed: result.gasUsed,
+      gasWanted: Number(result.gasWanted),
+      gasUsed: Number(result.gasUsed),
     };
   }
 
@@ -407,8 +407,8 @@ export class SigningWasmXClient extends WasmXClient {
       height: result.height,
       transactionHash: result.transactionHash,
       events: result.events,
-      gasWanted: result.gasWanted,
-      gasUsed: result.gasUsed,
+      gasWanted: Number(result.gasWanted),
+      gasUsed: Number(result.gasUsed),
     };
   }
 
@@ -455,8 +455,8 @@ export class SigningWasmXClient extends WasmXClient {
       height: result.height,
       transactionHash: result.transactionHash,
       events: result.events,
-      gasWanted: result.gasWanted,
-      gasUsed: result.gasUsed,
+      gasWanted: Number(result.gasWanted),
+      gasUsed: Number(result.gasUsed),
     };
   }
 

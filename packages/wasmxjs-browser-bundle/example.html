@@ -21,11 +21,17 @@
         // WasmxJS is available as a global from the UMD bundle
         console.log('WasmxJS loaded:', window.WasmxJS);
         console.log('Available modules:', Object.keys(window.WasmxJS));
+        console.log('Stargate available:', window.WasmxJS.stargate);
+
+        const stargateModules = window.WasmxJS.stargate ? Object.keys(window.WasmxJS.stargate) : [];
 
         output.innerHTML = `
             <h2>✓ WasmxJS Loaded Successfully!</h2>
             <p>Available modules: ${Object.keys(window.WasmxJS).length}</p>
             <pre>${JSON.stringify(Object.keys(window.WasmxJS).slice(0, 10), null, 2)}</pre>
+            <h3>Stargate Module</h3>
+            <p>Stargate exports: ${stargateModules.length}</p>
+            <pre>${JSON.stringify(stargateModules.slice(0, 10), null, 2)}</pre>
         `;
 
         // Your crypto functions work as before
