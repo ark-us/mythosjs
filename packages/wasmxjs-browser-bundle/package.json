@@ -1,6 +1,6 @@
 {
   "name": "wasmxjs-browser-bundle",
-  "version": "1.0.0",
+  "version": "0.0.2",
   "private": true,
   "type": "module",
   "scripts": {
@@ -11,6 +11,6 @@
     "vite": "^5.0.0"
   },
   "dependencies": {
-    "@ark-us/wasmxjs": "^0.0.13"
+    "@ark-us/wasmxjs": "^0.0.14"
   }
 }
