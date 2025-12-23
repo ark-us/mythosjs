@@ -11,6 +11,7 @@ export default {
     file: 'dist/wasmxjs.esm.min.js',
     format: 'es',
     sourcemap: true,
+    inlineDynamicImports: true,
   },
   plugins: [
     nodePolyfills(),
@@ -18,8 +19,14 @@ export default {
     resolve({
       browser: true,
       preferBuiltins: false,
+      mainFields: ['browser', 'module', 'main'],
     }),
-    commonjs(),
+    commonjs({
+      include: /node_modules/,
+      requireReturnsDefault: 'auto',
+      transformMixedEsModules: true,
+      ignoreDynamicRequires: false,
+    }),
     typescript({
       tsconfig: './tsconfig.json',
       declaration: false,
