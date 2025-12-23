@@ -12,6 +12,6 @@
   },
   "dependencies": {
     "@ark-us/wasmxjs": "^0.0.14",
-    "@ark-us/wasmx-stargate": "^0.0.11"
+    "@ark-us/wasmx-stargate": "^0.0.12"
   }
 }
