@@ -24,6 +24,7 @@ describe("AminoTypes", () => {
         sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
         byteCode: fromBase64("WUVMTE9XIFNVQk1BUklORQ=="),
         deps: [],
+        source: new Uint8Array(),
       };
       const aminoMsg = new AminoTypes(createWasmAminoConverters()).toAmino({
         typeUrl: "/mythos.wasmx.v1.MsgStoreCode",
@@ -49,6 +50,7 @@ describe("AminoTypes", () => {
         msg: toUtf8(`{"data":"0x"}`),
         funds: coins(0, "ucosm"),
         label: "label",
+        source: new Uint8Array(),
       };
       const aminoMsg = new AminoTypes(createWasmAminoConverters()).toAmino({
         typeUrl: "/mythos.wasmx.v1.MsgDeployCode",
@@ -167,6 +169,7 @@ describe("AminoTypes", () => {
         sender: "cosmos1pkptre7fdkl6gfrzlesjjvhxhlc3r4gmmk8rs6",
         byteCode: fromBase64("WUVMTE9XIFNVQk1BUklORQ=="),
         deps: [],
+        source: new Uint8Array(),
       };
       expect(msg).toEqual({
         typeUrl: "/mythos.wasmx.v1.MsgStoreCode",

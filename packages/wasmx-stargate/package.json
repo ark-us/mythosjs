@@ -1,6 +1,6 @@
 {
   "name": "@ark-us/wasmx-stargate",
-  "version": "0.0.12",
+  "version": "0.0.13",
   "description": "WasmX SDK",
   "contributors": [
     "Loredana Cirstea"
@@ -38,7 +38,7 @@
     "pack-web": "yarn build-or-skip && webpack --mode development --config webpack.web.config.js"
   },
   "dependencies": {
-    "@ark-us/wasmxjs": "^0.0.11",
+    "@ark-us/wasmxjs": "^0.0.15",
     "@cosmjs/amino": "^0.32.0",
     "@cosmjs/crypto": "^0.32.0",
     "@cosmjs/encoding": "^0.32.0",

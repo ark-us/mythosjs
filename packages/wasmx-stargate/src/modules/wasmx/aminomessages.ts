@@ -94,6 +94,7 @@ export function createWasmAminoConverters(): AminoConverters {
         byteCode: fromBase64(byte_code),
         deps: deps,
         metadata: metadata || CodeMetadataPB.fromPartial({}),
+        source: new Uint8Array(),
       }),
     },
     "/mythos.wasmx.v1.MsgDeployCode": {
@@ -115,6 +116,7 @@ export function createWasmAminoConverters(): AminoConverters {
         msg: toUtf8(JSON.stringify(msg)),
         funds: [...funds],
         metadata: metadata || CodeMetadataPB.fromPartial({}),
+        source: new Uint8Array(),
       }),
     },
     "/mythos.wasmx.v1.MsgInstantiateContract": {
