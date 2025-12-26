@@ -11,7 +11,7 @@
     "vite": "^5.0.0"
   },
   "dependencies": {
-    "@ark-us/wasmxjs": "^0.0.14",
+    "@ark-us/wasmxjs": "^0.0.16",
     "@ark-us/wasmx-stargate": "^0.0.12"
   }
 }
