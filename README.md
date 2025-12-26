@@ -27,3 +27,10 @@ yarn build
 
 yarn publish
 ```
+
+```bash
+cd packages/wasmxjs-browser-bundle
+npm install
+npm run build
+```
+
