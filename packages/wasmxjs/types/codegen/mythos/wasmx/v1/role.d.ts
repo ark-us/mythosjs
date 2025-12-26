@@ -69,6 +69,9 @@ export interface SystemContractRoleSDKType {
 export interface SystemBootstrapData {
     /** bech32 address of contract for roles */
     roleAddress: string;
+    roleRegistryId: Long;
+    roleRegistryCodeInfo?: CodeInfoPB;
+    roleRegistryContractInfo?: ContractInfoPB;
     /** bech32 address of contract for contract data storage */
     codeRegistryAddress: string;
     codeRegistryId: Long;
@@ -78,6 +81,9 @@ export interface SystemBootstrapData {
 export interface SystemBootstrapDataSDKType {
     /** bech32 address of contract for roles */
     role_address: string;
+    role_registry_id: Long;
+    role_registry_code_info?: CodeInfoPBSDKType;
+    role_registry_contract_info?: ContractInfoPBSDKType;
     /** bech32 address of contract for contract data storage */
     code_registry_address: string;
     code_registry_id: Long;

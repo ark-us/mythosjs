@@ -62,6 +62,7 @@ export interface SystemContract {
   deps: string[];
   metadata?: CodeMetadataPB;
   contractState: ContractStoragePB[];
+  source: Uint8Array;
 }
 export interface SystemContractSDKType {
   address: string;
@@ -82,6 +83,7 @@ export interface SystemContractSDKType {
   deps: string[];
   metadata?: CodeMetadataPBSDKType;
   contract_state: ContractStoragePBSDKType[];
+  source: Uint8Array;
 }
 /** Code - for importing and exporting code data */
 
@@ -303,7 +305,8 @@ function createBaseSystemContract(): SystemContract {
     role: undefined,
     deps: [],
     metadata: undefined,
-    contractState: []
+    contractState: [],
+    source: new Uint8Array()
   };
 }
 
@@ -351,6 +354,10 @@ export const SystemContract = {
 
     for (const v of message.contractState) {
       ContractStoragePB.encode(v!, writer.uint32(90).fork()).ldelim();
+    }
+
+    if (message.source.length !== 0) {
+      writer.uint32(98).bytes(message.source);
     }
 
     return writer;
@@ -409,6 +416,10 @@ export const SystemContract = {
           message.contractState.push(ContractStoragePB.decode(reader, reader.uint32()));
           break;
 
+        case 12:
+          message.source = reader.bytes();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -430,7 +441,8 @@ export const SystemContract = {
       role: isSet(object.role) ? SystemContractRole.fromJSON(object.role) : undefined,
       deps: Array.isArray(object?.deps) ? object.deps.map((e: any) => String(e)) : [],
       metadata: isSet(object.metadata) ? CodeMetadataPB.fromJSON(object.metadata) : undefined,
-      contractState: Array.isArray(object?.contractState) ? object.contractState.map((e: any) => ContractStoragePB.fromJSON(e)) : []
+      contractState: Array.isArray(object?.contractState) ? object.contractState.map((e: any) => ContractStoragePB.fromJSON(e)) : [],
+      source: isSet(object.source) ? bytesFromBase64(object.source) : new Uint8Array()
     };
   },
 
@@ -459,6 +471,7 @@ export const SystemContract = {
       obj.contractState = [];
     }
 
+    message.source !== undefined && (obj.source = base64FromBytes(message.source !== undefined ? message.source : new Uint8Array()));
     return obj;
   },
 
@@ -475,6 +488,7 @@ export const SystemContract = {
     message.deps = object.deps?.map(e => e) || [];
     message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadataPB.fromPartial(object.metadata) : undefined;
     message.contractState = object.contractState?.map(e => ContractStoragePB.fromPartial(e)) || [];
+    message.source = object.source ?? new Uint8Array();
     return message;
   }
 

@@ -1,6 +1,6 @@
 import { Rpc } from "../../../helpers";
 import * as _m0 from "protobufjs/minimal";
-import { MsgGrpcSendRequest, MsgGrpcSendRequestResponse, MsgStartTimeoutRequest, MsgStartTimeoutResponse, MsgCancelTimeoutRequest, MsgCancelTimeoutResponse, MsgStartBackgroundProcessRequest, MsgStartBackgroundProcessResponse, MsgMultiChainWrap, MsgMultiChainWrapResponse, MsgGrpcReceiveRequest, MsgGrpcReceiveRequestResponse, MsgP2PReceiveMessageRequest, MsgP2PReceiveMessageResponse, MsgExecuteAtomicTxResponse, MsgExecuteCrossChainCallRequest, MsgExecuteCrossChainCallResponse } from "./tx";
+import { MsgGrpcSendRequest, MsgGrpcSendRequestResponse, MsgStartTimeoutRequest, MsgStartTimeoutResponse, MsgCancelTimeoutRequest, MsgCancelTimeoutResponse, MsgStartBackgroundProcessRequest, MsgStartBackgroundProcessResponse, MsgMultiChainWrap, MsgMultiChainWrapResponse, MsgReentryWithGoRoutine, MsgReentryWithGoRoutineResponse, MsgReentry, MsgReentryResponse, MsgGrpcReceiveRequest, MsgGrpcReceiveRequestResponse, MsgP2PReceiveMessageRequest, MsgP2PReceiveMessageResponse, MsgExecuteAtomicTxResponse, MsgExecuteCrossChainCallRequest, MsgExecuteCrossChainCallResponse } from "./tx";
 import { MsgExecuteAtomicTxRequest } from "./custom";
 /** Msg defines the grpc server */
 
@@ -17,6 +17,13 @@ export interface Msg {
   /** MultiChainWrap wraps a message to be executed on one of the available chains */
 
   multiChainWrap(request: MsgMultiChainWrap): Promise<MsgMultiChainWrapResponse>;
+  /**
+   * MsgReentry is an internal message for contracts
+   * It cannot be called by EOAs
+   */
+
+  reentryWithGoRoutine(request: MsgReentryWithGoRoutine): Promise<MsgReentryWithGoRoutineResponse>;
+  reentry(request: MsgReentry): Promise<MsgReentryResponse>;
   /** GrpcReceiveRequest */
 
   grpcReceiveRequest(request: MsgGrpcReceiveRequest): Promise<MsgGrpcReceiveRequestResponse>;
@@ -38,6 +45,8 @@ export class MsgClientImpl implements Msg {
     this.cancelTimeout = this.cancelTimeout.bind(this);
     this.startBackgroundProcess = this.startBackgroundProcess.bind(this);
     this.multiChainWrap = this.multiChainWrap.bind(this);
+    this.reentryWithGoRoutine = this.reentryWithGoRoutine.bind(this);
+    this.reentry = this.reentry.bind(this);
     this.grpcReceiveRequest = this.grpcReceiveRequest.bind(this);
     this.p2PReceiveMessage = this.p2PReceiveMessage.bind(this);
     this.executeAtomicTx = this.executeAtomicTx.bind(this);
@@ -72,6 +81,18 @@ export class MsgClientImpl implements Msg {
     const data = MsgMultiChainWrap.encode(request).finish();
     const promise = this.rpc.request("mythos.network.v1.Msg", "MultiChainWrap", data);
     return promise.then(data => MsgMultiChainWrapResponse.decode(new _m0.Reader(data)));
+  }
+
+  reentryWithGoRoutine(request: MsgReentryWithGoRoutine): Promise<MsgReentryWithGoRoutineResponse> {
+    const data = MsgReentryWithGoRoutine.encode(request).finish();
+    const promise = this.rpc.request("mythos.network.v1.Msg", "ReentryWithGoRoutine", data);
+    return promise.then(data => MsgReentryWithGoRoutineResponse.decode(new _m0.Reader(data)));
+  }
+
+  reentry(request: MsgReentry): Promise<MsgReentryResponse> {
+    const data = MsgReentry.encode(request).finish();
+    const promise = this.rpc.request("mythos.network.v1.Msg", "Reentry", data);
+    return promise.then(data => MsgReentryResponse.decode(new _m0.Reader(data)));
   }
 
   grpcReceiveRequest(request: MsgGrpcReceiveRequest): Promise<MsgGrpcReceiveRequestResponse> {

@@ -19,6 +19,7 @@ export interface AminoMsgStoreCode extends AminoMsg {
                 address: string;
             };
         };
+        source: Uint8Array;
     };
 }
 export interface AminoMsgDeployCode extends AminoMsg {
@@ -46,6 +47,7 @@ export interface AminoMsgDeployCode extends AminoMsg {
             amount: string;
         }[];
         label: string;
+        source: Uint8Array;
     };
 }
 export interface AminoMsgInstantiateContract extends AminoMsg {
@@ -135,13 +137,13 @@ export interface AminoMsgExecuteDelegateContract extends AminoMsg {
 export declare const AminoConverter: {
     "/mythos.wasmx.v1.MsgStoreCode": {
         aminoType: string;
-        toAmino: ({ sender, byteCode, deps, metadata }: MsgStoreCode) => AminoMsgStoreCode["value"];
-        fromAmino: ({ sender, byte_code, deps, metadata }: AminoMsgStoreCode["value"]) => MsgStoreCode;
+        toAmino: ({ sender, byteCode, deps, metadata, source }: MsgStoreCode) => AminoMsgStoreCode["value"];
+        fromAmino: ({ sender, byte_code, deps, metadata, source }: AminoMsgStoreCode["value"]) => MsgStoreCode;
     };
     "/mythos.wasmx.v1.MsgDeployCode": {
         aminoType: string;
-        toAmino: ({ sender, byteCode, deps, metadata, msg, funds, label }: MsgDeployCode) => AminoMsgDeployCode["value"];
-        fromAmino: ({ sender, byte_code, deps, metadata, msg, funds, label }: AminoMsgDeployCode["value"]) => MsgDeployCode;
+        toAmino: ({ sender, byteCode, deps, metadata, msg, funds, label, source }: MsgDeployCode) => AminoMsgDeployCode["value"];
+        fromAmino: ({ sender, byte_code, deps, metadata, msg, funds, label, source }: AminoMsgDeployCode["value"]) => MsgDeployCode;
     };
     "/mythos.wasmx.v1.MsgInstantiateContract": {
         aminoType: string;

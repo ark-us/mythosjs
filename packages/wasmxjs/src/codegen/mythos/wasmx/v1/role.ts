@@ -110,6 +110,9 @@ export interface SystemContractRoleSDKType {
 export interface SystemBootstrapData {
   /** bech32 address of contract for roles */
   roleAddress: string;
+  roleRegistryId: Long;
+  roleRegistryCodeInfo?: CodeInfoPB;
+  roleRegistryContractInfo?: ContractInfoPB;
   /** bech32 address of contract for contract data storage */
 
   codeRegistryAddress: string;
@@ -120,6 +123,9 @@ export interface SystemBootstrapData {
 export interface SystemBootstrapDataSDKType {
   /** bech32 address of contract for roles */
   role_address: string;
+  role_registry_id: Long;
+  role_registry_code_info?: CodeInfoPBSDKType;
+  role_registry_contract_info?: ContractInfoPBSDKType;
   /** bech32 address of contract for contract data storage */
 
   code_registry_address: string;
@@ -433,6 +439,9 @@ export const SystemContractRole = {
 function createBaseSystemBootstrapData(): SystemBootstrapData {
   return {
     roleAddress: "",
+    roleRegistryId: Long.UZERO,
+    roleRegistryCodeInfo: undefined,
+    roleRegistryContractInfo: undefined,
     codeRegistryAddress: "",
     codeRegistryId: Long.UZERO,
     codeRegistryCodeInfo: undefined,
@@ -446,20 +455,32 @@ export const SystemBootstrapData = {
       writer.uint32(10).string(message.roleAddress);
     }
 
+    if (!message.roleRegistryId.isZero()) {
+      writer.uint32(16).uint64(message.roleRegistryId);
+    }
+
+    if (message.roleRegistryCodeInfo !== undefined) {
+      CodeInfoPB.encode(message.roleRegistryCodeInfo, writer.uint32(26).fork()).ldelim();
+    }
+
+    if (message.roleRegistryContractInfo !== undefined) {
+      ContractInfoPB.encode(message.roleRegistryContractInfo, writer.uint32(34).fork()).ldelim();
+    }
+
     if (message.codeRegistryAddress !== "") {
-      writer.uint32(18).string(message.codeRegistryAddress);
+      writer.uint32(42).string(message.codeRegistryAddress);
     }
 
     if (!message.codeRegistryId.isZero()) {
-      writer.uint32(24).uint64(message.codeRegistryId);
+      writer.uint32(48).uint64(message.codeRegistryId);
     }
 
     if (message.codeRegistryCodeInfo !== undefined) {
-      CodeInfoPB.encode(message.codeRegistryCodeInfo, writer.uint32(34).fork()).ldelim();
+      CodeInfoPB.encode(message.codeRegistryCodeInfo, writer.uint32(58).fork()).ldelim();
     }
 
     if (message.codeRegistryContractInfo !== undefined) {
-      ContractInfoPB.encode(message.codeRegistryContractInfo, writer.uint32(42).fork()).ldelim();
+      ContractInfoPB.encode(message.codeRegistryContractInfo, writer.uint32(66).fork()).ldelim();
     }
 
     return writer;
@@ -479,18 +500,30 @@ export const SystemBootstrapData = {
           break;
 
         case 2:
-          message.codeRegistryAddress = reader.string();
+          message.roleRegistryId = (reader.uint64() as Long);
           break;
 
         case 3:
-          message.codeRegistryId = (reader.uint64() as Long);
+          message.roleRegistryCodeInfo = CodeInfoPB.decode(reader, reader.uint32());
           break;
 
         case 4:
-          message.codeRegistryCodeInfo = CodeInfoPB.decode(reader, reader.uint32());
+          message.roleRegistryContractInfo = ContractInfoPB.decode(reader, reader.uint32());
           break;
 
         case 5:
+          message.codeRegistryAddress = reader.string();
+          break;
+
+        case 6:
+          message.codeRegistryId = (reader.uint64() as Long);
+          break;
+
+        case 7:
+          message.codeRegistryCodeInfo = CodeInfoPB.decode(reader, reader.uint32());
+          break;
+
+        case 8:
           message.codeRegistryContractInfo = ContractInfoPB.decode(reader, reader.uint32());
           break;
 
@@ -506,6 +539,9 @@ export const SystemBootstrapData = {
   fromJSON(object: any): SystemBootstrapData {
     return {
       roleAddress: isSet(object.roleAddress) ? String(object.roleAddress) : "",
+      roleRegistryId: isSet(object.roleRegistryId) ? Long.fromValue(object.roleRegistryId) : Long.UZERO,
+      roleRegistryCodeInfo: isSet(object.roleRegistryCodeInfo) ? CodeInfoPB.fromJSON(object.roleRegistryCodeInfo) : undefined,
+      roleRegistryContractInfo: isSet(object.roleRegistryContractInfo) ? ContractInfoPB.fromJSON(object.roleRegistryContractInfo) : undefined,
       codeRegistryAddress: isSet(object.codeRegistryAddress) ? String(object.codeRegistryAddress) : "",
       codeRegistryId: isSet(object.codeRegistryId) ? Long.fromValue(object.codeRegistryId) : Long.UZERO,
       codeRegistryCodeInfo: isSet(object.codeRegistryCodeInfo) ? CodeInfoPB.fromJSON(object.codeRegistryCodeInfo) : undefined,
@@ -516,6 +552,9 @@ export const SystemBootstrapData = {
   toJSON(message: SystemBootstrapData): unknown {
     const obj: any = {};
     message.roleAddress !== undefined && (obj.roleAddress = message.roleAddress);
+    message.roleRegistryId !== undefined && (obj.roleRegistryId = (message.roleRegistryId || Long.UZERO).toString());
+    message.roleRegistryCodeInfo !== undefined && (obj.roleRegistryCodeInfo = message.roleRegistryCodeInfo ? CodeInfoPB.toJSON(message.roleRegistryCodeInfo) : undefined);
+    message.roleRegistryContractInfo !== undefined && (obj.roleRegistryContractInfo = message.roleRegistryContractInfo ? ContractInfoPB.toJSON(message.roleRegistryContractInfo) : undefined);
     message.codeRegistryAddress !== undefined && (obj.codeRegistryAddress = message.codeRegistryAddress);
     message.codeRegistryId !== undefined && (obj.codeRegistryId = (message.codeRegistryId || Long.UZERO).toString());
     message.codeRegistryCodeInfo !== undefined && (obj.codeRegistryCodeInfo = message.codeRegistryCodeInfo ? CodeInfoPB.toJSON(message.codeRegistryCodeInfo) : undefined);
@@ -526,6 +565,9 @@ export const SystemBootstrapData = {
   fromPartial(object: Partial<SystemBootstrapData>): SystemBootstrapData {
     const message = createBaseSystemBootstrapData();
     message.roleAddress = object.roleAddress ?? "";
+    message.roleRegistryId = object.roleRegistryId !== undefined && object.roleRegistryId !== null ? Long.fromValue(object.roleRegistryId) : Long.UZERO;
+    message.roleRegistryCodeInfo = object.roleRegistryCodeInfo !== undefined && object.roleRegistryCodeInfo !== null ? CodeInfoPB.fromPartial(object.roleRegistryCodeInfo) : undefined;
+    message.roleRegistryContractInfo = object.roleRegistryContractInfo !== undefined && object.roleRegistryContractInfo !== null ? ContractInfoPB.fromPartial(object.roleRegistryContractInfo) : undefined;
     message.codeRegistryAddress = object.codeRegistryAddress ?? "";
     message.codeRegistryId = object.codeRegistryId !== undefined && object.codeRegistryId !== null ? Long.fromValue(object.codeRegistryId) : Long.UZERO;
     message.codeRegistryCodeInfo = object.codeRegistryCodeInfo !== undefined && object.codeRegistryCodeInfo !== null ? CodeInfoPB.fromPartial(object.codeRegistryCodeInfo) : undefined;

@@ -1,5 +1,5 @@
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgGrpcSendRequest, MsgStartTimeoutRequest, MsgCancelTimeoutRequest, MsgStartBackgroundProcessRequest, MsgMultiChainWrap, MsgGrpcReceiveRequest, MsgP2PReceiveMessageRequest, MsgExecuteCrossChainCallRequest } from "./tx";
+import { MsgGrpcSendRequest, MsgStartTimeoutRequest, MsgCancelTimeoutRequest, MsgStartBackgroundProcessRequest, MsgMultiChainWrap, MsgReentryWithGoRoutine, MsgReentry, MsgGrpcReceiveRequest, MsgP2PReceiveMessageRequest, MsgExecuteCrossChainCallRequest } from "./tx";
 import { MsgExecuteAtomicTxRequest } from "./custom";
 export declare const registry: ReadonlyArray<[string, GeneratedType]>;
 export declare const load: (protoRegistry: Registry) => void;
@@ -22,6 +22,14 @@ export declare const MessageComposer: {
             value: Uint8Array;
         };
         multiChainWrap(value: MsgMultiChainWrap): {
+            typeUrl: string;
+            value: Uint8Array;
+        };
+        reentryWithGoRoutine(value: MsgReentryWithGoRoutine): {
+            typeUrl: string;
+            value: Uint8Array;
+        };
+        reentry(value: MsgReentry): {
             typeUrl: string;
             value: Uint8Array;
         };
@@ -63,6 +71,14 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: MsgMultiChainWrap;
         };
+        reentryWithGoRoutine(value: MsgReentryWithGoRoutine): {
+            typeUrl: string;
+            value: MsgReentryWithGoRoutine;
+        };
+        reentry(value: MsgReentry): {
+            typeUrl: string;
+            value: MsgReentry;
+        };
         grpcReceiveRequest(value: MsgGrpcReceiveRequest): {
             typeUrl: string;
             value: MsgGrpcReceiveRequest;
@@ -98,6 +114,14 @@ export declare const MessageComposer: {
             value: unknown;
         };
         multiChainWrap(value: MsgMultiChainWrap): {
+            typeUrl: string;
+            value: unknown;
+        };
+        reentryWithGoRoutine(value: MsgReentryWithGoRoutine): {
+            typeUrl: string;
+            value: unknown;
+        };
+        reentry(value: MsgReentry): {
             typeUrl: string;
             value: unknown;
         };
@@ -139,6 +163,14 @@ export declare const MessageComposer: {
             typeUrl: string;
             value: MsgMultiChainWrap;
         };
+        reentryWithGoRoutine(value: any): {
+            typeUrl: string;
+            value: MsgReentryWithGoRoutine;
+        };
+        reentry(value: any): {
+            typeUrl: string;
+            value: MsgReentry;
+        };
         grpcReceiveRequest(value: any): {
             typeUrl: string;
             value: MsgGrpcReceiveRequest;
@@ -176,6 +208,14 @@ export declare const MessageComposer: {
         multiChainWrap(value: MsgMultiChainWrap): {
             typeUrl: string;
             value: MsgMultiChainWrap;
+        };
+        reentryWithGoRoutine(value: MsgReentryWithGoRoutine): {
+            typeUrl: string;
+            value: MsgReentryWithGoRoutine;
+        };
+        reentry(value: MsgReentry): {
+            typeUrl: string;
+            value: MsgReentry;
         };
         grpcReceiveRequest(value: MsgGrpcReceiveRequest): {
             typeUrl: string;

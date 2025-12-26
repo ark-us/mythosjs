@@ -21,6 +21,7 @@ export interface AminoMsgStoreCode extends AminoMsg {
         address: string;
       };
     };
+    source: Uint8Array;
   };
 }
 export interface AminoMsgDeployCode extends AminoMsg {
@@ -48,6 +49,7 @@ export interface AminoMsgDeployCode extends AminoMsg {
       amount: string;
     }[];
     label: string;
+    source: Uint8Array;
   };
 }
 export interface AminoMsgInstantiateContract extends AminoMsg {
@@ -141,7 +143,8 @@ export const AminoConverter = {
       sender,
       byteCode,
       deps,
-      metadata
+      metadata,
+      source
     }: MsgStoreCode): AminoMsgStoreCode["value"] => {
       return {
         sender,
@@ -159,14 +162,16 @@ export const AminoConverter = {
             chain_id: metadata.origin.chainId,
             address: metadata.origin.address
           }
-        }
+        },
+        source
       };
     },
     fromAmino: ({
       sender,
       byte_code,
       deps,
-      metadata
+      metadata,
+      source
     }: AminoMsgStoreCode["value"]): MsgStoreCode => {
       return {
         sender,
@@ -184,7 +189,8 @@ export const AminoConverter = {
             chainId: metadata.origin.chain_id,
             address: metadata.origin.address
           }
-        }
+        },
+        source
       };
     }
   },
@@ -197,7 +203,8 @@ export const AminoConverter = {
       metadata,
       msg,
       funds,
-      label
+      label,
+      source
     }: MsgDeployCode): AminoMsgDeployCode["value"] => {
       return {
         sender,
@@ -221,7 +228,8 @@ export const AminoConverter = {
           denom: el0.denom,
           amount: el0.amount
         })),
-        label
+        label,
+        source
       };
     },
     fromAmino: ({
@@ -231,7 +239,8 @@ export const AminoConverter = {
       metadata,
       msg,
       funds,
-      label
+      label,
+      source
     }: AminoMsgDeployCode["value"]): MsgDeployCode => {
       return {
         sender,
@@ -255,7 +264,8 @@ export const AminoConverter = {
           denom: el0.denom,
           amount: el0.amount
         })),
-        label
+        label,
+        source
       };
     }
   },

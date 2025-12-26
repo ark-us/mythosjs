@@ -1,7 +1,7 @@
 import { GeneratedType, Registry } from "@cosmjs/proto-signing";
-import { MsgGrpcSendRequest, MsgStartTimeoutRequest, MsgCancelTimeoutRequest, MsgStartBackgroundProcessRequest, MsgMultiChainWrap, MsgGrpcReceiveRequest, MsgP2PReceiveMessageRequest, MsgExecuteCrossChainCallRequest } from "./tx";
+import { MsgGrpcSendRequest, MsgStartTimeoutRequest, MsgCancelTimeoutRequest, MsgStartBackgroundProcessRequest, MsgMultiChainWrap, MsgReentryWithGoRoutine, MsgReentry, MsgGrpcReceiveRequest, MsgP2PReceiveMessageRequest, MsgExecuteCrossChainCallRequest } from "./tx";
 import { MsgExecuteAtomicTxRequest } from "./custom";
-export const registry: ReadonlyArray<[string, GeneratedType]> = [["/mythos.network.v1.MsgGrpcSendRequest", MsgGrpcSendRequest], ["/mythos.network.v1.MsgStartTimeoutRequest", MsgStartTimeoutRequest], ["/mythos.network.v1.MsgCancelTimeoutRequest", MsgCancelTimeoutRequest], ["/mythos.network.v1.MsgStartBackgroundProcessRequest", MsgStartBackgroundProcessRequest], ["/mythos.network.v1.MsgMultiChainWrap", MsgMultiChainWrap], ["/mythos.network.v1.MsgGrpcReceiveRequest", MsgGrpcReceiveRequest], ["/mythos.network.v1.MsgP2PReceiveMessageRequest", MsgP2PReceiveMessageRequest], ["/mythos.network.v1.MsgExecuteAtomicTxRequest", MsgExecuteAtomicTxRequest], ["/mythos.network.v1.MsgExecuteCrossChainCallRequest", MsgExecuteCrossChainCallRequest]];
+export const registry: ReadonlyArray<[string, GeneratedType]> = [["/mythos.network.v1.MsgGrpcSendRequest", MsgGrpcSendRequest], ["/mythos.network.v1.MsgStartTimeoutRequest", MsgStartTimeoutRequest], ["/mythos.network.v1.MsgCancelTimeoutRequest", MsgCancelTimeoutRequest], ["/mythos.network.v1.MsgStartBackgroundProcessRequest", MsgStartBackgroundProcessRequest], ["/mythos.network.v1.MsgMultiChainWrap", MsgMultiChainWrap], ["/mythos.network.v1.MsgReentryWithGoRoutine", MsgReentryWithGoRoutine], ["/mythos.network.v1.MsgReentry", MsgReentry], ["/mythos.network.v1.MsgGrpcReceiveRequest", MsgGrpcReceiveRequest], ["/mythos.network.v1.MsgP2PReceiveMessageRequest", MsgP2PReceiveMessageRequest], ["/mythos.network.v1.MsgExecuteAtomicTxRequest", MsgExecuteAtomicTxRequest], ["/mythos.network.v1.MsgExecuteCrossChainCallRequest", MsgExecuteCrossChainCallRequest]];
 export const load = (protoRegistry: Registry) => {
   registry.forEach(([typeUrl, mod]) => {
     protoRegistry.register(typeUrl, mod);
@@ -41,6 +41,20 @@ export const MessageComposer = {
       return {
         typeUrl: "/mythos.network.v1.MsgMultiChainWrap",
         value: MsgMultiChainWrap.encode(value).finish()
+      };
+    },
+
+    reentryWithGoRoutine(value: MsgReentryWithGoRoutine) {
+      return {
+        typeUrl: "/mythos.network.v1.MsgReentryWithGoRoutine",
+        value: MsgReentryWithGoRoutine.encode(value).finish()
+      };
+    },
+
+    reentry(value: MsgReentry) {
+      return {
+        typeUrl: "/mythos.network.v1.MsgReentry",
+        value: MsgReentry.encode(value).finish()
       };
     },
 
@@ -105,6 +119,20 @@ export const MessageComposer = {
     multiChainWrap(value: MsgMultiChainWrap) {
       return {
         typeUrl: "/mythos.network.v1.MsgMultiChainWrap",
+        value
+      };
+    },
+
+    reentryWithGoRoutine(value: MsgReentryWithGoRoutine) {
+      return {
+        typeUrl: "/mythos.network.v1.MsgReentryWithGoRoutine",
+        value
+      };
+    },
+
+    reentry(value: MsgReentry) {
+      return {
+        typeUrl: "/mythos.network.v1.MsgReentry",
         value
       };
     },
@@ -174,6 +202,20 @@ export const MessageComposer = {
       };
     },
 
+    reentryWithGoRoutine(value: MsgReentryWithGoRoutine) {
+      return {
+        typeUrl: "/mythos.network.v1.MsgReentryWithGoRoutine",
+        value: MsgReentryWithGoRoutine.toJSON(value)
+      };
+    },
+
+    reentry(value: MsgReentry) {
+      return {
+        typeUrl: "/mythos.network.v1.MsgReentry",
+        value: MsgReentry.toJSON(value)
+      };
+    },
+
     grpcReceiveRequest(value: MsgGrpcReceiveRequest) {
       return {
         typeUrl: "/mythos.network.v1.MsgGrpcReceiveRequest",
@@ -239,6 +281,20 @@ export const MessageComposer = {
       };
     },
 
+    reentryWithGoRoutine(value: any) {
+      return {
+        typeUrl: "/mythos.network.v1.MsgReentryWithGoRoutine",
+        value: MsgReentryWithGoRoutine.fromJSON(value)
+      };
+    },
+
+    reentry(value: any) {
+      return {
+        typeUrl: "/mythos.network.v1.MsgReentry",
+        value: MsgReentry.fromJSON(value)
+      };
+    },
+
     grpcReceiveRequest(value: any) {
       return {
         typeUrl: "/mythos.network.v1.MsgGrpcReceiveRequest",
@@ -301,6 +357,20 @@ export const MessageComposer = {
       return {
         typeUrl: "/mythos.network.v1.MsgMultiChainWrap",
         value: MsgMultiChainWrap.fromPartial(value)
+      };
+    },
+
+    reentryWithGoRoutine(value: MsgReentryWithGoRoutine) {
+      return {
+        typeUrl: "/mythos.network.v1.MsgReentryWithGoRoutine",
+        value: MsgReentryWithGoRoutine.fromPartial(value)
+      };
+    },
+
+    reentry(value: MsgReentry) {
+      return {
+        typeUrl: "/mythos.network.v1.MsgReentry",
+        value: MsgReentry.fromPartial(value)
       };
     },
 

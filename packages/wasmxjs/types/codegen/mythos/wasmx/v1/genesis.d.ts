@@ -55,6 +55,7 @@ export interface SystemContract {
     deps: string[];
     metadata?: CodeMetadataPB;
     contractState: ContractStoragePB[];
+    source: Uint8Array;
 }
 export interface SystemContractSDKType {
     address: string;
@@ -73,6 +74,7 @@ export interface SystemContractSDKType {
     deps: string[];
     metadata?: CodeMetadataPBSDKType;
     contract_state: ContractStoragePBSDKType[];
+    source: Uint8Array;
 }
 /** Code - for importing and exporting code data */
 export interface Code {

@@ -21,6 +21,8 @@ export interface MsgExecuteCrossChainCallResponseIndexedSDKType {
     index: number;
 }
 export interface MsgExecuteCrossChainCallRequest {
+    /** authority is the address that controls the module. */
+    authority: string;
     /** sender is the contract that prepared the message */
     sender: string;
     /** from is the contract that sent the cross-chain message */
@@ -43,6 +45,8 @@ export interface MsgExecuteCrossChainCallRequest {
     timeoutMs: Long;
 }
 export interface MsgExecuteCrossChainCallRequestSDKType {
+    /** authority is the address that controls the module. */
+    authority: string;
     /** sender is the contract that prepared the message */
     sender: string;
     /** from is the contract that sent the cross-chain message */
@@ -95,7 +99,8 @@ export interface MsgMultiChainWrapResponseSDKType {
     data: Uint8Array;
 }
 export interface MsgGrpcSendRequest {
-    /** this will always be the network module */
+    /** authority is the address that controls the module. */
+    authority: string;
     sender: string;
     contract: string;
     ipAddress: string;
@@ -104,7 +109,8 @@ export interface MsgGrpcSendRequest {
     encoding: string;
 }
 export interface MsgGrpcSendRequestSDKType {
-    /** this will always be the network module */
+    /** authority is the address that controls the module. */
+    authority: string;
     sender: string;
     contract: string;
     ip_address: string;
@@ -119,7 +125,8 @@ export interface MsgGrpcSendRequestResponseSDKType {
     data: Uint8Array;
 }
 export interface MsgGrpcReceiveRequest {
-    /** this will always be the network module */
+    /** authority is the address that controls the module. */
+    authority: string;
     sender: string;
     contract: string;
     data: Uint8Array;
@@ -127,7 +134,8 @@ export interface MsgGrpcReceiveRequest {
     encoding: string;
 }
 export interface MsgGrpcReceiveRequestSDKType {
-    /** this will always be the network module */
+    /** authority is the address that controls the module. */
+    authority: string;
     sender: string;
     contract: string;
     data: Uint8Array;
@@ -142,7 +150,8 @@ export interface MsgGrpcReceiveRequestResponseSDKType {
 }
 /** MsgStartTimeoutRequest */
 export interface MsgStartTimeoutRequest {
-    /** this will always be the wasmx module // TODO authority */
+    /** authority is the address that controls the module. */
+    authority: string;
     sender: string;
     /** contract address */
     contract: string;
@@ -152,7 +161,8 @@ export interface MsgStartTimeoutRequest {
 }
 /** MsgStartTimeoutRequest */
 export interface MsgStartTimeoutRequestSDKType {
-    /** this will always be the wasmx module // TODO authority */
+    /** authority is the address that controls the module. */
+    authority: string;
     sender: string;
     /** contract address */
     contract: string;
@@ -168,11 +178,15 @@ export interface MsgStartTimeoutResponseSDKType {
 }
 /** MsgCancelTimeoutRequest */
 export interface MsgCancelTimeoutRequest {
+    /** authority is the address that controls the module. */
+    authority: string;
     sender: string;
     id: string;
 }
 /** MsgCancelTimeoutRequest */
 export interface MsgCancelTimeoutRequestSDKType {
+    /** authority is the address that controls the module. */
+    authority: string;
     sender: string;
     id: string;
 }
@@ -184,7 +198,8 @@ export interface MsgCancelTimeoutResponseSDKType {
 }
 /** MsgStartBackgroundProcessRequest */
 export interface MsgStartBackgroundProcessRequest {
-    /** this will always be the wasmx module // TODO authority */
+    /** authority is the address that controls the module. */
+    authority: string;
     sender: string;
     /** contract address */
     contract: string;
@@ -192,7 +207,8 @@ export interface MsgStartBackgroundProcessRequest {
 }
 /** MsgStartBackgroundProcessRequest */
 export interface MsgStartBackgroundProcessRequestSDKType {
-    /** this will always be the wasmx module // TODO authority */
+    /** authority is the address that controls the module. */
+    authority: string;
     sender: string;
     /** contract address */
     contract: string;
@@ -208,7 +224,7 @@ export interface MsgStartBackgroundProcessResponseSDKType {
 export interface MsgExecuteContract {
     /** Sender is the that actor that signed the messages */
     sender: string;
-    /** Contract is the address of the smart contract */
+    /** Contract is the address or role of the smart contract */
     contract: string;
     /** Msg json encoded message to be passed to the contract */
     msg: Uint8Array;
@@ -217,7 +233,7 @@ export interface MsgExecuteContract {
 export interface MsgExecuteContractSDKType {
     /** Sender is the that actor that signed the messages */
     sender: string;
-    /** Contract is the address of the smart contract */
+    /** Contract is the address or role of the smart contract */
     contract: string;
     /** Msg json encoded message to be passed to the contract */
     msg: Uint8Array;
@@ -228,6 +244,62 @@ export interface MsgExecuteContractResponse {
 }
 /** ExecuteContractResponse */
 export interface MsgExecuteContractResponseSDKType {
+    data: Uint8Array;
+}
+/** MsgReentry */
+export interface MsgReentry {
+    /** authority is the address that controls the module. */
+    authority: string;
+    sender: string;
+    /** contract address */
+    contract: string;
+    entryPoint: string;
+    msg: Uint8Array;
+}
+/** MsgReentry */
+export interface MsgReentrySDKType {
+    /** authority is the address that controls the module. */
+    authority: string;
+    sender: string;
+    /** contract address */
+    contract: string;
+    entry_point: string;
+    msg: Uint8Array;
+}
+/** MsgReentryResponse */
+export interface MsgReentryResponse {
+    data: Uint8Array;
+}
+/** MsgReentryResponse */
+export interface MsgReentryResponseSDKType {
+    data: Uint8Array;
+}
+/** MsgReentryWithGoRoutine */
+export interface MsgReentryWithGoRoutine {
+    /** authority is the address that controls the module. */
+    authority: string;
+    sender: string;
+    /** contract address */
+    contract: string;
+    entryPoint: string;
+    msg: Uint8Array;
+}
+/** MsgReentryWithGoRoutine */
+export interface MsgReentryWithGoRoutineSDKType {
+    /** authority is the address that controls the module. */
+    authority: string;
+    sender: string;
+    /** contract address */
+    contract: string;
+    entry_point: string;
+    msg: Uint8Array;
+}
+/** MsgReentryWithGoRoutineResponse */
+export interface MsgReentryWithGoRoutineResponse {
+    data: Uint8Array;
+}
+/** MsgReentryWithGoRoutineResponse */
+export interface MsgReentryWithGoRoutineResponseSDKType {
     data: Uint8Array;
 }
 /** QueryContract */
@@ -255,13 +327,15 @@ export interface MsgQueryContractResponseSDKType {
     data: Uint8Array;
 }
 export interface MsgP2PReceiveMessageRequest {
-    /** this will always be the network module */
+    /** authority is the address that controls the module. */
+    authority: string;
     sender: string;
     contract: string;
     data: Uint8Array;
 }
 export interface MsgP2PReceiveMessageRequestSDKType {
-    /** this will always be the network module */
+    /** authority is the address that controls the module. */
+    authority: string;
     sender: string;
     contract: string;
     data: Uint8Array;
@@ -458,6 +532,34 @@ export declare const MsgExecuteContractResponse: {
     fromJSON(object: any): MsgExecuteContractResponse;
     toJSON(message: MsgExecuteContractResponse): unknown;
     fromPartial(object: Partial<MsgExecuteContractResponse>): MsgExecuteContractResponse;
+};
+export declare const MsgReentry: {
+    encode(message: MsgReentry, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgReentry;
+    fromJSON(object: any): MsgReentry;
+    toJSON(message: MsgReentry): unknown;
+    fromPartial(object: Partial<MsgReentry>): MsgReentry;
+};
+export declare const MsgReentryResponse: {
+    encode(message: MsgReentryResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgReentryResponse;
+    fromJSON(object: any): MsgReentryResponse;
+    toJSON(message: MsgReentryResponse): unknown;
+    fromPartial(object: Partial<MsgReentryResponse>): MsgReentryResponse;
+};
+export declare const MsgReentryWithGoRoutine: {
+    encode(message: MsgReentryWithGoRoutine, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgReentryWithGoRoutine;
+    fromJSON(object: any): MsgReentryWithGoRoutine;
+    toJSON(message: MsgReentryWithGoRoutine): unknown;
+    fromPartial(object: Partial<MsgReentryWithGoRoutine>): MsgReentryWithGoRoutine;
+};
+export declare const MsgReentryWithGoRoutineResponse: {
+    encode(message: MsgReentryWithGoRoutineResponse, writer?: _m0.Writer): _m0.Writer;
+    decode(input: _m0.Reader | Uint8Array, length?: number): MsgReentryWithGoRoutineResponse;
+    fromJSON(object: any): MsgReentryWithGoRoutineResponse;
+    toJSON(message: MsgReentryWithGoRoutineResponse): unknown;
+    fromPartial(object: Partial<MsgReentryWithGoRoutineResponse>): MsgReentryWithGoRoutineResponse;
 };
 export declare const MsgQueryContract: {
     encode(message: MsgQueryContract, writer?: _m0.Writer): _m0.Writer;

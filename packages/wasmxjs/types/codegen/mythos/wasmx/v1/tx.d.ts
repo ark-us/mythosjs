@@ -19,6 +19,7 @@ export interface MsgStoreCode {
      */
     deps: string[];
     metadata?: CodeMetadataPB;
+    source: Uint8Array;
 }
 /** MsgStoreCode submit Wasm code to the system */
 export interface MsgStoreCodeSDKType {
@@ -36,6 +37,7 @@ export interface MsgStoreCodeSDKType {
      */
     deps: string[];
     metadata?: CodeMetadataPBSDKType;
+    source: Uint8Array;
 }
 /** MsgStoreCodeResponse returns store result data. */
 export interface MsgStoreCodeResponse {
@@ -75,6 +77,7 @@ export interface MsgDeployCode {
     /** Funds coins that are transferred to the contract on instantiation */
     funds: Coin[];
     label: string;
+    source: Uint8Array;
 }
 /** MsgStoreCode submit Wasm code to the system */
 export interface MsgDeployCodeSDKType {
@@ -100,6 +103,7 @@ export interface MsgDeployCodeSDKType {
     /** Funds coins that are transferred to the contract on instantiation */
     funds: CoinSDKType[];
     label: string;
+    source: Uint8Array;
 }
 /** MsgDeployCodeResponse returns store result data. */
 export interface MsgDeployCodeResponse {

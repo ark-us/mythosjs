@@ -284,6 +284,14 @@ export declare namespace mythos {
                         typeUrl: string;
                         value: Uint8Array;
                     };
+                    reentryWithGoRoutine(value: _153.MsgReentryWithGoRoutine): {
+                        typeUrl: string;
+                        value: Uint8Array;
+                    };
+                    reentry(value: _153.MsgReentry): {
+                        typeUrl: string;
+                        value: Uint8Array;
+                    };
                     grpcReceiveRequest(value: _153.MsgGrpcReceiveRequest): {
                         typeUrl: string;
                         value: Uint8Array;
@@ -322,6 +330,14 @@ export declare namespace mythos {
                         typeUrl: string;
                         value: _153.MsgMultiChainWrap;
                     };
+                    reentryWithGoRoutine(value: _153.MsgReentryWithGoRoutine): {
+                        typeUrl: string;
+                        value: _153.MsgReentryWithGoRoutine;
+                    };
+                    reentry(value: _153.MsgReentry): {
+                        typeUrl: string;
+                        value: _153.MsgReentry;
+                    };
                     grpcReceiveRequest(value: _153.MsgGrpcReceiveRequest): {
                         typeUrl: string;
                         value: _153.MsgGrpcReceiveRequest;
@@ -357,6 +373,14 @@ export declare namespace mythos {
                         value: unknown;
                     };
                     multiChainWrap(value: _153.MsgMultiChainWrap): {
+                        typeUrl: string;
+                        value: unknown;
+                    };
+                    reentryWithGoRoutine(value: _153.MsgReentryWithGoRoutine): {
+                        typeUrl: string;
+                        value: unknown;
+                    };
+                    reentry(value: _153.MsgReentry): {
                         typeUrl: string;
                         value: unknown;
                     };
@@ -398,6 +422,14 @@ export declare namespace mythos {
                         typeUrl: string;
                         value: _153.MsgMultiChainWrap;
                     };
+                    reentryWithGoRoutine(value: any): {
+                        typeUrl: string;
+                        value: _153.MsgReentryWithGoRoutine;
+                    };
+                    reentry(value: any): {
+                        typeUrl: string;
+                        value: _153.MsgReentry;
+                    };
                     grpcReceiveRequest(value: any): {
                         typeUrl: string;
                         value: _153.MsgGrpcReceiveRequest;
@@ -436,6 +468,14 @@ export declare namespace mythos {
                         typeUrl: string;
                         value: _153.MsgMultiChainWrap;
                     };
+                    reentryWithGoRoutine(value: _153.MsgReentryWithGoRoutine): {
+                        typeUrl: string;
+                        value: _153.MsgReentryWithGoRoutine;
+                    };
+                    reentry(value: _153.MsgReentry): {
+                        typeUrl: string;
+                        value: _153.MsgReentry;
+                    };
                     grpcReceiveRequest(value: _153.MsgGrpcReceiveRequest): {
                         typeUrl: string;
                         value: _153.MsgGrpcReceiveRequest;
@@ -457,14 +497,16 @@ export declare namespace mythos {
             AminoConverter: {
                 "/mythos.network.v1.MsgGrpcSendRequest": {
                     aminoType: string;
-                    toAmino: ({ sender, contract, ipAddress, data, encoding }: _153.MsgGrpcSendRequest) => {
+                    toAmino: ({ authority, sender, contract, ipAddress, data, encoding }: _153.MsgGrpcSendRequest) => {
+                        authority: string;
                         sender: string;
                         contract: string;
                         ip_address: string;
                         data: Uint8Array;
                         encoding: string;
                     };
-                    fromAmino: ({ sender, contract, ip_address, data, encoding }: {
+                    fromAmino: ({ authority, sender, contract, ip_address, data, encoding }: {
+                        authority: string;
                         sender: string;
                         contract: string;
                         ip_address: string;
@@ -474,14 +516,16 @@ export declare namespace mythos {
                 };
                 "/mythos.network.v1.MsgStartTimeoutRequest": {
                     aminoType: string;
-                    toAmino: ({ sender, contract, delay, args, id }: _153.MsgStartTimeoutRequest) => {
+                    toAmino: ({ authority, sender, contract, delay, args, id }: _153.MsgStartTimeoutRequest) => {
+                        authority: string;
                         sender: string;
                         contract: string;
                         delay: string;
                         args: Uint8Array;
                         id: string;
                     };
-                    fromAmino: ({ sender, contract, delay, args, id }: {
+                    fromAmino: ({ authority, sender, contract, delay, args, id }: {
+                        authority: string;
                         sender: string;
                         contract: string;
                         delay: string;
@@ -491,23 +535,27 @@ export declare namespace mythos {
                 };
                 "/mythos.network.v1.MsgCancelTimeoutRequest": {
                     aminoType: string;
-                    toAmino: ({ sender, id }: _153.MsgCancelTimeoutRequest) => {
+                    toAmino: ({ authority, sender, id }: _153.MsgCancelTimeoutRequest) => {
+                        authority: string;
                         sender: string;
                         id: string;
                     };
-                    fromAmino: ({ sender, id }: {
+                    fromAmino: ({ authority, sender, id }: {
+                        authority: string;
                         sender: string;
                         id: string;
                     }) => _153.MsgCancelTimeoutRequest;
                 };
                 "/mythos.network.v1.MsgStartBackgroundProcessRequest": {
                     aminoType: string;
-                    toAmino: ({ sender, contract, args }: _153.MsgStartBackgroundProcessRequest) => {
+                    toAmino: ({ authority, sender, contract, args }: _153.MsgStartBackgroundProcessRequest) => {
+                        authority: string;
                         sender: string;
                         contract: string;
                         args: Uint8Array;
                     };
-                    fromAmino: ({ sender, contract, args }: {
+                    fromAmino: ({ authority, sender, contract, args }: {
+                        authority: string;
                         sender: string;
                         contract: string;
                         args: Uint8Array;
@@ -532,15 +580,51 @@ export declare namespace mythos {
                         };
                     }) => _153.MsgMultiChainWrap;
                 };
+                "/mythos.network.v1.MsgReentryWithGoRoutine": {
+                    aminoType: string;
+                    toAmino: ({ authority, sender, contract, entryPoint, msg }: _153.MsgReentryWithGoRoutine) => {
+                        authority: string;
+                        sender: string;
+                        contract: string;
+                        entry_point: string;
+                        msg: Uint8Array;
+                    };
+                    fromAmino: ({ authority, sender, contract, entry_point, msg }: {
+                        authority: string;
+                        sender: string;
+                        contract: string;
+                        entry_point: string;
+                        msg: Uint8Array;
+                    }) => _153.MsgReentryWithGoRoutine;
+                };
+                "/mythos.network.v1.MsgReentry": {
+                    aminoType: string;
+                    toAmino: ({ authority, sender, contract, entryPoint, msg }: _153.MsgReentry) => {
+                        authority: string;
+                        sender: string;
+                        contract: string;
+                        entry_point: string;
+                        msg: Uint8Array;
+                    };
+                    fromAmino: ({ authority, sender, contract, entry_point, msg }: {
+                        authority: string;
+                        sender: string;
+                        contract: string;
+                        entry_point: string;
+                        msg: Uint8Array;
+                    }) => _153.MsgReentry;
+                };
                 "/mythos.network.v1.MsgGrpcReceiveRequest": {
                     aminoType: string;
-                    toAmino: ({ sender, contract, data, encoding }: _153.MsgGrpcReceiveRequest) => {
+                    toAmino: ({ authority, sender, contract, data, encoding }: _153.MsgGrpcReceiveRequest) => {
+                        authority: string;
                         sender: string;
                         contract: string;
                         data: Uint8Array;
                         encoding: string;
                     };
-                    fromAmino: ({ sender, contract, data, encoding }: {
+                    fromAmino: ({ authority, sender, contract, data, encoding }: {
+                        authority: string;
                         sender: string;
                         contract: string;
                         data: Uint8Array;
@@ -549,12 +633,14 @@ export declare namespace mythos {
                 };
                 "/mythos.network.v1.MsgP2PReceiveMessageRequest": {
                     aminoType: string;
-                    toAmino: ({ sender, contract, data }: _153.MsgP2PReceiveMessageRequest) => {
+                    toAmino: ({ authority, sender, contract, data }: _153.MsgP2PReceiveMessageRequest) => {
+                        authority: string;
                         sender: string;
                         contract: string;
                         data: Uint8Array;
                     };
-                    fromAmino: ({ sender, contract, data }: {
+                    fromAmino: ({ authority, sender, contract, data }: {
+                        authority: string;
                         sender: string;
                         contract: string;
                         data: Uint8Array;
@@ -573,7 +659,8 @@ export declare namespace mythos {
                 };
                 "/mythos.network.v1.MsgExecuteCrossChainCallRequest": {
                     aminoType: string;
-                    toAmino: ({ sender, from, to, msg, funds, dependencies, fromChainId, toChainId, isQuery, timeoutMs }: _153.MsgExecuteCrossChainCallRequest) => {
+                    toAmino: ({ authority, sender, from, to, msg, funds, dependencies, fromChainId, toChainId, isQuery, timeoutMs }: _153.MsgExecuteCrossChainCallRequest) => {
+                        authority: string;
                         sender: string;
                         from: string;
                         to: string;
@@ -588,7 +675,8 @@ export declare namespace mythos {
                         is_query: boolean;
                         timeout_ms: string;
                     };
-                    fromAmino: ({ sender, from, to, msg, funds, dependencies, from_chain_id, to_chain_id, is_query, timeout_ms }: {
+                    fromAmino: ({ authority, sender, from, to, msg, funds, dependencies, from_chain_id, to_chain_id, is_query, timeout_ms }: {
+                        authority: string;
                         sender: string;
                         from: string;
                         to: string;
@@ -737,6 +825,34 @@ export declare namespace mythos {
                 fromJSON(object: any): _153.MsgExecuteContractResponse;
                 toJSON(message: _153.MsgExecuteContractResponse): unknown;
                 fromPartial(object: Partial<_153.MsgExecuteContractResponse>): _153.MsgExecuteContractResponse;
+            };
+            MsgReentry: {
+                encode(message: _153.MsgReentry, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+                decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _153.MsgReentry;
+                fromJSON(object: any): _153.MsgReentry;
+                toJSON(message: _153.MsgReentry): unknown;
+                fromPartial(object: Partial<_153.MsgReentry>): _153.MsgReentry;
+            };
+            MsgReentryResponse: {
+                encode(message: _153.MsgReentryResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+                decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _153.MsgReentryResponse;
+                fromJSON(object: any): _153.MsgReentryResponse;
+                toJSON(message: _153.MsgReentryResponse): unknown;
+                fromPartial(object: Partial<_153.MsgReentryResponse>): _153.MsgReentryResponse;
+            };
+            MsgReentryWithGoRoutine: {
+                encode(message: _153.MsgReentryWithGoRoutine, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+                decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _153.MsgReentryWithGoRoutine;
+                fromJSON(object: any): _153.MsgReentryWithGoRoutine;
+                toJSON(message: _153.MsgReentryWithGoRoutine): unknown;
+                fromPartial(object: Partial<_153.MsgReentryWithGoRoutine>): _153.MsgReentryWithGoRoutine;
+            };
+            MsgReentryWithGoRoutineResponse: {
+                encode(message: _153.MsgReentryWithGoRoutineResponse, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
+                decode(input: Uint8Array | import("protobufjs").Reader, length?: number): _153.MsgReentryWithGoRoutineResponse;
+                fromJSON(object: any): _153.MsgReentryWithGoRoutineResponse;
+                toJSON(message: _153.MsgReentryWithGoRoutineResponse): unknown;
+                fromPartial(object: Partial<_153.MsgReentryWithGoRoutineResponse>): _153.MsgReentryWithGoRoutineResponse;
             };
             MsgQueryContract: {
                 encode(message: _153.MsgQueryContract, writer?: import("protobufjs").Writer): import("protobufjs").Writer;
@@ -1158,7 +1274,7 @@ export declare namespace mythos {
             AminoConverter: {
                 "/mythos.wasmx.v1.MsgStoreCode": {
                     aminoType: string;
-                    toAmino: ({ sender, byteCode, deps, metadata }: _160.MsgStoreCode) => {
+                    toAmino: ({ sender, byteCode, deps, metadata, source }: _160.MsgStoreCode) => {
                         sender: string;
                         byte_code: Uint8Array;
                         deps: string[];
@@ -1175,8 +1291,9 @@ export declare namespace mythos {
                                 address: string;
                             };
                         };
+                        source: Uint8Array;
                     };
-                    fromAmino: ({ sender, byte_code, deps, metadata }: {
+                    fromAmino: ({ sender, byte_code, deps, metadata, source }: {
                         sender: string;
                         byte_code: Uint8Array;
                         deps: string[];
@@ -1193,11 +1310,12 @@ export declare namespace mythos {
                                 address: string;
                             };
                         };
+                        source: Uint8Array;
                     }) => _160.MsgStoreCode;
                 };
                 "/mythos.wasmx.v1.MsgDeployCode": {
                     aminoType: string;
-                    toAmino: ({ sender, byteCode, deps, metadata, msg, funds, label }: _160.MsgDeployCode) => {
+                    toAmino: ({ sender, byteCode, deps, metadata, msg, funds, label, source }: _160.MsgDeployCode) => {
                         sender: string;
                         byte_code: Uint8Array;
                         deps: string[];
@@ -1220,8 +1338,9 @@ export declare namespace mythos {
                             amount: string;
                         }[];
                         label: string;
+                        source: Uint8Array;
                     };
-                    fromAmino: ({ sender, byte_code, deps, metadata, msg, funds, label }: {
+                    fromAmino: ({ sender, byte_code, deps, metadata, msg, funds, label, source }: {
                         sender: string;
                         byte_code: Uint8Array;
                         deps: string[];
@@ -1244,6 +1363,7 @@ export declare namespace mythos {
                             amount: string;
                         }[];
                         label: string;
+                        source: Uint8Array;
                     }) => _160.MsgDeployCode;
                 };
                 "/mythos.wasmx.v1.MsgInstantiateContract": {

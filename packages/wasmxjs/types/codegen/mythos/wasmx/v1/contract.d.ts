@@ -88,6 +88,8 @@ export interface CodeInfoPB {
     interpretedBytecodeDeployment: Uint8Array;
     interpretedBytecodeRuntime: Uint8Array;
     runtimeHash: Uint8Array;
+    source: Uint8Array;
+    sourceVerified: boolean;
 }
 /** CodeInfo is data for the uploaded contract WASM code */
 export interface CodeInfoPBSDKType {
@@ -112,6 +114,8 @@ export interface CodeInfoPBSDKType {
     interpreted_bytecode_deployment: Uint8Array;
     interpreted_bytecode_runtime: Uint8Array;
     runtime_hash: Uint8Array;
+    source: Uint8Array;
+    source_verified: boolean;
 }
 export interface CodeOriginPB {
     /** unique chain ID */

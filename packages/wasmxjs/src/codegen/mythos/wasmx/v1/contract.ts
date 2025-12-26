@@ -155,6 +155,8 @@ export interface CodeInfoPB {
   interpretedBytecodeDeployment: Uint8Array;
   interpretedBytecodeRuntime: Uint8Array;
   runtimeHash: Uint8Array;
+  source: Uint8Array;
+  sourceVerified: boolean;
 }
 /** CodeInfo is data for the uploaded contract WASM code */
 
@@ -185,6 +187,8 @@ export interface CodeInfoPBSDKType {
   interpreted_bytecode_deployment: Uint8Array;
   interpreted_bytecode_runtime: Uint8Array;
   runtime_hash: Uint8Array;
+  source: Uint8Array;
+  source_verified: boolean;
 }
 export interface CodeOriginPB {
   /** unique chain ID */
@@ -501,7 +505,9 @@ function createBaseCodeInfoPB(): CodeInfoPB {
     metadata: undefined,
     interpretedBytecodeDeployment: new Uint8Array(),
     interpretedBytecodeRuntime: new Uint8Array(),
-    runtimeHash: new Uint8Array()
+    runtimeHash: new Uint8Array(),
+    source: new Uint8Array(),
+    sourceVerified: false
   };
 }
 
@@ -541,6 +547,14 @@ export const CodeInfoPB = {
 
     if (message.runtimeHash.length !== 0) {
       writer.uint32(74).bytes(message.runtimeHash);
+    }
+
+    if (message.source.length !== 0) {
+      writer.uint32(82).bytes(message.source);
+    }
+
+    if (message.sourceVerified === true) {
+      writer.uint32(88).bool(message.sourceVerified);
     }
 
     return writer;
@@ -591,6 +605,14 @@ export const CodeInfoPB = {
           message.runtimeHash = reader.bytes();
           break;
 
+        case 10:
+          message.source = reader.bytes();
+          break;
+
+        case 11:
+          message.sourceVerified = reader.bool();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -610,7 +632,9 @@ export const CodeInfoPB = {
       metadata: isSet(object.metadata) ? CodeMetadataPB.fromJSON(object.metadata) : undefined,
       interpretedBytecodeDeployment: isSet(object.interpretedBytecodeDeployment) ? bytesFromBase64(object.interpretedBytecodeDeployment) : new Uint8Array(),
       interpretedBytecodeRuntime: isSet(object.interpretedBytecodeRuntime) ? bytesFromBase64(object.interpretedBytecodeRuntime) : new Uint8Array(),
-      runtimeHash: isSet(object.runtimeHash) ? bytesFromBase64(object.runtimeHash) : new Uint8Array()
+      runtimeHash: isSet(object.runtimeHash) ? bytesFromBase64(object.runtimeHash) : new Uint8Array(),
+      source: isSet(object.source) ? bytesFromBase64(object.source) : new Uint8Array(),
+      sourceVerified: isSet(object.sourceVerified) ? Boolean(object.sourceVerified) : false
     };
   },
 
@@ -631,6 +655,8 @@ export const CodeInfoPB = {
     message.interpretedBytecodeDeployment !== undefined && (obj.interpretedBytecodeDeployment = base64FromBytes(message.interpretedBytecodeDeployment !== undefined ? message.interpretedBytecodeDeployment : new Uint8Array()));
     message.interpretedBytecodeRuntime !== undefined && (obj.interpretedBytecodeRuntime = base64FromBytes(message.interpretedBytecodeRuntime !== undefined ? message.interpretedBytecodeRuntime : new Uint8Array()));
     message.runtimeHash !== undefined && (obj.runtimeHash = base64FromBytes(message.runtimeHash !== undefined ? message.runtimeHash : new Uint8Array()));
+    message.source !== undefined && (obj.source = base64FromBytes(message.source !== undefined ? message.source : new Uint8Array()));
+    message.sourceVerified !== undefined && (obj.sourceVerified = message.sourceVerified);
     return obj;
   },
 
@@ -645,6 +671,8 @@ export const CodeInfoPB = {
     message.interpretedBytecodeDeployment = object.interpretedBytecodeDeployment ?? new Uint8Array();
     message.interpretedBytecodeRuntime = object.interpretedBytecodeRuntime ?? new Uint8Array();
     message.runtimeHash = object.runtimeHash ?? new Uint8Array();
+    message.source = object.source ?? new Uint8Array();
+    message.sourceVerified = object.sourceVerified ?? false;
     return message;
   }
 

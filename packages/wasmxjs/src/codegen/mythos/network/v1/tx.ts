@@ -20,7 +20,10 @@ export interface MsgExecuteCrossChainCallResponseIndexedSDKType {
   index: number;
 }
 export interface MsgExecuteCrossChainCallRequest {
+  /** authority is the address that controls the module. */
+  authority: string;
   /** sender is the contract that prepared the message */
+
   sender: string;
   /** from is the contract that sent the cross-chain message */
 
@@ -48,7 +51,10 @@ export interface MsgExecuteCrossChainCallRequest {
   timeoutMs: Long;
 }
 export interface MsgExecuteCrossChainCallRequestSDKType {
+  /** authority is the address that controls the module. */
+  authority: string;
   /** sender is the contract that prepared the message */
+
   sender: string;
   /** from is the contract that sent the cross-chain message */
 
@@ -106,7 +112,8 @@ export interface MsgMultiChainWrapResponseSDKType {
   data: Uint8Array;
 }
 export interface MsgGrpcSendRequest {
-  /** this will always be the network module */
+  /** authority is the address that controls the module. */
+  authority: string;
   sender: string;
   contract: string;
   ipAddress: string;
@@ -116,7 +123,8 @@ export interface MsgGrpcSendRequest {
   encoding: string;
 }
 export interface MsgGrpcSendRequestSDKType {
-  /** this will always be the network module */
+  /** authority is the address that controls the module. */
+  authority: string;
   sender: string;
   contract: string;
   ip_address: string;
@@ -132,7 +140,8 @@ export interface MsgGrpcSendRequestResponseSDKType {
   data: Uint8Array;
 }
 export interface MsgGrpcReceiveRequest {
-  /** this will always be the network module */
+  /** authority is the address that controls the module. */
+  authority: string;
   sender: string;
   contract: string;
   data: Uint8Array;
@@ -141,7 +150,8 @@ export interface MsgGrpcReceiveRequest {
   encoding: string;
 }
 export interface MsgGrpcReceiveRequestSDKType {
-  /** this will always be the network module */
+  /** authority is the address that controls the module. */
+  authority: string;
   sender: string;
   contract: string;
   data: Uint8Array;
@@ -158,7 +168,8 @@ export interface MsgGrpcReceiveRequestResponseSDKType {
 /** MsgStartTimeoutRequest */
 
 export interface MsgStartTimeoutRequest {
-  /** this will always be the wasmx module // TODO authority */
+  /** authority is the address that controls the module. */
+  authority: string;
   sender: string;
   /** contract address */
 
@@ -170,7 +181,8 @@ export interface MsgStartTimeoutRequest {
 /** MsgStartTimeoutRequest */
 
 export interface MsgStartTimeoutRequestSDKType {
-  /** this will always be the wasmx module // TODO authority */
+  /** authority is the address that controls the module. */
+  authority: string;
   sender: string;
   /** contract address */
 
@@ -188,12 +200,16 @@ export interface MsgStartTimeoutResponseSDKType {}
 /** MsgCancelTimeoutRequest */
 
 export interface MsgCancelTimeoutRequest {
+  /** authority is the address that controls the module. */
+  authority: string;
   sender: string;
   id: string;
 }
 /** MsgCancelTimeoutRequest */
 
 export interface MsgCancelTimeoutRequestSDKType {
+  /** authority is the address that controls the module. */
+  authority: string;
   sender: string;
   id: string;
 }
@@ -206,7 +222,8 @@ export interface MsgCancelTimeoutResponseSDKType {}
 /** MsgStartBackgroundProcessRequest */
 
 export interface MsgStartBackgroundProcessRequest {
-  /** this will always be the wasmx module // TODO authority */
+  /** authority is the address that controls the module. */
+  authority: string;
   sender: string;
   /** contract address */
 
@@ -216,7 +233,8 @@ export interface MsgStartBackgroundProcessRequest {
 /** MsgStartBackgroundProcessRequest */
 
 export interface MsgStartBackgroundProcessRequestSDKType {
-  /** this will always be the wasmx module // TODO authority */
+  /** authority is the address that controls the module. */
+  authority: string;
   sender: string;
   /** contract address */
 
@@ -234,7 +252,7 @@ export interface MsgStartBackgroundProcessResponseSDKType {}
 export interface MsgExecuteContract {
   /** Sender is the that actor that signed the messages */
   sender: string;
-  /** Contract is the address of the smart contract */
+  /** Contract is the address or role of the smart contract */
 
   contract: string;
   /** Msg json encoded message to be passed to the contract */
@@ -246,7 +264,7 @@ export interface MsgExecuteContract {
 export interface MsgExecuteContractSDKType {
   /** Sender is the that actor that signed the messages */
   sender: string;
-  /** Contract is the address of the smart contract */
+  /** Contract is the address or role of the smart contract */
 
   contract: string;
   /** Msg json encoded message to be passed to the contract */
@@ -261,6 +279,74 @@ export interface MsgExecuteContractResponse {
 /** ExecuteContractResponse */
 
 export interface MsgExecuteContractResponseSDKType {
+  data: Uint8Array;
+}
+/** MsgReentry */
+
+export interface MsgReentry {
+  /** authority is the address that controls the module. */
+  authority: string;
+  sender: string;
+  /** contract address */
+
+  contract: string;
+  entryPoint: string;
+  msg: Uint8Array;
+}
+/** MsgReentry */
+
+export interface MsgReentrySDKType {
+  /** authority is the address that controls the module. */
+  authority: string;
+  sender: string;
+  /** contract address */
+
+  contract: string;
+  entry_point: string;
+  msg: Uint8Array;
+}
+/** MsgReentryResponse */
+
+export interface MsgReentryResponse {
+  data: Uint8Array;
+}
+/** MsgReentryResponse */
+
+export interface MsgReentryResponseSDKType {
+  data: Uint8Array;
+}
+/** MsgReentryWithGoRoutine */
+
+export interface MsgReentryWithGoRoutine {
+  /** authority is the address that controls the module. */
+  authority: string;
+  sender: string;
+  /** contract address */
+
+  contract: string;
+  entryPoint: string;
+  msg: Uint8Array;
+}
+/** MsgReentryWithGoRoutine */
+
+export interface MsgReentryWithGoRoutineSDKType {
+  /** authority is the address that controls the module. */
+  authority: string;
+  sender: string;
+  /** contract address */
+
+  contract: string;
+  entry_point: string;
+  msg: Uint8Array;
+}
+/** MsgReentryWithGoRoutineResponse */
+
+export interface MsgReentryWithGoRoutineResponse {
+  data: Uint8Array;
+}
+/** MsgReentryWithGoRoutineResponse */
+
+export interface MsgReentryWithGoRoutineResponseSDKType {
   data: Uint8Array;
 }
 /** QueryContract */
@@ -294,13 +380,15 @@ export interface MsgQueryContractResponseSDKType {
   data: Uint8Array;
 }
 export interface MsgP2PReceiveMessageRequest {
-  /** this will always be the network module */
+  /** authority is the address that controls the module. */
+  authority: string;
   sender: string;
   contract: string;
   data: Uint8Array;
 }
 export interface MsgP2PReceiveMessageRequestSDKType {
-  /** this will always be the network module */
+  /** authority is the address that controls the module. */
+  authority: string;
   sender: string;
   contract: string;
   data: Uint8Array;
@@ -512,6 +600,7 @@ export const MsgExecuteCrossChainCallResponseIndexed = {
 
 function createBaseMsgExecuteCrossChainCallRequest(): MsgExecuteCrossChainCallRequest {
   return {
+    authority: "",
     sender: "",
     from: "",
     to: "",
@@ -527,44 +616,48 @@ function createBaseMsgExecuteCrossChainCallRequest(): MsgExecuteCrossChainCallRe
 
 export const MsgExecuteCrossChainCallRequest = {
   encode(message: MsgExecuteCrossChainCallRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+
     if (message.sender !== "") {
-      writer.uint32(10).string(message.sender);
+      writer.uint32(18).string(message.sender);
     }
 
     if (message.from !== "") {
-      writer.uint32(18).string(message.from);
+      writer.uint32(26).string(message.from);
     }
 
     if (message.to !== "") {
-      writer.uint32(26).string(message.to);
+      writer.uint32(34).string(message.to);
     }
 
     if (message.msg.length !== 0) {
-      writer.uint32(34).bytes(message.msg);
+      writer.uint32(42).bytes(message.msg);
     }
 
     for (const v of message.funds) {
-      Coin.encode(v!, writer.uint32(42).fork()).ldelim();
+      Coin.encode(v!, writer.uint32(50).fork()).ldelim();
     }
 
     for (const v of message.dependencies) {
-      writer.uint32(50).string(v!);
+      writer.uint32(58).string(v!);
     }
 
     if (message.fromChainId !== "") {
-      writer.uint32(58).string(message.fromChainId);
+      writer.uint32(66).string(message.fromChainId);
     }
 
     if (message.toChainId !== "") {
-      writer.uint32(66).string(message.toChainId);
+      writer.uint32(74).string(message.toChainId);
     }
 
     if (message.isQuery === true) {
-      writer.uint32(72).bool(message.isQuery);
+      writer.uint32(80).bool(message.isQuery);
     }
 
     if (!message.timeoutMs.isZero()) {
-      writer.uint32(80).uint64(message.timeoutMs);
+      writer.uint32(88).uint64(message.timeoutMs);
     }
 
     return writer;
@@ -580,42 +673,46 @@ export const MsgExecuteCrossChainCallRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.sender = reader.string();
+          message.authority = reader.string();
           break;
 
         case 2:
-          message.from = reader.string();
+          message.sender = reader.string();
           break;
 
         case 3:
-          message.to = reader.string();
+          message.from = reader.string();
           break;
 
         case 4:
-          message.msg = reader.bytes();
+          message.to = reader.string();
           break;
 
         case 5:
-          message.funds.push(Coin.decode(reader, reader.uint32()));
+          message.msg = reader.bytes();
           break;
 
         case 6:
-          message.dependencies.push(reader.string());
+          message.funds.push(Coin.decode(reader, reader.uint32()));
           break;
 
         case 7:
-          message.fromChainId = reader.string();
+          message.dependencies.push(reader.string());
           break;
 
         case 8:
-          message.toChainId = reader.string();
+          message.fromChainId = reader.string();
           break;
 
         case 9:
-          message.isQuery = reader.bool();
+          message.toChainId = reader.string();
           break;
 
         case 10:
+          message.isQuery = reader.bool();
+          break;
+
+        case 11:
           message.timeoutMs = (reader.uint64() as Long);
           break;
 
@@ -630,6 +727,7 @@ export const MsgExecuteCrossChainCallRequest = {
 
   fromJSON(object: any): MsgExecuteCrossChainCallRequest {
     return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
       sender: isSet(object.sender) ? String(object.sender) : "",
       from: isSet(object.from) ? String(object.from) : "",
       to: isSet(object.to) ? String(object.to) : "",
@@ -645,6 +743,7 @@ export const MsgExecuteCrossChainCallRequest = {
 
   toJSON(message: MsgExecuteCrossChainCallRequest): unknown {
     const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
     message.sender !== undefined && (obj.sender = message.sender);
     message.from !== undefined && (obj.from = message.from);
     message.to !== undefined && (obj.to = message.to);
@@ -671,6 +770,7 @@ export const MsgExecuteCrossChainCallRequest = {
 
   fromPartial(object: Partial<MsgExecuteCrossChainCallRequest>): MsgExecuteCrossChainCallRequest {
     const message = createBaseMsgExecuteCrossChainCallRequest();
+    message.authority = object.authority ?? "";
     message.sender = object.sender ?? "";
     message.from = object.from ?? "";
     message.to = object.to ?? "";
@@ -958,6 +1058,7 @@ export const MsgMultiChainWrapResponse = {
 
 function createBaseMsgGrpcSendRequest(): MsgGrpcSendRequest {
   return {
+    authority: "",
     sender: "",
     contract: "",
     ipAddress: "",
@@ -968,24 +1069,28 @@ function createBaseMsgGrpcSendRequest(): MsgGrpcSendRequest {
 
 export const MsgGrpcSendRequest = {
   encode(message: MsgGrpcSendRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+
     if (message.sender !== "") {
-      writer.uint32(10).string(message.sender);
+      writer.uint32(18).string(message.sender);
     }
 
     if (message.contract !== "") {
-      writer.uint32(18).string(message.contract);
+      writer.uint32(26).string(message.contract);
     }
 
     if (message.ipAddress !== "") {
-      writer.uint32(26).string(message.ipAddress);
+      writer.uint32(34).string(message.ipAddress);
     }
 
     if (message.data.length !== 0) {
-      writer.uint32(34).bytes(message.data);
+      writer.uint32(42).bytes(message.data);
     }
 
     if (message.encoding !== "") {
-      writer.uint32(42).string(message.encoding);
+      writer.uint32(50).string(message.encoding);
     }
 
     return writer;
@@ -1001,22 +1106,26 @@ export const MsgGrpcSendRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.sender = reader.string();
+          message.authority = reader.string();
           break;
 
         case 2:
-          message.contract = reader.string();
+          message.sender = reader.string();
           break;
 
         case 3:
-          message.ipAddress = reader.string();
+          message.contract = reader.string();
           break;
 
         case 4:
-          message.data = reader.bytes();
+          message.ipAddress = reader.string();
           break;
 
         case 5:
+          message.data = reader.bytes();
+          break;
+
+        case 6:
           message.encoding = reader.string();
           break;
 
@@ -1031,6 +1140,7 @@ export const MsgGrpcSendRequest = {
 
   fromJSON(object: any): MsgGrpcSendRequest {
     return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
       sender: isSet(object.sender) ? String(object.sender) : "",
       contract: isSet(object.contract) ? String(object.contract) : "",
       ipAddress: isSet(object.ipAddress) ? String(object.ipAddress) : "",
@@ -1041,6 +1151,7 @@ export const MsgGrpcSendRequest = {
 
   toJSON(message: MsgGrpcSendRequest): unknown {
     const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
     message.sender !== undefined && (obj.sender = message.sender);
     message.contract !== undefined && (obj.contract = message.contract);
     message.ipAddress !== undefined && (obj.ipAddress = message.ipAddress);
@@ -1051,6 +1162,7 @@ export const MsgGrpcSendRequest = {
 
   fromPartial(object: Partial<MsgGrpcSendRequest>): MsgGrpcSendRequest {
     const message = createBaseMsgGrpcSendRequest();
+    message.authority = object.authority ?? "";
     message.sender = object.sender ?? "";
     message.contract = object.contract ?? "";
     message.ipAddress = object.ipAddress ?? "";
@@ -1120,6 +1232,7 @@ export const MsgGrpcSendRequestResponse = {
 
 function createBaseMsgGrpcReceiveRequest(): MsgGrpcReceiveRequest {
   return {
+    authority: "",
     sender: "",
     contract: "",
     data: new Uint8Array(),
@@ -1129,20 +1242,24 @@ function createBaseMsgGrpcReceiveRequest(): MsgGrpcReceiveRequest {
 
 export const MsgGrpcReceiveRequest = {
   encode(message: MsgGrpcReceiveRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+
     if (message.sender !== "") {
-      writer.uint32(10).string(message.sender);
+      writer.uint32(18).string(message.sender);
     }
 
     if (message.contract !== "") {
-      writer.uint32(18).string(message.contract);
+      writer.uint32(26).string(message.contract);
     }
 
     if (message.data.length !== 0) {
-      writer.uint32(26).bytes(message.data);
+      writer.uint32(34).bytes(message.data);
     }
 
     if (message.encoding !== "") {
-      writer.uint32(34).string(message.encoding);
+      writer.uint32(42).string(message.encoding);
     }
 
     return writer;
@@ -1158,18 +1275,22 @@ export const MsgGrpcReceiveRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.sender = reader.string();
+          message.authority = reader.string();
           break;
 
         case 2:
-          message.contract = reader.string();
+          message.sender = reader.string();
           break;
 
         case 3:
-          message.data = reader.bytes();
+          message.contract = reader.string();
           break;
 
         case 4:
+          message.data = reader.bytes();
+          break;
+
+        case 5:
           message.encoding = reader.string();
           break;
 
@@ -1184,6 +1305,7 @@ export const MsgGrpcReceiveRequest = {
 
   fromJSON(object: any): MsgGrpcReceiveRequest {
     return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
       sender: isSet(object.sender) ? String(object.sender) : "",
       contract: isSet(object.contract) ? String(object.contract) : "",
       data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array(),
@@ -1193,6 +1315,7 @@ export const MsgGrpcReceiveRequest = {
 
   toJSON(message: MsgGrpcReceiveRequest): unknown {
     const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
     message.sender !== undefined && (obj.sender = message.sender);
     message.contract !== undefined && (obj.contract = message.contract);
     message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
@@ -1202,6 +1325,7 @@ export const MsgGrpcReceiveRequest = {
 
   fromPartial(object: Partial<MsgGrpcReceiveRequest>): MsgGrpcReceiveRequest {
     const message = createBaseMsgGrpcReceiveRequest();
+    message.authority = object.authority ?? "";
     message.sender = object.sender ?? "";
     message.contract = object.contract ?? "";
     message.data = object.data ?? new Uint8Array();
@@ -1270,6 +1394,7 @@ export const MsgGrpcReceiveRequestResponse = {
 
 function createBaseMsgStartTimeoutRequest(): MsgStartTimeoutRequest {
   return {
+    authority: "",
     sender: "",
     contract: "",
     delay: Long.ZERO,
@@ -1280,24 +1405,28 @@ function createBaseMsgStartTimeoutRequest(): MsgStartTimeoutRequest {
 
 export const MsgStartTimeoutRequest = {
   encode(message: MsgStartTimeoutRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+
     if (message.sender !== "") {
-      writer.uint32(10).string(message.sender);
+      writer.uint32(18).string(message.sender);
     }
 
     if (message.contract !== "") {
-      writer.uint32(18).string(message.contract);
+      writer.uint32(26).string(message.contract);
     }
 
     if (!message.delay.isZero()) {
-      writer.uint32(24).int64(message.delay);
+      writer.uint32(32).int64(message.delay);
     }
 
     if (message.args.length !== 0) {
-      writer.uint32(34).bytes(message.args);
+      writer.uint32(42).bytes(message.args);
     }
 
     if (message.id !== "") {
-      writer.uint32(42).string(message.id);
+      writer.uint32(50).string(message.id);
     }
 
     return writer;
@@ -1313,22 +1442,26 @@ export const MsgStartTimeoutRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.sender = reader.string();
+          message.authority = reader.string();
           break;
 
         case 2:
-          message.contract = reader.string();
+          message.sender = reader.string();
           break;
 
         case 3:
-          message.delay = (reader.int64() as Long);
+          message.contract = reader.string();
           break;
 
         case 4:
-          message.args = reader.bytes();
+          message.delay = (reader.int64() as Long);
           break;
 
         case 5:
+          message.args = reader.bytes();
+          break;
+
+        case 6:
           message.id = reader.string();
           break;
 
@@ -1343,6 +1476,7 @@ export const MsgStartTimeoutRequest = {
 
   fromJSON(object: any): MsgStartTimeoutRequest {
     return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
       sender: isSet(object.sender) ? String(object.sender) : "",
       contract: isSet(object.contract) ? String(object.contract) : "",
       delay: isSet(object.delay) ? Long.fromValue(object.delay) : Long.ZERO,
@@ -1353,6 +1487,7 @@ export const MsgStartTimeoutRequest = {
 
   toJSON(message: MsgStartTimeoutRequest): unknown {
     const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
     message.sender !== undefined && (obj.sender = message.sender);
     message.contract !== undefined && (obj.contract = message.contract);
     message.delay !== undefined && (obj.delay = (message.delay || Long.ZERO).toString());
@@ -1363,6 +1498,7 @@ export const MsgStartTimeoutRequest = {
 
   fromPartial(object: Partial<MsgStartTimeoutRequest>): MsgStartTimeoutRequest {
     const message = createBaseMsgStartTimeoutRequest();
+    message.authority = object.authority ?? "";
     message.sender = object.sender ?? "";
     message.contract = object.contract ?? "";
     message.delay = object.delay !== undefined && object.delay !== null ? Long.fromValue(object.delay) : Long.ZERO;
@@ -1418,6 +1554,7 @@ export const MsgStartTimeoutResponse = {
 
 function createBaseMsgCancelTimeoutRequest(): MsgCancelTimeoutRequest {
   return {
+    authority: "",
     sender: "",
     id: ""
   };
@@ -1425,12 +1562,16 @@ function createBaseMsgCancelTimeoutRequest(): MsgCancelTimeoutRequest {
 
 export const MsgCancelTimeoutRequest = {
   encode(message: MsgCancelTimeoutRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+
     if (message.sender !== "") {
-      writer.uint32(10).string(message.sender);
+      writer.uint32(18).string(message.sender);
     }
 
     if (message.id !== "") {
-      writer.uint32(18).string(message.id);
+      writer.uint32(26).string(message.id);
     }
 
     return writer;
@@ -1446,10 +1587,14 @@ export const MsgCancelTimeoutRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.sender = reader.string();
+          message.authority = reader.string();
           break;
 
         case 2:
+          message.sender = reader.string();
+          break;
+
+        case 3:
           message.id = reader.string();
           break;
 
@@ -1464,6 +1609,7 @@ export const MsgCancelTimeoutRequest = {
 
   fromJSON(object: any): MsgCancelTimeoutRequest {
     return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
       sender: isSet(object.sender) ? String(object.sender) : "",
       id: isSet(object.id) ? String(object.id) : ""
     };
@@ -1471,6 +1617,7 @@ export const MsgCancelTimeoutRequest = {
 
   toJSON(message: MsgCancelTimeoutRequest): unknown {
     const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
     message.sender !== undefined && (obj.sender = message.sender);
     message.id !== undefined && (obj.id = message.id);
     return obj;
@@ -1478,6 +1625,7 @@ export const MsgCancelTimeoutRequest = {
 
   fromPartial(object: Partial<MsgCancelTimeoutRequest>): MsgCancelTimeoutRequest {
     const message = createBaseMsgCancelTimeoutRequest();
+    message.authority = object.authority ?? "";
     message.sender = object.sender ?? "";
     message.id = object.id ?? "";
     return message;
@@ -1530,6 +1678,7 @@ export const MsgCancelTimeoutResponse = {
 
 function createBaseMsgStartBackgroundProcessRequest(): MsgStartBackgroundProcessRequest {
   return {
+    authority: "",
     sender: "",
     contract: "",
     args: new Uint8Array()
@@ -1538,16 +1687,20 @@ function createBaseMsgStartBackgroundProcessRequest(): MsgStartBackgroundProcess
 
 export const MsgStartBackgroundProcessRequest = {
   encode(message: MsgStartBackgroundProcessRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+
     if (message.sender !== "") {
-      writer.uint32(10).string(message.sender);
+      writer.uint32(18).string(message.sender);
     }
 
     if (message.contract !== "") {
-      writer.uint32(18).string(message.contract);
+      writer.uint32(26).string(message.contract);
     }
 
     if (message.args.length !== 0) {
-      writer.uint32(26).bytes(message.args);
+      writer.uint32(34).bytes(message.args);
     }
 
     return writer;
@@ -1563,14 +1716,18 @@ export const MsgStartBackgroundProcessRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.sender = reader.string();
+          message.authority = reader.string();
           break;
 
         case 2:
-          message.contract = reader.string();
+          message.sender = reader.string();
           break;
 
         case 3:
+          message.contract = reader.string();
+          break;
+
+        case 4:
           message.args = reader.bytes();
           break;
 
@@ -1585,6 +1742,7 @@ export const MsgStartBackgroundProcessRequest = {
 
   fromJSON(object: any): MsgStartBackgroundProcessRequest {
     return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
       sender: isSet(object.sender) ? String(object.sender) : "",
       contract: isSet(object.contract) ? String(object.contract) : "",
       args: isSet(object.args) ? bytesFromBase64(object.args) : new Uint8Array()
@@ -1593,6 +1751,7 @@ export const MsgStartBackgroundProcessRequest = {
 
   toJSON(message: MsgStartBackgroundProcessRequest): unknown {
     const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
     message.sender !== undefined && (obj.sender = message.sender);
     message.contract !== undefined && (obj.contract = message.contract);
     message.args !== undefined && (obj.args = base64FromBytes(message.args !== undefined ? message.args : new Uint8Array()));
@@ -1601,6 +1760,7 @@ export const MsgStartBackgroundProcessRequest = {
 
   fromPartial(object: Partial<MsgStartBackgroundProcessRequest>): MsgStartBackgroundProcessRequest {
     const message = createBaseMsgStartBackgroundProcessRequest();
+    message.authority = object.authority ?? "";
     message.sender = object.sender ?? "";
     message.contract = object.contract ?? "";
     message.args = object.args ?? new Uint8Array();
@@ -1790,6 +1950,330 @@ export const MsgExecuteContractResponse = {
 
 };
 
+function createBaseMsgReentry(): MsgReentry {
+  return {
+    authority: "",
+    sender: "",
+    contract: "",
+    entryPoint: "",
+    msg: new Uint8Array()
+  };
+}
+
+export const MsgReentry = {
+  encode(message: MsgReentry, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+
+    if (message.sender !== "") {
+      writer.uint32(18).string(message.sender);
+    }
+
+    if (message.contract !== "") {
+      writer.uint32(26).string(message.contract);
+    }
+
+    if (message.entryPoint !== "") {
+      writer.uint32(34).string(message.entryPoint);
+    }
+
+    if (message.msg.length !== 0) {
+      writer.uint32(42).bytes(message.msg);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgReentry {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgReentry();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+
+        case 2:
+          message.sender = reader.string();
+          break;
+
+        case 3:
+          message.contract = reader.string();
+          break;
+
+        case 4:
+          message.entryPoint = reader.string();
+          break;
+
+        case 5:
+          message.msg = reader.bytes();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgReentry {
+    return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      contract: isSet(object.contract) ? String(object.contract) : "",
+      entryPoint: isSet(object.entryPoint) ? String(object.entryPoint) : "",
+      msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: MsgReentry): unknown {
+    const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
+    message.sender !== undefined && (obj.sender = message.sender);
+    message.contract !== undefined && (obj.contract = message.contract);
+    message.entryPoint !== undefined && (obj.entryPoint = message.entryPoint);
+    message.msg !== undefined && (obj.msg = base64FromBytes(message.msg !== undefined ? message.msg : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgReentry>): MsgReentry {
+    const message = createBaseMsgReentry();
+    message.authority = object.authority ?? "";
+    message.sender = object.sender ?? "";
+    message.contract = object.contract ?? "";
+    message.entryPoint = object.entryPoint ?? "";
+    message.msg = object.msg ?? new Uint8Array();
+    return message;
+  }
+
+};
+
+function createBaseMsgReentryResponse(): MsgReentryResponse {
+  return {
+    data: new Uint8Array()
+  };
+}
+
+export const MsgReentryResponse = {
+  encode(message: MsgReentryResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.data.length !== 0) {
+      writer.uint32(10).bytes(message.data);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgReentryResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgReentryResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.data = reader.bytes();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgReentryResponse {
+    return {
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: MsgReentryResponse): unknown {
+    const obj: any = {};
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgReentryResponse>): MsgReentryResponse {
+    const message = createBaseMsgReentryResponse();
+    message.data = object.data ?? new Uint8Array();
+    return message;
+  }
+
+};
+
+function createBaseMsgReentryWithGoRoutine(): MsgReentryWithGoRoutine {
+  return {
+    authority: "",
+    sender: "",
+    contract: "",
+    entryPoint: "",
+    msg: new Uint8Array()
+  };
+}
+
+export const MsgReentryWithGoRoutine = {
+  encode(message: MsgReentryWithGoRoutine, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+
+    if (message.sender !== "") {
+      writer.uint32(18).string(message.sender);
+    }
+
+    if (message.contract !== "") {
+      writer.uint32(26).string(message.contract);
+    }
+
+    if (message.entryPoint !== "") {
+      writer.uint32(34).string(message.entryPoint);
+    }
+
+    if (message.msg.length !== 0) {
+      writer.uint32(42).bytes(message.msg);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgReentryWithGoRoutine {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgReentryWithGoRoutine();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.authority = reader.string();
+          break;
+
+        case 2:
+          message.sender = reader.string();
+          break;
+
+        case 3:
+          message.contract = reader.string();
+          break;
+
+        case 4:
+          message.entryPoint = reader.string();
+          break;
+
+        case 5:
+          message.msg = reader.bytes();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgReentryWithGoRoutine {
+    return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
+      sender: isSet(object.sender) ? String(object.sender) : "",
+      contract: isSet(object.contract) ? String(object.contract) : "",
+      entryPoint: isSet(object.entryPoint) ? String(object.entryPoint) : "",
+      msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: MsgReentryWithGoRoutine): unknown {
+    const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
+    message.sender !== undefined && (obj.sender = message.sender);
+    message.contract !== undefined && (obj.contract = message.contract);
+    message.entryPoint !== undefined && (obj.entryPoint = message.entryPoint);
+    message.msg !== undefined && (obj.msg = base64FromBytes(message.msg !== undefined ? message.msg : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgReentryWithGoRoutine>): MsgReentryWithGoRoutine {
+    const message = createBaseMsgReentryWithGoRoutine();
+    message.authority = object.authority ?? "";
+    message.sender = object.sender ?? "";
+    message.contract = object.contract ?? "";
+    message.entryPoint = object.entryPoint ?? "";
+    message.msg = object.msg ?? new Uint8Array();
+    return message;
+  }
+
+};
+
+function createBaseMsgReentryWithGoRoutineResponse(): MsgReentryWithGoRoutineResponse {
+  return {
+    data: new Uint8Array()
+  };
+}
+
+export const MsgReentryWithGoRoutineResponse = {
+  encode(message: MsgReentryWithGoRoutineResponse, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.data.length !== 0) {
+      writer.uint32(10).bytes(message.data);
+    }
+
+    return writer;
+  },
+
+  decode(input: _m0.Reader | Uint8Array, length?: number): MsgReentryWithGoRoutineResponse {
+    const reader = input instanceof _m0.Reader ? input : new _m0.Reader(input);
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = createBaseMsgReentryWithGoRoutineResponse();
+
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+
+      switch (tag >>> 3) {
+        case 1:
+          message.data = reader.bytes();
+          break;
+
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+
+    return message;
+  },
+
+  fromJSON(object: any): MsgReentryWithGoRoutineResponse {
+    return {
+      data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array()
+    };
+  },
+
+  toJSON(message: MsgReentryWithGoRoutineResponse): unknown {
+    const obj: any = {};
+    message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
+    return obj;
+  },
+
+  fromPartial(object: Partial<MsgReentryWithGoRoutineResponse>): MsgReentryWithGoRoutineResponse {
+    const message = createBaseMsgReentryWithGoRoutineResponse();
+    message.data = object.data ?? new Uint8Array();
+    return message;
+  }
+
+};
+
 function createBaseMsgQueryContract(): MsgQueryContract {
   return {
     sender: "",
@@ -1930,6 +2414,7 @@ export const MsgQueryContractResponse = {
 
 function createBaseMsgP2PReceiveMessageRequest(): MsgP2PReceiveMessageRequest {
   return {
+    authority: "",
     sender: "",
     contract: "",
     data: new Uint8Array()
@@ -1938,16 +2423,20 @@ function createBaseMsgP2PReceiveMessageRequest(): MsgP2PReceiveMessageRequest {
 
 export const MsgP2PReceiveMessageRequest = {
   encode(message: MsgP2PReceiveMessageRequest, writer: _m0.Writer = _m0.Writer.create()): _m0.Writer {
+    if (message.authority !== "") {
+      writer.uint32(10).string(message.authority);
+    }
+
     if (message.sender !== "") {
-      writer.uint32(10).string(message.sender);
+      writer.uint32(18).string(message.sender);
     }
 
     if (message.contract !== "") {
-      writer.uint32(18).string(message.contract);
+      writer.uint32(26).string(message.contract);
     }
 
     if (message.data.length !== 0) {
-      writer.uint32(26).bytes(message.data);
+      writer.uint32(34).bytes(message.data);
     }
 
     return writer;
@@ -1963,14 +2452,18 @@ export const MsgP2PReceiveMessageRequest = {
 
       switch (tag >>> 3) {
         case 1:
-          message.sender = reader.string();
+          message.authority = reader.string();
           break;
 
         case 2:
-          message.contract = reader.string();
+          message.sender = reader.string();
           break;
 
         case 3:
+          message.contract = reader.string();
+          break;
+
+        case 4:
           message.data = reader.bytes();
           break;
 
@@ -1985,6 +2478,7 @@ export const MsgP2PReceiveMessageRequest = {
 
   fromJSON(object: any): MsgP2PReceiveMessageRequest {
     return {
+      authority: isSet(object.authority) ? String(object.authority) : "",
       sender: isSet(object.sender) ? String(object.sender) : "",
       contract: isSet(object.contract) ? String(object.contract) : "",
       data: isSet(object.data) ? bytesFromBase64(object.data) : new Uint8Array()
@@ -1993,6 +2487,7 @@ export const MsgP2PReceiveMessageRequest = {
 
   toJSON(message: MsgP2PReceiveMessageRequest): unknown {
     const obj: any = {};
+    message.authority !== undefined && (obj.authority = message.authority);
     message.sender !== undefined && (obj.sender = message.sender);
     message.contract !== undefined && (obj.contract = message.contract);
     message.data !== undefined && (obj.data = base64FromBytes(message.data !== undefined ? message.data : new Uint8Array()));
@@ -2001,6 +2496,7 @@ export const MsgP2PReceiveMessageRequest = {
 
   fromPartial(object: Partial<MsgP2PReceiveMessageRequest>): MsgP2PReceiveMessageRequest {
     const message = createBaseMsgP2PReceiveMessageRequest();
+    message.authority = object.authority ?? "";
     message.sender = object.sender ?? "";
     message.contract = object.contract ?? "";
     message.data = object.data ?? new Uint8Array();

@@ -21,6 +21,7 @@ export interface MsgStoreCode {
 
   deps: string[];
   metadata?: CodeMetadataPB;
+  source: Uint8Array;
 }
 /** MsgStoreCode submit Wasm code to the system */
 
@@ -41,6 +42,7 @@ export interface MsgStoreCodeSDKType {
 
   deps: string[];
   metadata?: CodeMetadataPBSDKType;
+  source: Uint8Array;
 }
 /** MsgStoreCodeResponse returns store result data. */
 
@@ -89,6 +91,7 @@ export interface MsgDeployCode {
 
   funds: Coin[];
   label: string;
+  source: Uint8Array;
 }
 /** MsgStoreCode submit Wasm code to the system */
 
@@ -119,6 +122,7 @@ export interface MsgDeployCodeSDKType {
 
   funds: CoinSDKType[];
   label: string;
+  source: Uint8Array;
 }
 /** MsgDeployCodeResponse returns store result data. */
 
@@ -494,7 +498,8 @@ function createBaseMsgStoreCode(): MsgStoreCode {
     sender: "",
     byteCode: new Uint8Array(),
     deps: [],
-    metadata: undefined
+    metadata: undefined,
+    source: new Uint8Array()
   };
 }
 
@@ -514,6 +519,10 @@ export const MsgStoreCode = {
 
     if (message.metadata !== undefined) {
       CodeMetadataPB.encode(message.metadata, writer.uint32(34).fork()).ldelim();
+    }
+
+    if (message.source.length !== 0) {
+      writer.uint32(42).bytes(message.source);
     }
 
     return writer;
@@ -544,6 +553,10 @@ export const MsgStoreCode = {
           message.metadata = CodeMetadataPB.decode(reader, reader.uint32());
           break;
 
+        case 5:
+          message.source = reader.bytes();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -558,7 +571,8 @@ export const MsgStoreCode = {
       sender: isSet(object.sender) ? String(object.sender) : "",
       byteCode: isSet(object.byteCode) ? bytesFromBase64(object.byteCode) : new Uint8Array(),
       deps: Array.isArray(object?.deps) ? object.deps.map((e: any) => String(e)) : [],
-      metadata: isSet(object.metadata) ? CodeMetadataPB.fromJSON(object.metadata) : undefined
+      metadata: isSet(object.metadata) ? CodeMetadataPB.fromJSON(object.metadata) : undefined,
+      source: isSet(object.source) ? bytesFromBase64(object.source) : new Uint8Array()
     };
   },
 
@@ -574,6 +588,7 @@ export const MsgStoreCode = {
     }
 
     message.metadata !== undefined && (obj.metadata = message.metadata ? CodeMetadataPB.toJSON(message.metadata) : undefined);
+    message.source !== undefined && (obj.source = base64FromBytes(message.source !== undefined ? message.source : new Uint8Array()));
     return obj;
   },
 
@@ -583,6 +598,7 @@ export const MsgStoreCode = {
     message.byteCode = object.byteCode ?? new Uint8Array();
     message.deps = object.deps?.map(e => e) || [];
     message.metadata = object.metadata !== undefined && object.metadata !== null ? CodeMetadataPB.fromPartial(object.metadata) : undefined;
+    message.source = object.source ?? new Uint8Array();
     return message;
   }
 
@@ -665,7 +681,8 @@ function createBaseMsgDeployCode(): MsgDeployCode {
     metadata: undefined,
     msg: new Uint8Array(),
     funds: [],
-    label: ""
+    label: "",
+    source: new Uint8Array()
   };
 }
 
@@ -697,6 +714,10 @@ export const MsgDeployCode = {
 
     if (message.label !== "") {
       writer.uint32(58).string(message.label);
+    }
+
+    if (message.source.length !== 0) {
+      writer.uint32(66).bytes(message.source);
     }
 
     return writer;
@@ -739,6 +760,10 @@ export const MsgDeployCode = {
           message.label = reader.string();
           break;
 
+        case 8:
+          message.source = reader.bytes();
+          break;
+
         default:
           reader.skipType(tag & 7);
           break;
@@ -756,7 +781,8 @@ export const MsgDeployCode = {
       metadata: isSet(object.metadata) ? CodeMetadataPB.fromJSON(object.metadata) : undefined,
       msg: isSet(object.msg) ? bytesFromBase64(object.msg) : new Uint8Array(),
       funds: Array.isArray(object?.funds) ? object.funds.map((e: any) => Coin.fromJSON(e)) : [],
-      label: isSet(object.label) ? String(object.label) : ""
+      label: isSet(object.label) ? String(object.label) : "",
+      source: isSet(object.source) ? bytesFromBase64(object.source) : new Uint8Array()
     };
   },
 
@@ -781,6 +807,7 @@ export const MsgDeployCode = {
     }
 
     message.label !== undefined && (obj.label = message.label);
+    message.source !== undefined && (obj.source = base64FromBytes(message.source !== undefined ? message.source : new Uint8Array()));
     return obj;
   },
 
@@ -793,6 +820,7 @@ export const MsgDeployCode = {
     message.msg = object.msg ?? new Uint8Array();
     message.funds = object.funds?.map(e => Coin.fromPartial(e)) || [];
     message.label = object.label ?? "";
+    message.source = object.source ?? new Uint8Array();
     return message;
   }
 

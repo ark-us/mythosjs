@@ -1,5 +1,5 @@
 import { Rpc } from "../../../helpers";
-import { MsgGrpcSendRequest, MsgGrpcSendRequestResponse, MsgStartTimeoutRequest, MsgStartTimeoutResponse, MsgCancelTimeoutRequest, MsgCancelTimeoutResponse, MsgStartBackgroundProcessRequest, MsgStartBackgroundProcessResponse, MsgMultiChainWrap, MsgMultiChainWrapResponse, MsgGrpcReceiveRequest, MsgGrpcReceiveRequestResponse, MsgP2PReceiveMessageRequest, MsgP2PReceiveMessageResponse, MsgExecuteAtomicTxResponse, MsgExecuteCrossChainCallRequest, MsgExecuteCrossChainCallResponse } from "./tx";
+import { MsgGrpcSendRequest, MsgGrpcSendRequestResponse, MsgStartTimeoutRequest, MsgStartTimeoutResponse, MsgCancelTimeoutRequest, MsgCancelTimeoutResponse, MsgStartBackgroundProcessRequest, MsgStartBackgroundProcessResponse, MsgMultiChainWrap, MsgMultiChainWrapResponse, MsgReentryWithGoRoutine, MsgReentryWithGoRoutineResponse, MsgReentry, MsgReentryResponse, MsgGrpcReceiveRequest, MsgGrpcReceiveRequestResponse, MsgP2PReceiveMessageRequest, MsgP2PReceiveMessageResponse, MsgExecuteAtomicTxResponse, MsgExecuteCrossChainCallRequest, MsgExecuteCrossChainCallResponse } from "./tx";
 import { MsgExecuteAtomicTxRequest } from "./custom";
 /** Msg defines the grpc server */
 export interface Msg {
@@ -12,6 +12,12 @@ export interface Msg {
     startBackgroundProcess(request: MsgStartBackgroundProcessRequest): Promise<MsgStartBackgroundProcessResponse>;
     /** MultiChainWrap wraps a message to be executed on one of the available chains */
     multiChainWrap(request: MsgMultiChainWrap): Promise<MsgMultiChainWrapResponse>;
+    /**
+     * MsgReentry is an internal message for contracts
+     * It cannot be called by EOAs
+     */
+    reentryWithGoRoutine(request: MsgReentryWithGoRoutine): Promise<MsgReentryWithGoRoutineResponse>;
+    reentry(request: MsgReentry): Promise<MsgReentryResponse>;
     /** GrpcReceiveRequest */
     grpcReceiveRequest(request: MsgGrpcReceiveRequest): Promise<MsgGrpcReceiveRequestResponse>;
     /** P2PReceiveMessage */
@@ -28,6 +34,8 @@ export declare class MsgClientImpl implements Msg {
     cancelTimeout(request: MsgCancelTimeoutRequest): Promise<MsgCancelTimeoutResponse>;
     startBackgroundProcess(request: MsgStartBackgroundProcessRequest): Promise<MsgStartBackgroundProcessResponse>;
     multiChainWrap(request: MsgMultiChainWrap): Promise<MsgMultiChainWrapResponse>;
+    reentryWithGoRoutine(request: MsgReentryWithGoRoutine): Promise<MsgReentryWithGoRoutineResponse>;
+    reentry(request: MsgReentry): Promise<MsgReentryResponse>;
     grpcReceiveRequest(request: MsgGrpcReceiveRequest): Promise<MsgGrpcReceiveRequestResponse>;
     p2PReceiveMessage(request: MsgP2PReceiveMessageRequest): Promise<MsgP2PReceiveMessageResponse>;
     executeAtomicTx(request: MsgExecuteAtomicTxRequest): Promise<MsgExecuteAtomicTxResponse>;
